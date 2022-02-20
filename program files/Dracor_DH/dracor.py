@@ -3,6 +3,7 @@ import json
 from urllib import request
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.feature_extraction.text import CountVectorizer
+from nltk.corpus import stopwords
 
 
 dracor_api = "https://dracor.org/api"                    # API-Endpunkt für DraCor
@@ -30,9 +31,7 @@ def get_dracor(corpus, play=None, text_mode=None):
         print("No valid request for scope of text:")
         print(text_mode)
         print("supported options are: 'full', 'spoken' or None")
-        sys.exit()
-        
-        
+        sys.exit()  
 
 def get_data(corpus, text_mode):
     """Alle Stücke eines Korpus herunterladen."""
@@ -48,12 +47,18 @@ def get_data(corpus, text_mode):
 
 # options: corpus="ita"/"ger", text="spoken"/"full"
 def get_features(corpus="ita", text="full", vocab=True, syntax=True, remove_stopwords=False, lemmatize=False, alias_names=False, normalize_orthography=False, drama_stats=True):
-    if corpus=="ita":
+    if corpus=="ita":                                      # Dramentexte aus dem Netz ziehen
         texts, ids = get_data("ita", text_mode=text)
+        stopwordlist = stopwords.words('italian')
     elif corpus=="ger":
         texts, ids = get_data("ger", text_mode=text)
+        stopwordlist = stopwords.words('german')
     else:
         print("No valid corpus found!")
         sys.exit()
-    vectorizer = TfidfVectorizer(max_df=.65, min_df=1, stop_words=None, use_idf=True, norm=None)
+    if not remove_stopwords:                               # Stopwordlisten deaktivieren falls gewünscht
+        stopwordlist = None
+    if not lemmatize:
+        lemmatizer = None
+    vectorizer = TfidfVectorizer(max_df=.65, min_df=1, stop_words=stopwordlist, use_idf=True, norm=None)
     return vectorizer.fit_transform(texts)
