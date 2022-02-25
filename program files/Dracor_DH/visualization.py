@@ -11,7 +11,7 @@ def read_data_csv(path: str) -> pd.DataFrame:
 
 def set_time_frame(first_year, last_year) -> tuple:
 
-    """help function for draw_plot, determines time frame to draw plot for; if not specified by user, it defaults to the oldest/      youngest play in the corpus 
+    """help function for draw_plot, determines time frame to draw plot for; if not specified by user, it defaults to the oldest/youngest play in the corpus 
     """
 
     if not first_year:
