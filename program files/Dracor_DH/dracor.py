@@ -1,6 +1,7 @@
 import sys
 import json
 from urllib import request
+import sklearn
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.feature_extraction.text import CountVectorizer
 from nltk.corpus import stopwords
@@ -53,6 +54,7 @@ def get_features(corpus="ita", text="full", vocab=True, syntax=True, remove_stop
     elif corpus=="ger":
         texts, ids = get_data("ger", text_mode=text)
         stopwordlist = stopwords.words('german')
+        #print(ids)
     else:
         print("No valid corpus found!")
         sys.exit()
@@ -60,5 +62,9 @@ def get_features(corpus="ita", text="full", vocab=True, syntax=True, remove_stop
         stopwordlist = None
     if not lemmatize:
         lemmatizer = None
+
     vectorizer = TfidfVectorizer(max_df=.65, min_df=1, stop_words=stopwordlist, use_idf=True, norm=None)
-    return vectorizer.fit_transform(texts)
+    return vectorizer.fit_transform(texts), vectorizer.get_feature_names_out()  #  tuple: (document id, token id), value: tf-idf score 
+
+
+

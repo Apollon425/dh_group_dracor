@@ -2,10 +2,11 @@ library(shiny)
 library(data.table)
 library(ggplot2)
 library(curl)
+install.packages("vscDebugger")
 
 
 # read data
-gerdracor <- fread("C:\\Users\\richa\\OneDrive\\Studium\\Digital Humanities\\Master\\1. Semester\\Verfahren und Anwendungen in den DH\\Projektarbeit\\dh_group_dracor\\data_files\\corpus_metadata.csv")
+gerdracor <- fread("C:\\Users\\richa\\OneDrive\\Studium\\Digital Humanities\\Master\\1. Semester\\Verfahren und Anwendungen in den DH\\Projektarbeit\\Dracor\\dh_group_dracor\\data_files\\corpus_metadata.csv")
 gerdracor
 
 
