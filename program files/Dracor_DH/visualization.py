@@ -42,11 +42,11 @@ def draw_plot(data: pd.DataFrame, column: str, plot_type: str, annotate: bool, f
 
     if annotate:
         year = data["yearNormalized"].to_list()
-        density = data[column].to_list()
+        data = data[column].to_list()
         name = data["firstAuthor"].to_list()
 
         for i, txt in enumerate(name):
-            plt.annotate(txt, (year[i], density[i]))
+            plt.annotate(txt, (year[i], data[i]))
 
     plt.show()
 
