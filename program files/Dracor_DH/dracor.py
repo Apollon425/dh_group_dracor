@@ -46,7 +46,7 @@ def get_data(corpus, text_mode):
 
 
 # options: corpus="ita"/"ger", text="spoken"/"full"
-def get_features(corpus="ita", text="full", vocab=True, syntax=True, remove_stopwords=False, lemmatize=False, alias_names=False, normalize_orthography=False, drama_stats=True):
+def get_features(corpus="ita", text="full", vocab=True, syntax=True, remove_stopwords=False, lemmatize=False, alias_names=False, normalize_orthography=False, drama_stats=True, get_ids=False):
     if corpus=="ita":                                      # Dramentexte aus dem Netz ziehen
         texts, ids = get_data("ita", text_mode=text)
         stopwordlist = stopwords.words('italian')
@@ -61,4 +61,7 @@ def get_features(corpus="ita", text="full", vocab=True, syntax=True, remove_stop
     if not lemmatize:
         lemmatizer = None
     vectorizer = TfidfVectorizer(max_df=.65, min_df=1, stop_words=stopwordlist, use_idf=True, norm=None)
-    return vectorizer.fit_transform(texts)
+    if not get_ids:
+        return vectorizer.fit_transform(texts)
+    else:
+        return vectorizer.fit_transform(texts), ids
