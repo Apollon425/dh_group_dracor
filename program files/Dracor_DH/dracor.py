@@ -1,7 +1,6 @@
 import sys
 import json
 from urllib import request
-import sklearn
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.feature_extraction.text import CountVectorizer
 from nltk.corpus import stopwords
@@ -47,14 +46,13 @@ def get_data(corpus, text_mode):
 
 
 # options: corpus="ita"/"ger", text="spoken"/"full"
-def get_features(corpus="ita", text="full", vocab=True, syntax=True, remove_stopwords=False, lemmatize=False, alias_names=False, normalize_orthography=False, drama_stats=True):
+def get_features(corpus="ita", text="full", vocab=True, syntax=True, remove_stopwords=False, lemmatize=False, alias_names=False, normalize_orthography=False, drama_stats=True, get_ids=False):
     if corpus=="ita":                                      # Dramentexte aus dem Netz ziehen
         texts, ids = get_data("ita", text_mode=text)
         stopwordlist = stopwords.words('italian')
     elif corpus=="ger":
         texts, ids = get_data("ger", text_mode=text)
         stopwordlist = stopwords.words('german')
-        #print(ids)
     else:
         print("No valid corpus found!")
         sys.exit()
@@ -62,9 +60,8 @@ def get_features(corpus="ita", text="full", vocab=True, syntax=True, remove_stop
         stopwordlist = None
     if not lemmatize:
         lemmatizer = None
-
     vectorizer = TfidfVectorizer(max_df=.65, min_df=1, stop_words=stopwordlist, use_idf=True, norm=None)
-    return vectorizer.fit_transform(texts), vectorizer.get_feature_names_out()  #  tuple: (document id, token id), value: tf-idf score 
-
-
-
+    if not get_ids:
+        return vectorizer.fit_transform(texts)
+    else:
+        return vectorizer.fit_transform(texts), ids
