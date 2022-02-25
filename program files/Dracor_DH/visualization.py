@@ -42,11 +42,11 @@ def draw_plot(data: pd.DataFrame, column: str, plot_type: str, annotate: bool, f
 
     if annotate:
         year = data["yearNormalized"].to_list()
-        data = data[column].to_list()
+        y_axis_attribute = data[column].to_list()
         name = data["firstAuthor"].to_list()
 
         for i, txt in enumerate(name):
-            plt.annotate(txt, (year[i], data[i]))
+            plt.annotate(txt, (year[i], y_axis_attribute[i]))
 
     plt.show()
 
