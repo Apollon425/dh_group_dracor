@@ -4,6 +4,7 @@ from urllib import request
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.feature_extraction.text import CountVectorizer
 from nltk.corpus import stopwords
+import pandas as pd
 
 
 dracor_api = "https://dracor.org/api"                    # API-Endpunkt für DraCor
@@ -65,3 +66,6 @@ def get_features(corpus="ita", text="full", vocab=True, syntax=True, remove_stop
         return vectorizer.fit_transform(texts)
     else:
         return vectorizer.fit_transform(texts), ids
+
+def convert_to_csv(nparray):
+    pd.DataFrame(nparray).to_csv("tfidf.csv")
