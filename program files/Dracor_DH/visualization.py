@@ -1,13 +1,18 @@
+from turtle import shape
 import dracor as dr
 import pandas as pd
 from matplotlib import pyplot as plt
 import sys
 
-METADATA_PATH = 'data_files/corpus_metadata.csv'
+METADATA_PATH = 'data_files/ger_corpus_metadata.csv'
+TF_IDF_PATH = f'data_files/ita_tfidf_min5.csv'
 
 
 def read_data_csv(path: str) -> pd.DataFrame:
     return pd.read_csv(path)
+
+def write_to_csv(data: pd.DataFrame, path: str):
+    data.to_csv(path)
 
 def set_time_frame(first_year, last_year) -> tuple:
 
@@ -51,6 +56,20 @@ def draw_plot(data: pd.DataFrame, column: str, plot_type: str, annotate: bool, f
     plt.show()
 
 if __name__ == '__main__':
-    draw_plot(data=read_data_csv(METADATA_PATH), column="averageClustering", plot_type="scatter", annotate=False, first_year=1850)
+
+    #draw_plot(data=read_data_csv(METADATA_PATH), column="averageClustering", plot_type="scatter", annotate=False, first_year=1850)
+
+    matrix, dracor_ids, vector_names = dr.get_features("ita", get_ids= True)
+
+    df = dr.convert_to_csv(TF_IDF_PATH, matrix, vector_names)
+    #df = read_data_csv(TF_IDF_PATH)
+
+    df.index = dracor_ids
+    write_to_csv(df, TF_IDF_PATH)
+
+    print(df)
+
+
+
 
 

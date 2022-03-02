@@ -48,7 +48,18 @@ def get_data(corpus, text_mode):
 
 
 # options: corpus="ita"/"ger", text="spoken"/"full"
-def get_features(corpus="ita", text="full", vocab=True, syntax=True, remove_stopwords=False, lemmatize=False, alias_names=False, normalize_orthography=False, drama_stats=True, get_ids=False):
+def get_features(corpus="ita",
+        text="full", 
+        vocab=True, 
+        syntax=True, 
+        remove_stopwords=False, 
+        lemmatize=False, alias_names=False, 
+        normalize_orthography=False, 
+        drama_stats=True, 
+        get_ids=False
+
+    ):
+
     if corpus=="ita":                                      # Dramentexte aus dem Netz ziehen
         texts, ids = get_data("ita", text_mode=text)
         stopwordlist = stopwords.words('italian')
@@ -62,11 +73,17 @@ def get_features(corpus="ita", text="full", vocab=True, syntax=True, remove_stop
         stopwordlist = None
     if not lemmatize:
         lemmatizer = None
-    vectorizer = TfidfVectorizer(max_df=.65, min_df=1, stop_words=stopwordlist, use_idf=True, norm=None)
+    vectorizer = TfidfVectorizer(max_df=.65, min_df=5, stop_words=stopwordlist, use_idf=True, norm=None)
+      #
+
     if not get_ids:
         return vectorizer.fit_transform(texts)
-    else:
-        return vectorizer.fit_transform(texts), ids
 
-def convert_to_csv(scipymatrix):
-    pd.DataFrame(data=scipy.sparse.csr_matrix.todense(scipymatrix)).to_csv("tfidf.csv", index=False)       
+    else:        
+        return vectorizer.fit_transform(texts), ids, vectorizer.get_feature_names_out()
+
+def convert_to_csv(path, scipymatrix, ids):
+    df = pd.DataFrame(data=scipy.sparse.csr_matrix.todense(scipymatrix))
+    df.columns = ids
+    df.to_csv(path, encoding="utf-8", index=False)
+    return df   
