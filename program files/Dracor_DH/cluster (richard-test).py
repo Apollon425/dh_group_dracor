@@ -38,3 +38,5 @@ ax.scatter(x_axis, y_axis, c=[colors[d] for d in kmean_indices])
 #     ax.annotate(txt[0:5], (x_axis[i], y_axis[i]))
 
 plt.savefig("ger_no_stopwords.png")
+
+# test
