@@ -12,8 +12,8 @@ import sys
 vectors, dracor_ids, vector_names = dr.get_features("ger", get_ids= True, remove_stopwords=True)
 
 
-true_k = 10
-model = KMeans(n_clusters=true_k, init="k-means++", max_iter=100, n_init=1)
+k = 10
+model = KMeans(n_clusters=k, init="k-means++", max_iter=100, n_init=1)
 
 model.fit(vectors)
 
