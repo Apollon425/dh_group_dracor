@@ -107,7 +107,6 @@ if __name__ == '__main__':
 
     matrix, dracor_ids, vector_names = get_features("ita", get_ids= True)  #  do tf-idf
     df = convert_to_df_and_csv(TF_IDF_PATH, matrix, vector_names, True)  #  put data in pandas dataframe with named columns (=features), export as csv optionally
-    df = read_data_csv(TF_IDF_PATH)
     df.index = dracor_ids  #  add row names (= dracors ids of plays)
 
     print(df)  #  df has named rows (=dracors ids of plays) and columns (feature)
