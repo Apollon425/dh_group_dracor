@@ -15,7 +15,7 @@ ssl._create_default_https_context = ssl._create_unverified_context
 range_n_clusters = list(range(1, 11))  #  number of clusters
 
 #  get the data directly, but put it in a pandas dataframe with named rows and columns like so:
-# matrix, dracor_ids, vector_names = dr.get_features("ita", get_ids= True)
+matrix, dracor_ids, vector_names = dr.get_features("ita", get_ids= True)
 # df = dr.convert_to_df_and_csv(dr.TF_IDF_PATH, matrix, vector_names, False)
 # df.index = dracor_ids
 
@@ -23,9 +23,7 @@ range_n_clusters = list(range(1, 11))  #  number of clusters
 #  so it must be present in data_files folder; advantage: tf-idf is not calculated again, just the result of the calculation
 #  done previously is read) like so:
 
-df = dr.read_data_csv(dr.TF_IDF_PATH)
-
-print(df)
+#df = dr.read_data_csv(dr.TF_IDF_PATH)
 
 
 
@@ -40,17 +38,18 @@ for n_clusters in range_n_clusters:
     ax1.set_xlim([-0.1, 1])
     # The (n_clusters+1)*10 is for inserting blank space between silhouette
     # plots of individual clusters, to demarcate them clearly.
-    ax1.set_ylim([0, len(dr.TF_IDF_PATH) + (n_clusters + 1) * 10])
+    ax1.set_ylim([0, matrix.get_shape()[0] + (n_clusters + 1) * 10])  #  CHANGED from: len(dr.TF_IDF_PATH)
 
     # Initialize the clusterer with n_clusters value and a random generator
     # seed of 10 for reproducibility.
     clusterer = KMeans(n_clusters=n_clusters, random_state=10)
-    cluster_labels = clusterer.fit_predict(dr.TF_IDF_PATH)
+    cluster_labels = clusterer.fit_predict(matrix)  #  CHANGED parameter from: dr.TF_IDF_PATH
+    print(cluster_labels)
 
     # The silhouette_score gives the average value for all the samples.
     # This gives a perspective into the density and separation of the formed
     # clusters
-    silhouette_avg = silhouette_score(dr.TF_IDF_PATH, cluster_labels)
+    silhouette_avg = silhouette_score(matrix, cluster_labels)  #  CHANGED parameter from: dr.TF_IDF_PATH
     print(
         "For n_clusters =",
         n_clusters,
@@ -59,7 +58,7 @@ for n_clusters in range_n_clusters:
     )
 
     # Compute the silhouette scores for each sample
-    sample_silhouette_values = silhouette_samples(dr.TF_IDF_PATH, cluster_labels)
+    sample_silhouette_values = silhouette_samples(matrix, cluster_labels)  #  CHANGED parameter from: dr.TF_IDF_PATH
 
     y_lower = 10
     for i in range(n_clusters):
@@ -100,9 +99,10 @@ for n_clusters in range_n_clusters:
 
     # 2nd Plot showing the actual clusters formed
     colors = cm.nipy_spectral(cluster_labels.astype(float) / n_clusters)
+
     ax2.scatter(
-        dr.TF_IDF_PATH[:, 0], dr.TF_IDF_PATH[:, 1], marker=".", s=30, lw=0, alpha=0.7, c=colors, edgecolor="k"
-    )
+        matrix[:, 0], matrix[:, 1], marker=".", s=30, lw=0, alpha=0.7, c=colors, edgecolor="k"
+    )  #  TODO: understand; seems wrong
 
     # Labeling the clusters
     centers = clusterer.cluster_centers_
