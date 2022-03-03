@@ -87,7 +87,8 @@ def get_features(corpus="ita",
         vectorizer = TfidfVectorizer(min_df=10, stop_words=stopwordlist, use_idf=True, norm=None)
         features.append(vectorizer.fit_transform(texts))
         if get_ids:
-            features.append(ids, vectorizer.get_feature_names_out())
+            features.append(ids)
+            features.append(vectorizer.get_feature_names_out())
     return features
 
 

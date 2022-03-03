@@ -1,18 +1,20 @@
 from sklearn.cluster import KMeans
 from sklearn.metrics import silhouette_samples, silhouette_score
 
+from sklearn.decomposition import PCA
+
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import numpy as np
 import dracor_data as dr
-import cluster_unofficial as cl
+#import cluster_unofficial as cl
 import visualization
 import sys
 
 import ssl
 ssl._create_default_https_context = ssl._create_unverified_context
 
-range_n_clusters = list(range(2, 11))  #  number of clusters
+range_n_clusters = list(range(2, 4))  #  number of clusters
 
 matrix, dracor_ids, vector_names = dr.get_features("ita", get_ids= True)
 
@@ -28,18 +30,18 @@ for n_clusters in range_n_clusters:
     ax1.set_xlim([-0.1, 1])
     # The (n_clusters+1)*10 is for inserting blank space between silhouette
     # plots of individual clusters, to demarcate them clearly.
-    ax1.set_ylim([0, matrix.get_shape()[0] + (n_clusters + 1) * 10])  #  CHANGED from: len(dr.TF_IDF_PATH)
+    ax1.set_ylim([0, matrix.get_shape()[0] + (n_clusters + 1) * 10])  
 
     # Initialize the clusterer with n_clusters value and a random generator
     # seed of 10 for reproducibility.
     clusterer = KMeans(n_clusters=n_clusters, random_state=10)
-    cluster_labels = clusterer.fit_predict(matrix)  #  CHANGED parameter from: dr.TF_IDF_PATH
+    cluster_labels = clusterer.fit_predict(matrix)  
     #print(cluster_labels)
 
     # The silhouette_score gives the average value for all the samples.
     # This gives a perspective into the density and separation of the formed
     # clusters
-    silhouette_avg = silhouette_score(matrix, cluster_labels)  #  CHANGED parameter from: dr.TF_IDF_PATH
+    silhouette_avg = silhouette_score(matrix, cluster_labels)  
     print(
         "For n_clusters =",
         n_clusters,
@@ -47,8 +49,8 @@ for n_clusters in range_n_clusters:
         silhouette_avg,
     )
 
-#     # Compute the silhouette scores for each sample
-    sample_silhouette_values = silhouette_samples(matrix, cluster_labels)  #  CHANGED parameter from: dr.TF_IDF_PATH
+     # Compute the silhouette scores for each sample
+    sample_silhouette_values = silhouette_samples(matrix, cluster_labels)  
 
     y_lower = 10
     for i in range(n_clusters):
@@ -88,13 +90,15 @@ for n_clusters in range_n_clusters:
     ax1.set_xticks([-0.1, 0, 0.2, 0.4, 0.6, 0.8, 1])
 
     # 2nd Plot showing the actual clusters formed
-    # colors = cm.nipy_spectral(cluster_labels.astype(float) / n_clusters)
+    colors = cm.nipy_spectral(cluster_labels.astype(float) / n_clusters)
+    #pca = PCA(n_components=2)
+    #scatter_plot_points = pca.fit_transform(matrix.toarray())
 
     # ax2.scatter(
     #     matrix[:, 0], matrix[:, 1], marker=".", s=30, lw=0, alpha=0.7, c=colors, edgecolor="k"
     # )  #  TODO: understand; seems wrong
 
-    # # Labeling the clusters
+    # # # Labeling the clusters
     # centers = clusterer.cluster_centers_
     # # Draw white circles at cluster centers
     # ax2.scatter(
@@ -110,9 +114,9 @@ for n_clusters in range_n_clusters:
     # for i, c in enumerate(centers):
     #     ax2.scatter(c[0], c[1], marker="$%d$" % i, alpha=1, s=50, edgecolor="k")
 
-    # ax2.set_title("The dr of the clustered data.")
-    # ax2.set_xlabel("Feature space for the 1st feature")
-    # ax2.set_ylabel("Feature space for the 2nd feature")
+    ax2.set_title("The dr of the clustered data.")
+    ax2.set_xlabel("Feature space for the 1st feature")
+    ax2.set_ylabel("Feature space for the 2nd feature")
 
     plt.suptitle(
         "Silhouette analysis for KMeans clustering on sample data with n_clusters = %d"
