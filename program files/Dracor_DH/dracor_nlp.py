@@ -10,7 +10,7 @@ class Preprocessor:
         for text in texts:
             self.spacy_docs.append(nlp(text))
 
-    def __call__(self):     # __call__ and not a normal function name because tfidf-vectorizer demands a callable
+    def lemmatize(self):
         lemmatized_texts = []
         for doc in self.spacy_docs:
             lemmatized_texts.append(" ".join([token.lemma_ for token in doc]))
