@@ -6,28 +6,28 @@ import matplotlib.cm as cm
 import numpy as np
 import dracor_data as dr
 import cluster_unofficial as cl
-import visualization as visualization
+import visualization
 import sys
 
 import ssl
 ssl._create_default_https_context = ssl._create_unverified_context
 
-range_n_clusters = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+range_n_clusters = list(range(1, 11))  #  number of clusters
 
 #  get the data directly, but put it in a pandas dataframe with named rows and columns like so:
-matrix, dracor_ids, vector_names = dr.get_features("ita", get_ids= True)
-df = dr.convert_to_df_and_csv(dr.TF_IDF_PATH, matrix, vector_names, False)
-df.index = dracor_ids
+# matrix, dracor_ids, vector_names = dr.get_features("ita", get_ids= True)
+# df = dr.convert_to_df_and_csv(dr.TF_IDF_PATH, matrix, vector_names, False)
+# df.index = dracor_ids
 
 #  or read the data from a csv-file into a pandas dataframe (that file must have been exported somewhere else previously,
 #  so it must be present in data_files folder; advantage: tf-idf is not calculated again, just the result of the calculation
 #  done previously is read) like so:
 
-#df = dr.read_data_csv(dr.TF_IDF_PATH)
+df = dr.read_data_csv(dr.TF_IDF_PATH)
+
+print(df)
 
 
-
-sys.exit()
 
 for n_clusters in range_n_clusters:
     # Create a subplot with 1 row and 2 columns
@@ -40,17 +40,17 @@ for n_clusters in range_n_clusters:
     ax1.set_xlim([-0.1, 1])
     # The (n_clusters+1)*10 is for inserting blank space between silhouette
     # plots of individual clusters, to demarcate them clearly.
-    ax1.set_ylim([0, len(visualization.TF_IDF_PATH) + (n_clusters + 1) * 10])
+    ax1.set_ylim([0, len(dr.TF_IDF_PATH) + (n_clusters + 1) * 10])
 
     # Initialize the clusterer with n_clusters value and a random generator
     # seed of 10 for reproducibility.
     clusterer = KMeans(n_clusters=n_clusters, random_state=10)
-    cluster_labels = clusterer.fit_predict(visualization.TF_IDF_PATH)
+    cluster_labels = clusterer.fit_predict(dr.TF_IDF_PATH)
 
     # The silhouette_score gives the average value for all the samples.
     # This gives a perspective into the density and separation of the formed
     # clusters
-    silhouette_avg = silhouette_score(visualization.TF_IDF_PATH, cluster_labels)
+    silhouette_avg = silhouette_score(dr.TF_IDF_PATH, cluster_labels)
     print(
         "For n_clusters =",
         n_clusters,
@@ -59,7 +59,7 @@ for n_clusters in range_n_clusters:
     )
 
     # Compute the silhouette scores for each sample
-    sample_silhouette_values = silhouette_samples(visualization.TF_IDF_PATH, cluster_labels)
+    sample_silhouette_values = silhouette_samples(dr.TF_IDF_PATH, cluster_labels)
 
     y_lower = 10
     for i in range(n_clusters):
@@ -101,7 +101,7 @@ for n_clusters in range_n_clusters:
     # 2nd Plot showing the actual clusters formed
     colors = cm.nipy_spectral(cluster_labels.astype(float) / n_clusters)
     ax2.scatter(
-        visualization.TF_IDF_PATH[:, 0], visualization.TF_IDF_PATH[:, 1], marker=".", s=30, lw=0, alpha=0.7, c=colors, edgecolor="k"
+        dr.TF_IDF_PATH[:, 0], dr.TF_IDF_PATH[:, 1], marker=".", s=30, lw=0, alpha=0.7, c=colors, edgecolor="k"
     )
 
     # Labeling the clusters
@@ -120,7 +120,7 @@ for n_clusters in range_n_clusters:
     for i, c in enumerate(centers):
         ax2.scatter(c[0], c[1], marker="$%d$" % i, alpha=1, s=50, edgecolor="k")
 
-    ax2.set_title("The visualization of the clustered data.")
+    ax2.set_title("The dr of the clustered data.")
     ax2.set_xlabel("Feature space for the 1st feature")
     ax2.set_ylabel("Feature space for the 2nd feature")
 
