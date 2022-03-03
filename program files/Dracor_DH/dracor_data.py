@@ -65,7 +65,7 @@ def get_features(corpus="ita",
         get_ids=False
 
     ):
-
+    features = []
     if corpus=="ita":                                      # Dramentexte aus dem Netz ziehen
         texts, ids = get_data("ita", text_mode=text)
         stopwordlist = stopwords.words('italian')
@@ -80,15 +80,17 @@ def get_features(corpus="ita",
     if lemmatize or sytax:
         preproc = Preprocessor(texts, corpus)
         lemmatizer = preproc
+    if syntax:
+        features.append(preproc.pos_tag())
     if not lemmatize:
-        lemmatizer = None  
-    vectorizer = TfidfVectorizer(min_df=10, stop_words=stopwordlist, use_idf=True, norm=None, preprocessor=lemmatizer)
+        lemmatizer = None
+    if vocab:  
+        vectorizer = TfidfVectorizer(min_df=10, stop_words=stopwordlist, use_idf=True, norm=None, preprocessor=lemmatizer)
+        features.append(vectorizer.fit_transform(texts))
+        if get_ids:
+            features.append(ids, vectorizer.get_feature_names_out())
+    return features
 
-    if not get_ids:
-        return vectorizer.fit_transform(texts)
-
-    else:        
-        return vectorizer.fit_transform(texts), ids, vectorizer.get_feature_names_out()
 
 def convert_to_df_and_csv(path, scipymatrix, ids, export_data: bool) -> pd.DataFrame:
     df = pd.DataFrame(data=scipy.sparse.csr_matrix.todense(scipymatrix))
