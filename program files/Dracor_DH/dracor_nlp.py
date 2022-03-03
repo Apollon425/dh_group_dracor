@@ -4,9 +4,9 @@ class Preprocessor:
     def __init__(self, texts, lang):
         self.spacy_docs = []
         if lang=="ita":
-            nlp = spacy.load("it_core_news_lg", disable=['ner'])
+            nlp = spacy.load("it_core_news_lg", disable=['parser','ner'])
         else:
-            nlp = spacy.load("de_dep_news_trf")
+            nlp = spacy.load("de_dep_news_trf", disable=['parser'])
         for text in texts:
             self.spacy_docs.append(nlp(text))
 
