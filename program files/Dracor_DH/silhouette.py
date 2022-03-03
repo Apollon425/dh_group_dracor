@@ -14,19 +14,17 @@ ssl._create_default_https_context = ssl._create_unverified_context
 
 range_n_clusters = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 
-#  get the data either directly, like so (vectors is sparse matrix, rows columns are unnamed):
-vectors, dracor_ids, vector_names = dr.get_features("ita", get_ids= True, remove_stopwords=True)
-
-#  or get the data directly, but put it in a pandas dataframe with named rows and columns like so:
+#  get the data directly, but put it in a pandas dataframe with named rows and columns like so:
 matrix, dracor_ids, vector_names = dr.get_features("ita", get_ids= True)
-df = dr.convert_to_csv(visualization.TF_IDF_PATH, matrix, vector_names)
+df = dr.convert_to_df_and_csv(dr.TF_IDF_PATH, matrix, vector_names, False)
 df.index = dracor_ids
 
 #  or read the data from a csv-file into a pandas dataframe (that file must have been exported somewhere else previously,
 #  so it must be present in data_files folder; advantage: tf-idf is not calculated again, just the result of the calculation
 #  done previously is read) like so:
 
-df = visualization.read_data_csv(visualization.TF_IDF_PATH)
+#df = dr.read_data_csv(dr.TF_IDF_PATH)
+
 
 
 sys.exit()
