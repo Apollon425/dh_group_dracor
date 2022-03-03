@@ -73,7 +73,7 @@ def get_features(corpus="ita",
         stopwordlist = None
     if not lemmatize:
         lemmatizer = None
-    vectorizer = TfidfVectorizer(max_df=.65, min_df=5, stop_words=stopwordlist, use_idf=True, norm=None)
+    vectorizer = TfidfVectorizer(max_df = 1, min_df=5, stop_words=stopwordlist, use_idf=True, norm=None)
       #
 
     if not get_ids:
