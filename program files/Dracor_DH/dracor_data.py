@@ -6,6 +6,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 from nltk.corpus import stopwords
 import pandas as pd
 import scipy
+from dracor_nlp import Preprocessor
 
 GER_METADATA_PATH = 'data_files/gerdracor-metadata.csv'
 ITA_METADATA_PATH = 'data_files/itadracor-metadata.csv'
@@ -58,7 +59,7 @@ def get_features(corpus="ita",
         vocab=True, 
         syntax=True, 
         remove_stopwords=False, 
-        lemmatize=False, alias_names=False, 
+        lemmatize=True,
         normalize_orthography=False, 
         drama_stats=True, 
         get_ids=False
@@ -76,10 +77,12 @@ def get_features(corpus="ita",
         sys.exit()
     if not remove_stopwords:                               # Stopwordlisten deaktivieren falls gewünscht
         stopwordlist = None
+    if lemmatize or sytax:
+        preproc = Preprocessor(texts, corpus)
+        lemmatizer = preproc
     if not lemmatize:
-        lemmatizer = None
-    vectorizer = TfidfVectorizer(min_df=10, stop_words=stopwordlist, use_idf=True, norm=None)
-      #
+        lemmatizer = None  
+    vectorizer = TfidfVectorizer(min_df=10, stop_words=stopwordlist, use_idf=True, norm=None, preprocessor=lemmatizer)
 
     if not get_ids:
         return vectorizer.fit_transform(texts)
@@ -111,4 +114,3 @@ if __name__ == '__main__':
     df.index = dracor_ids  #  add row names (= dracors ids of plays)
 
     print(df)  #  df has named rows (=dracors ids of plays) and columns (feature)
-
