@@ -12,19 +12,9 @@ import sys
 import ssl
 ssl._create_default_https_context = ssl._create_unverified_context
 
-range_n_clusters = list(range(1, 11))  #  number of clusters
+range_n_clusters = list(range(2, 11))  #  number of clusters
 
-#  get the data directly, but put it in a pandas dataframe with named rows and columns like so:
 matrix, dracor_ids, vector_names = dr.get_features("ita", get_ids= True)
-# df = dr.convert_to_df_and_csv(dr.TF_IDF_PATH, matrix, vector_names, False)
-# df.index = dracor_ids
-
-#  or read the data from a csv-file into a pandas dataframe (that file must have been exported somewhere else previously,
-#  so it must be present in data_files folder; advantage: tf-idf is not calculated again, just the result of the calculation
-#  done previously is read) like so:
-
-#df = dr.read_data_csv(dr.TF_IDF_PATH)
-
 
 
 for n_clusters in range_n_clusters:
@@ -44,7 +34,7 @@ for n_clusters in range_n_clusters:
     # seed of 10 for reproducibility.
     clusterer = KMeans(n_clusters=n_clusters, random_state=10)
     cluster_labels = clusterer.fit_predict(matrix)  #  CHANGED parameter from: dr.TF_IDF_PATH
-    print(cluster_labels)
+    #print(cluster_labels)
 
     # The silhouette_score gives the average value for all the samples.
     # This gives a perspective into the density and separation of the formed
@@ -57,7 +47,7 @@ for n_clusters in range_n_clusters:
         silhouette_avg,
     )
 
-    # Compute the silhouette scores for each sample
+#     # Compute the silhouette scores for each sample
     sample_silhouette_values = silhouette_samples(matrix, cluster_labels)  #  CHANGED parameter from: dr.TF_IDF_PATH
 
     y_lower = 10
@@ -98,31 +88,31 @@ for n_clusters in range_n_clusters:
     ax1.set_xticks([-0.1, 0, 0.2, 0.4, 0.6, 0.8, 1])
 
     # 2nd Plot showing the actual clusters formed
-    colors = cm.nipy_spectral(cluster_labels.astype(float) / n_clusters)
+    # colors = cm.nipy_spectral(cluster_labels.astype(float) / n_clusters)
 
-    ax2.scatter(
-        matrix[:, 0], matrix[:, 1], marker=".", s=30, lw=0, alpha=0.7, c=colors, edgecolor="k"
-    )  #  TODO: understand; seems wrong
+    # ax2.scatter(
+    #     matrix[:, 0], matrix[:, 1], marker=".", s=30, lw=0, alpha=0.7, c=colors, edgecolor="k"
+    # )  #  TODO: understand; seems wrong
 
-    # Labeling the clusters
-    centers = clusterer.cluster_centers_
-    # Draw white circles at cluster centers
-    ax2.scatter(
-        centers[:, 0],
-        centers[:, 1],
-        marker="o",
-        c="white",
-        alpha=1,
-        s=200,
-        edgecolor="k",
-    )
+    # # Labeling the clusters
+    # centers = clusterer.cluster_centers_
+    # # Draw white circles at cluster centers
+    # ax2.scatter(
+    #     centers[:, 0],
+    #     centers[:, 1],
+    #     marker="o",
+    #     c="white",
+    #     alpha=1,
+    #     s=200,
+    #     edgecolor="k",
+    # )
 
-    for i, c in enumerate(centers):
-        ax2.scatter(c[0], c[1], marker="$%d$" % i, alpha=1, s=50, edgecolor="k")
+    # for i, c in enumerate(centers):
+    #     ax2.scatter(c[0], c[1], marker="$%d$" % i, alpha=1, s=50, edgecolor="k")
 
-    ax2.set_title("The dr of the clustered data.")
-    ax2.set_xlabel("Feature space for the 1st feature")
-    ax2.set_ylabel("Feature space for the 2nd feature")
+    # ax2.set_title("The dr of the clustered data.")
+    # ax2.set_xlabel("Feature space for the 1st feature")
+    # ax2.set_ylabel("Feature space for the 2nd feature")
 
     plt.suptitle(
         "Silhouette analysis for KMeans clustering on sample data with n_clusters = %d"
