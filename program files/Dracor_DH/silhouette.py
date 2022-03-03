@@ -11,15 +11,19 @@ import dracor_data as dr
 import visualization
 import sys
 
+
 import ssl
 ssl._create_default_https_context = ssl._create_unverified_context
 
-range_n_clusters = list(range(2, 4))  #  number of clusters
+range_n_clusters = list(range(2, 11))  #  number of clusters
 
-test = dr.get_features("ita", get_ids= True)
-print(test)
-sys.exit()
-matrix, dracor_ids, vector_names = dr.get_features("ita", get_ids= True)
+return_list = dr.get_features("ita",  vocab=True, syntax=False, lemmatize=False, get_ids= True)
+
+
+matrix = return_list[0]
+dracor_ids = return_list[1]
+vector_names = return_list[2]
+
 
 
 for n_clusters in range_n_clusters:
@@ -94,30 +98,38 @@ for n_clusters in range_n_clusters:
 
     # 2nd Plot showing the actual clusters formed
     colors = cm.nipy_spectral(cluster_labels.astype(float) / n_clusters)
+
+
     pca = PCA(n_components=2)
     scatter_plot_points = pca.fit_transform(matrix.toarray())
+    x_axis = [o[0] for o in scatter_plot_points]
+    y_axis = [o[1] for o in scatter_plot_points]
 
     ax2.scatter(
-        matrix[:, 0], matrix[:, 1], marker=".", s=30, lw=0, alpha=0.7, c=colors, edgecolor="k"
+        x_axis, y_axis, marker=".", s=30, lw=0, alpha=0.7, c=colors, edgecolor="k"  #  @fabian x_axis, y_axis war urspürnglich so:  matrix[:, 0], matrix[:, 1]
+                                                                                    #  das ging aber leider nicht zu plotten, kam immer derselbe fehler; daher pca in
+                                                                                    #  zeile 103-106, so ging es dann; dafür ging das labeln der cluster nicht mehr;
+                                                                                    #  daher habe ich z.113-129, die das eigentlich machen, leider nich mehr;
+                                                                                    #  das ist der aktuelle stand :-)
     )  #  TODO: understand; seems wrong
 
     # # Labeling the clusters
-    centers = clusterer.cluster_centers_
-    # Draw white circles at cluster centers
-    ax2.scatter(
-        centers[:, 0],
-        centers[:, 1],
-        marker="o",
-        c="white",
-        alpha=1,
-        s=200,
-        edgecolor="k",
-    )
+    # centers = clusterer.cluster_centers_
+    # # Draw white circles at cluster centers
+    # ax2.scatter(
+    #     centers[:, 0],
+    #     centers[:, 1],
+    #     marker="o",
+    #     c="white",
+    #     alpha=1,
+    #     s=200,
+    #     edgecolor="k",
+    # )
 
-    for i, c in enumerate(centers):
-        ax2.scatter(c[0], c[1], marker="$%d$" % i, alpha=1, s=50, edgecolor="k")
+    # for i, c in enumerate(centers):
+    #     ax2.scatter(c[0], c[1], marker="$%d$" % i, alpha=1, s=50, edgecolor="k")
 
-    ax2.set_title("The dr of the clustered data.")
+    ax2.set_title("The visualization of the clustered data.")
     ax2.set_xlabel("Feature space for the 1st feature")
     ax2.set_ylabel("Feature space for the 2nd feature")
 
