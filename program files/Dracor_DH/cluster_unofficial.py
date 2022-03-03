@@ -2,7 +2,7 @@ import pandas as pd
 from sklearn.cluster import KMeans
 from sklearn.metrics import adjusted_rand_score
 import string
-import dracor as dr
+import dracor_data as dr
 import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.decomposition import PCA

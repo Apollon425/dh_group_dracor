@@ -4,14 +4,32 @@ from sklearn.metrics import silhouette_samples, silhouette_score
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import numpy as np
-import dracor as dr
+import dracor_data as dr
 import cluster_unofficial as cl
 import visualization as visualization
+import sys
 
 import ssl
 ssl._create_default_https_context = ssl._create_unverified_context
 
 range_n_clusters = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+#  get the data either directly, like so (vectors is sparse matrix, rows columns are unnamed):
+vectors, dracor_ids, vector_names = dr.get_features("ita", get_ids= True, remove_stopwords=True)
+
+#  or get the data directly, but put it in a pandas dataframe with named rows and columns like so:
+matrix, dracor_ids, vector_names = dr.get_features("ita", get_ids= True)
+df = dr.convert_to_csv(visualization.TF_IDF_PATH, matrix, vector_names)
+df.index = dracor_ids
+
+#  or read the data from a csv-file into a pandas dataframe (that file must have been exported somewhere else previously,
+#  so it must be present in data_files folder; advantage: tf-idf is not calculated again, just the result of the calculation
+#  done previously is read) like so:
+
+df = visualization.read_data_csv(visualization.TF_IDF_PATH)
+
+
+sys.exit()
 
 for n_clusters in range_n_clusters:
     # Create a subplot with 1 row and 2 columns
