@@ -77,7 +77,7 @@ def get_features(corpus="ita",
         sys.exit()
     if not remove_stopwords:                               # Stopwordlisten deaktivieren falls gewünscht
         stopwordlist = None
-    if lemmatize or sytax:
+    if lemmatize or syntax:
         preproc = Preprocessor(texts, corpus)
     if syntax:
         features.append(preproc.pos_tag())
