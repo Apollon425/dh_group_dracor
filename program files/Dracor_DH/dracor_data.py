@@ -79,13 +79,12 @@ def get_features(corpus="ita",
         stopwordlist = None
     if lemmatize or sytax:
         preproc = Preprocessor(texts, corpus)
-        lemmatizer = preproc
     if syntax:
         features.append(preproc.pos_tag())
-    if not lemmatize:
-        lemmatizer = None
+    if lemmatize:
+        texts = preproc.lemmatize()
     if vocab:  
-        vectorizer = TfidfVectorizer(min_df=10, stop_words=stopwordlist, use_idf=True, norm=None, preprocessor=lemmatizer)
+        vectorizer = TfidfVectorizer(min_df=10, stop_words=stopwordlist, use_idf=True, norm=None)
         features.append(vectorizer.fit_transform(texts))
         if get_ids:
             features.append(ids, vectorizer.get_feature_names_out())
