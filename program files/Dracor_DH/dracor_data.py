@@ -7,7 +7,8 @@ from nltk.corpus import stopwords
 import pandas as pd
 import scipy
 
-METADATA_PATH = 'data_files/gerdracor-metadata.csv'
+GER_METADATA_PATH = 'data_files/gerdracor-metadata.csv'
+ITA_METADATA_PATH = 'data_files/itadracor-metadata.csv'
 TF_IDF_PATH = f'data_files/ita_tfidf_min10.csv'
 
 
