@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import numpy as np
 import dracor as dr
-import cluster_richard as cl
+import cluster_unofficial as cl
 import visualization as visualization
 
 import ssl
