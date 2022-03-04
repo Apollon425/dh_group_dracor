@@ -3,6 +3,7 @@ import dracor_data as dr
 import pandas as pd
 from matplotlib import pyplot as plt
 import sys
+import elbow as elb
 
 
 
@@ -61,7 +62,14 @@ if __name__ == '__main__':
     # dr.write_to_csv(df, TF_IDF_PATH)
 
     # print(df)
-    pass
+    return_list = dr.get_features("ita",  vocab=True, syntax=False, lemmatize=False, get_ids= True)
+
+
+    matrix = return_list[0]
+    dracor_ids = return_list[1]
+    vector_names = return_list[2]
+    range = list(range(2, 11))
+    elb.elbow_plot(range=range, data=matrix)
 
 
 
