@@ -68,9 +68,9 @@ if __name__ == '__main__':
     vector_names = return_list[2]
 
 
-    range = list(range(2, 4))
-    #elb.elbow_plot(range=range, data=matrix)
-    sil.silhouette_plot(matrix=matrix, range_n_clusters=range)
+    
+    elb.elbow_plot(data=matrix, no_of_clusters=5)
+    #sil.silhouette_plot(matrix=matrix, no_of_clusters=5)
 
 
 
