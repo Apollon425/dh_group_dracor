@@ -1,9 +1,11 @@
+from configparser import MissingSectionHeaderError
 from turtle import shape
 import dracor_data as dr
 import pandas as pd
 from matplotlib import pyplot as plt
 import sys
 import elbow as elb
+import silhouette as sil
 
 
 
@@ -52,17 +54,13 @@ def draw_plot(data: pd.DataFrame, column: str, plot_type: str, annotate: bool, f
 if __name__ == '__main__':
 
     #draw_plot(data=read_data_csv(METADATA_PATH), column="averageClustering", plot_type="scatter", annotate=False, first_year=1850)
-
-    #matrix, dracor_ids, vector_names = dr.get_features("ita", get_ids= True)
+    return_list = dr.get_features("ita",  vocab=True, syntax=False, lemmatize=True, get_ids= True)
 
     #df = dr.convert_to_csv(dr.TF_IDF_PATH, matrix, vector_names)
     #df = read_data_csv(TF_IDF_PATH)
-
     # df.index = dracor_ids
     # dr.write_to_csv(df, TF_IDF_PATH)
-
     # print(df)
-    return_list = dr.get_features("ita",  vocab=True, syntax=False, lemmatize=True, get_ids= True)
 
 
     matrix = return_list[0]
@@ -70,8 +68,9 @@ if __name__ == '__main__':
     vector_names = return_list[2]
 
 
-    range = list(range(2, 11))
-    elb.elbow_plot(range=range, data=matrix)
+    range = list(range(2, 4))
+    #elb.elbow_plot(range=range, data=matrix)
+    sil.silhouette_plot(matrix=matrix, range_n_clusters=range)
 
 
 

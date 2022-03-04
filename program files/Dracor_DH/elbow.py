@@ -9,7 +9,7 @@ import seaborn as sns
 
 
 
-def elbow_plot(range: list, data, plotsize=(10,10)):
+def elbow_plot(data, range: list,  plotsize=(10,10)):
 
     inertia_list = []
     for n in range:
