@@ -12,7 +12,7 @@ import sys
 
 def elbow_plot(data, no_of_clusters,  plotsize=(10,10)):
 
-    cluster_range = list(range(2, no_of_clusters+1))
+    cluster_range = list(range(2, no_of_clusters+2))
     print(cluster_range)
     inertia_list = []
     for n in cluster_range:

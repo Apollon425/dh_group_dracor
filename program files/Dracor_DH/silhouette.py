@@ -18,7 +18,7 @@ ssl._create_default_https_context = ssl._create_unverified_context
 
 def silhouette_plot(matrix, no_of_clusters):
 
-    range_n_clusters = list(range(2, no_of_clusters+1))
+    range_n_clusters = list(range(2, no_of_clusters+2))
     for n_clusters in range_n_clusters:
         # Create a subplot with 1 row and 2 columns
         fig, (ax1, ax2) = plt.subplots(1, 2)
