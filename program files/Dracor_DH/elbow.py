@@ -1,7 +1,6 @@
 from sklearn.cluster import KMeans # clustering algorithms
 import matplotlib.pyplot as plt
 import seaborn as sns
-import dracor_data as dr
 
 # evaluating k
 # elbow plot: inertia = sum of squared distances of samples to their closest cluster center; decreases with number of clusters
