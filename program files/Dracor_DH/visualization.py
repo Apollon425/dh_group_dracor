@@ -53,22 +53,17 @@ def draw_plot(data: pd.DataFrame, column: str, plot_type: str, annotate: bool, f
 
 if __name__ == '__main__':
 
+    #  metadata plotting:
     #draw_plot(data=read_data_csv(METADATA_PATH), column="averageClustering", plot_type="scatter", annotate=False, first_year=1850)
+
+    #  calculate tif-idf:
     return_list = dr.get_features("ita",  vocab=True, syntax=False, lemmatize=True, get_ids= True)
-
-    #df = dr.convert_to_csv(dr.TF_IDF_PATH, matrix, vector_names)
-    #df = read_data_csv(TF_IDF_PATH)
-    # df.index = dracor_ids
-    # dr.write_to_csv(df, TF_IDF_PATH)
-    # print(df)
-
-
     matrix = return_list[0]
     dracor_ids = return_list[1]
     vector_names = return_list[2]
 
 
-    
+    #  cluster plotting:
     elb.elbow_plot(data=matrix, no_of_clusters=5)
     #sil.silhouette_plot(matrix=matrix, no_of_clusters=5)
 
