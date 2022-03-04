@@ -16,7 +16,7 @@ ssl._create_default_https_context = ssl._create_unverified_context
 
 
 
-def silhouette_plot(matrix, no_of_clusters):
+def silhouette_plot(data, no_of_clusters):
 
     range_n_clusters = list(range(2, no_of_clusters+2))
     for n_clusters in range_n_clusters:
@@ -30,18 +30,18 @@ def silhouette_plot(matrix, no_of_clusters):
         ax1.set_xlim([-0.1, 1])
         # The (n_clusters+1)*10 is for inserting blank space between silhouette
         # plots of individual clusters, to demarcate them clearly.
-        ax1.set_ylim([0, matrix.get_shape()[0] + (n_clusters + 1) * 10])  
+        ax1.set_ylim([0, data.get_shape()[0] + (n_clusters + 1) * 10])  
 
         # Initialize the clusterer with n_clusters value and a random generator
         # seed of 10 for reproducibility.
         clusterer = KMeans(n_clusters=n_clusters, random_state=10)
-        cluster_labels = clusterer.fit_predict(matrix)  
+        cluster_labels = clusterer.fit_predict(data)  
         #print(cluster_labels)
 
         # The silhouette_score gives the average value for all the samples.
         # This gives a perspective into the density and separation of the formed
         # clusters
-        silhouette_avg = silhouette_score(matrix, cluster_labels)  
+        silhouette_avg = silhouette_score(data, cluster_labels)  
         print(
             "For n_clusters =",
             n_clusters,
@@ -50,7 +50,7 @@ def silhouette_plot(matrix, no_of_clusters):
         )
 
         # Compute the silhouette scores for each sample
-        sample_silhouette_values = silhouette_samples(matrix, cluster_labels)  
+        sample_silhouette_values = silhouette_samples(data, cluster_labels)  
 
         y_lower = 10
         for i in range(n_clusters):
@@ -94,7 +94,7 @@ def silhouette_plot(matrix, no_of_clusters):
 
 
         pca = PCA(n_components=2)
-        scatter_plot_points = pca.fit_transform(matrix.toarray())
+        scatter_plot_points = pca.fit_transform(data.toarray())
         x_axis = [o[0] for o in scatter_plot_points]
         y_axis = [o[1] for o in scatter_plot_points]
 

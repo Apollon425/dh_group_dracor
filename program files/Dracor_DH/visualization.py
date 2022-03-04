@@ -65,7 +65,7 @@ if __name__ == '__main__':
 
     #  cluster plotting:
     elb.elbow_plot(data=matrix, no_of_clusters=5)
-    #sil.silhouette_plot(matrix=matrix, no_of_clusters=5)
+    #sil.silhouette_plot(data=matrix, no_of_clusters=5)
 
 
 
