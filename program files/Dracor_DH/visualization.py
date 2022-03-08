@@ -8,6 +8,17 @@ import elbow as elb
 import silhouette as sil
 
 
+import pandas as pd
+from sklearn.cluster import KMeans
+from sklearn.metrics import adjusted_rand_score
+import string
+import dracor_data as dr
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.decomposition import PCA
+import sys
+
+
 
 
 def set_time_frame(first_year, last_year) -> tuple:
@@ -51,21 +62,92 @@ def draw_plot(data: pd.DataFrame, column: str, plot_type: str, annotate: bool, f
 
     plt.show()
 
-if __name__ == '__main__':
+def cluster_scatterplot(top_termns: int, corpus= "ger"):
 
-    #  metadata plotting:
-    #draw_plot(data=read_data_csv(METADATA_PATH), column="averageClustering", plot_type="scatter", annotate=False, first_year=1850)
+    if corpus == "ger":
+        meta = dr.read_data_csv(dr.GER_METADATA_PATH)
+    elif corpus == "ita":
+        meta = dr.read_data_csv(dr.ITA_METADATA_PATH)
+    else:
+        sys.exit("Corpus name invalid. Only \"ger\" and \"ita\" are supported.")
 
-    #  calculate tif-idf:
-    return_list = dr.get_features("ita",  vocab=True, syntax=False, lemmatize=True, get_ids= True)
+
+    return_list = dr.get_features(corpus=corpus, text='spoken', vocab=True, syntax=False, lemmatize=False, get_ids= True)
     matrix = return_list[0]
     dracor_ids = return_list[1]
     vector_names = return_list[2]
 
 
-    #  cluster plotting:
-    elb.elbow_plot(data=matrix, no_of_clusters=5)
-    #sil.silhouette_plot(data=matrix, no_of_clusters=5)
+
+    names = meta['firstAuthor'].to_list()
+
+
+    k = 6
+    model = KMeans(n_clusters=k, init="k-means++", n_init=1, random_state=10)  #  max_iter = 100
+
+    model.fit(matrix)
+
+    order_centroids = model.cluster_centers_.argsort()[:, ::-1]
+    print(order_centroids)
+
+    with open ("results.txt", "w", encoding="utf-8") as f:
+        for i in range(k):
+            f.write(f"Cluster: {i} \n")
+            #f.write("\n")
+            for ind in order_centroids[i, :top_termns]:
+                f.write(' %s' % vector_names[ind],)
+                f.write("\n")
+            f.write("\n")
+            f.write("\n")
+
+
+
+    kmean_indices = model.fit_predict(matrix)
+    pca = PCA(n_components=2)
+    scatter_plot_points = pca.fit_transform(matrix.toarray())
+
+
+    colors = ["r", "b", "c", "y", "m", "g"]  #  "k", "yellow", "greenyellow", "pink"
+
+    x_axis = [o[0] for o in scatter_plot_points]
+    y_axis = [o[1] for o in scatter_plot_points]
+
+    fix, ax = plt.subplots(figsize=(50, 50))
+
+    ax.scatter(x_axis, y_axis, c=[colors[d] for d in kmean_indices])
+
+    for i, txt in enumerate(names):
+        ax.annotate(txt[0:5], (x_axis[i], y_axis[i]))
+
+    plt.savefig("test3.png")
+
+if __name__ == '__main__':
+
+    # #  metadata plotting:
+    # #draw_plot(data=read_data_csv(METADATA_PATH), column="averageClustering", plot_type="scatter", annotate=False, first_year=1850)
+
+    # #  calculate tif-idf:
+    # return_list = dr.get_features("ita", text='spoken', vocab=True, syntax=False, lemmatize=False, get_ids= True)
+    # matrix = return_list[0]
+    # dracor_ids = return_list[1]
+    # vector_names = return_list[2]
+
+
+    # print(dracor_ids)
+    # print(dracor_ids[138])
+    # print(vector_names)
+    # print(vector_names[1120])
+
+
+    # print(type(matrix))
+    # print(matrix)
+
+
+
+    # #  cluster plotting:
+    # #elb.elbow_plot(data=matrix, no_of_clusters=5)
+    # sil.silhouette_plot(data=matrix, no_of_clusters=5)
+    cluster_scatterplot(top_termns=25)
 
 
 

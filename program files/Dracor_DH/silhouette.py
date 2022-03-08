@@ -1,4 +1,4 @@
-from sklearn.cluster import KMeans
+from sklearn.cluster import KMeans, k_means
 from sklearn.metrics import silhouette_samples, silhouette_score
 
 from sklearn.decomposition import PCA
@@ -7,7 +7,6 @@ import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import numpy as np
 import dracor_data as dr
-#import cluster_unofficial as cl
 import visualization
 import sys
 
@@ -34,7 +33,7 @@ def silhouette_plot(data, no_of_clusters):
 
         # Initialize the clusterer with n_clusters value and a random generator
         # seed of 10 for reproducibility.
-        clusterer = KMeans(n_clusters=n_clusters, random_state=10)
+        clusterer = KMeans(n_clusters=n_clusters, init="k-means++", n_init=1, random_state=10)
         cluster_labels = clusterer.fit_predict(data)  
         #print(cluster_labels)
 

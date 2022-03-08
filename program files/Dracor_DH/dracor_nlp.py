@@ -6,9 +6,10 @@ class Preprocessor:
         if lang=="ita":
             nlp = spacy.load("it_core_news_lg", disable=['parser','ner'])
         else:
-            nlp = spacy.load("de_dep_news_trf", disable=['parser'])
-        for text in texts:
-            self.spacy_docs.append(nlp(text))
+            nlp = spacy.load("de_core_news_sm", disable=['parser'])
+            nlp.max_length = 5000000
+        for doc in nlp.pipe(texts, disable=["tok2vec", "parser", "attribute_ruler", "ner"]):
+            self.spacy_docs.append(doc)  #  nlp (doc) ??
 
     def lemmatize(self):
         lemmatized_texts = []
