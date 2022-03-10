@@ -1,0 +1,30 @@
+Cluster: 0 
+ che
+ non
+ il
+ di
+ la
+ in
+ io
+ per
+ se
+ mi
+ el
+ un
+ mio
+ ch
+ tu
+ al
+ me
+ ti
+ le
+ ma
+ più
+ da
+ si
+ del
+ tuo
+
+
+Cluster: 1 
+ che

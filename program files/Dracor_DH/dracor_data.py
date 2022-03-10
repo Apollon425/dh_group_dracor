@@ -14,6 +14,7 @@ TF_IDF_PATH = f'data_files/ita_tfidf_min10.csv'
 
 
 
+
 dracor_api = "https://dracor.org/api"                    # API-Endpunkt für DraCor
 
 def get_dracor(corpus, play=None, text_mode=None):
@@ -62,7 +63,8 @@ def get_features(corpus="ita",
         lemmatize=True,
         normalize_orthography=False, 
         drama_stats=True, 
-        get_ids=False
+        get_ids=False,
+        min_df=10
 
     ):
     features = []
@@ -84,7 +86,7 @@ def get_features(corpus="ita",
     if lemmatize:
         texts = preproc.lemmatize()
     if vocab:  
-        vectorizer = TfidfVectorizer(min_df=10, stop_words=stopwordlist, use_idf=True, norm=None)
+        vectorizer = TfidfVectorizer(min_df=min_df, stop_words=stopwordlist, use_idf=True, norm=None)
         features.append(vectorizer.fit_transform(texts))
         if get_ids:
             features.append(ids)
