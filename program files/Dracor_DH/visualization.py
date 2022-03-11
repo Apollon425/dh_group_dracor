@@ -2,7 +2,8 @@ from configparser import MissingSectionHeaderError
 from turtle import shape
 import dracor_data as dr
 import pandas as pd
-from matplotlib import pyplot as plt
+from matplotlib import pyplot as plt 
+
 import matplotlib.cm as cm
 import os
 
@@ -36,7 +37,8 @@ def create_output_folder(output_folder: str):
         print("New plot saved.")
         return outputpath
     else:
-        sys.exit("Plot not saved, since one with the same parameters already exists.")
+        print("Plot not saved, since one with the same parameters already exists.")
+        return ""
         
 
 
@@ -85,6 +87,9 @@ def draw_plot(data: pd.DataFrame, column: str, plot_type: str, annotate: bool, f
 
     plt.show()
 
+
+
+
 def cluster_scatterplot(
     
     top_terms: int, 
@@ -125,8 +130,9 @@ def cluster_scatterplot(
     dracor_ids = return_list[1]
     vector_names = return_list[2]
 
-    df = dr.convert_to_df_and_csv(dr.TF_IDF_PATH, matrix, vector_names, False)
+    df = dr.convert_to_df_and_csv(dr.TF_IDF_PATH, matrix, vector_names, False)  #  TODO: fix outputpath
     #print(df)
+
 
 
     #  2) cluster data using k-means:
@@ -148,18 +154,20 @@ def cluster_scatterplot(
     df['k_mean_cluster'] = kmean_indices
     df['dracor_id'] = dracor_ids
     df = df.drop(vector_names, axis=1)
-    #print(df)
+    print(df.query('k_mean_cluster==5')['dracor_id'])
+
 
     #  5) plot that df:
 
-    sns.relplot(data = df, x = 'x_axis', y = 'y_axis', hue = 'k_mean_cluster', palette = 'tab10', kind = 'scatter', height=8.27, aspect=11.7/8.27)
-    
+    plot = sns.relplot(data = df, x = 'x_axis', y = 'y_axis', hue = 'k_mean_cluster', palette = 'tab10', kind = 'scatter', height=8.27, aspect=11.7/8.27)
     if label is not None:
-        labels = meta[label].to_list()  
-
-        for i, txt in enumerate(labels):
-            plt.annotate(txt, (x_axis[i], y_axis[i]))
-
+        ax = plot.axes[0, 0]
+        for idx, row in df.iterrows():
+            x = row[0]
+            y = row[1]
+            label_point = row[3]
+            label_point = meta.loc[meta['id'] == f"{label_point}", f'{label}'].item()
+            ax.text(x+.05, y, label_point, horizontalalignment='left')
 
 
     #  6) save it:
@@ -172,13 +180,41 @@ def cluster_scatterplot(
 
     out_string = f'/{corpus}_{text}_{vocab_str}_min_df={str(min_df)}_{syntax_str}_{lemma_str}_cluster={str(clusters)}_label={label_str}'  #  
     out_path = create_output_folder(out_string)
-    plt.savefig(out_path + "/cluster_plot.png")
-    plt.show()
+    if out_path != "":
+        plt.savefig(out_path + "/cluster_plot.png")
+        plt.show()
 
 
 
-    order_centroids = model.cluster_centers_.argsort()[:, ::-1]  #  TODO: watch dh-video, understand what this does exactly
-    print(order_centroids)
+    #  7) find contents of clusters, save them as csv
+
+    #  metadata and token-list for plays in cluster:
+
+    order_centroids = model.cluster_centers_.argsort()[:, ::-1]  #  sort token by tf-idf value for each cluster
+    #print(order_centroids)
+
+
+    for cluster in range(clusters):
+        cluster_content = df.query(f'k_mean_cluster=={cluster}')['dracor_id'].to_list()
+
+        meta_data_cluster = meta.loc[meta['id'].isin(cluster_content)]
+        print(f"\n Metadata for Cluster {cluster}: \n\n {meta_data_cluster} \n ------------------- \n")
+        if out_path != "":
+            meta_data_cluster.to_csv(out_path + f"/cluster {cluster}.csv")
+
+        #   TODO:  fix output of highest tf-idf features per cluster
+        #  
+        # highest_tf_idf_scores = order_centroids[cluster][:top_terms]
+        # print(highest_tf_idf_scores)
+        # for value in highest_tf_idf_scores:
+        #     try:
+        #         print(df_2.columns[value])
+        #     except IndexError as e:
+        #         print("Fehler bei: \n")
+
+        #         print(value)
+
+    #  token-list for plays in cluster:
 
 
     # with open ("results2.txt", "w", encoding="utf-8") as f:
@@ -230,49 +266,6 @@ if __name__ == '__main__':
                       syntax=False, 
                       lemmatize=False, 
                       get_ids=True,
+                      label='firstAuthor',
                       clusters=6)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#  most likely not needed anymore:
-
-
-    #     #colors = ["r", "b", "c", "y", "m", "g"]  #  "k", "yellow", "greenyellow", "pink"
-    # colors = cm.nipy_spectral(kmean_indices.astype(float) / clusters)
-    # #df_data['predicted_label'] = cls.labels_.astype(int)
-    # print(colors)
-
-    # x_axis = [o[0] for o in scatter_plot_points]
-    # y_axis = [o[1] for o in scatter_plot_points]
-
-    # fix, ax = plt.subplots(figsize=(30, 30))
-    # points = ax.scatter(x_axis, y_axis, c=colors, alpha=0.7)
