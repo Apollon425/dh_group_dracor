@@ -154,7 +154,6 @@ def cluster_scatterplot(
     df['k_mean_cluster'] = kmean_indices
     df['dracor_id'] = dracor_ids
     df = df.drop(vector_names, axis=1)
-    print(df.query('k_mean_cluster==5')['dracor_id'])
 
 
     #  5) plot that df:
@@ -167,7 +166,7 @@ def cluster_scatterplot(
             y = row[1]
             label_point = row[3]
             label_point = meta.loc[meta['id'] == f"{label_point}", f'{label}'].item()
-            ax.text(x+.05, y, label_point, horizontalalignment='left')
+            ax.text(x+25, y-10, label_point, horizontalalignment='left')
 
 
     #  6) save it:
