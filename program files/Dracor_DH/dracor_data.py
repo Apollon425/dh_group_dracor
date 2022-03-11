@@ -53,6 +53,14 @@ def get_data(corpus, text_mode):
         ids.append(ident)                                 # id hinzufügen
     return texts, ids                                     # Texte + ids als Ergebnis
 
+def get_metadata(corpus):
+    if corpus == "ger":
+        meta = read_data_csv(GER_METADATA_PATH)
+    elif corpus == "ita":
+        meta = read_data_csv(ITA_METADATA_PATH)
+    else:
+        sys.exit("Corpus name invalid. Only \"ger\" and \"ita\" are supported.")
+    return {meta["id"][i]:[meta["yearNormalized"][i], meta["numOfSpeakers"][i], meta["numOfSpeakersFemale"][i], meta["numOfSpeakersMale"][i], meta["wordCountText"][i], meta["wordCountSp"][i], meta["wordCountStage"][i]] for i in list(range(len(meta["id"])))}
 
 # options: corpus="ita"/"ger", text="spoken"/"full"
 def get_features(corpus="ita",
@@ -60,8 +68,7 @@ def get_features(corpus="ita",
         vocab=True, 
         syntax=True, 
         remove_stopwords=False, 
-        lemmatize=True,
-        normalize_orthography=False, 
+        lemmatize=True, 
         drama_stats=True, 
         get_ids=False,
         min_df=10
@@ -91,6 +98,8 @@ def get_features(corpus="ita",
         if get_ids:
             features.append(ids)
             features.append(vectorizer.get_feature_names_out())
+    if drama_stats:
+        features.append(get_metadata(corpus))
     return features
 
 
