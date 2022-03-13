@@ -15,7 +15,7 @@ from pathlib import Path
 
 GER_METADATA_PATH = Path("data_files/gerdracor-metadata.csv")
 ITA_METADATA_PATH = Path("data_files/itadracor-metadata.csv")
-TF_IDF_PATH = Path("data_files/ita_tfidf_min10.cs")
+TF_IDF_PATH = Path("data_files/ita_tfidf_min10.csv")
 
 
 dracor_api = "https://dracor.org/api"                    # API-Endpunkt für DraCor

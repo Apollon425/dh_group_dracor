@@ -1,5 +1,7 @@
 from configparser import MissingSectionHeaderError
 from turtle import shape
+
+import sklearn
 import dracor_data as dr
 import pandas as pd
 from matplotlib import pyplot as plt 
@@ -23,7 +25,6 @@ import matplotlib.pyplot as plt
 from sklearn.decomposition import PCA
 import sys
 import seaborn as sns
-
 
 OUTPUT_PATH_BASE = 'visualization_output/clustering'
 
@@ -158,14 +159,15 @@ def cluster_scatterplot(
 
     #  5) plot that df:
 
-    plot = sns.relplot(data = df, x = 'x_axis', y = 'y_axis', hue = 'k_mean_cluster', palette = 'tab10', kind = 'scatter', height=8.27, aspect=11.7/8.27)
+    plot = sns.relplot(data = df, x = 'x_axis', y = 'y_axis', hue = 'k_mean_cluster', palette = 'tab10', kind = 'scatter', height=15, aspect=1.5)
     if label is not None:
         ax = plot.axes[0, 0]
         for idx, row in df.iterrows():
             x = row[0]
             y = row[1]
-            label_point = row[3]
-            label_point = meta.loc[meta['id'] == f"{label_point}", f'{label}'].item()
+            label_point_row = row[3]
+            label_point = meta.loc[meta['id'] == f"{label_point_row}", f'{label}'].item()
+            label_point = label_point + ", " + str((meta.loc[meta['id'] == f"{label_point_row}", f'yearNormalized'].item()))
             ax.text(x+25, y-10, label_point, horizontalalignment='left')
 
 
@@ -259,12 +261,12 @@ if __name__ == '__main__':
 
     cluster_scatterplot(top_terms=25, 
                       corpus="ita", 
-                      text='spoken', 
+                      text='full', 
                       vocab=True, 
                       min_df=10,
                       syntax=False, 
-                      lemmatize=False, 
+                      lemmatize=True, 
                       get_ids=True,
-                      #label='firstAuthor',
+                      label='firstAuthor',
                       clusters=6)
 
