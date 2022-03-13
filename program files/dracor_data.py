@@ -7,12 +7,15 @@ from nltk.corpus import stopwords
 import pandas as pd
 import scipy
 from dracor_nlp import Preprocessor
+from pathlib import Path
 
-GER_METADATA_PATH = 'data_files/gerdracor-metadata.csv'
-ITA_METADATA_PATH = 'data_files/itadracor-metadata.csv'
-TF_IDF_PATH = f'data_files/ita_tfidf_min10.csv'
+# GER_METADATA_PATH = 'data_files/gerdracor-metadata.csv'
+# ITA_METADATA_PATH = 'data_files/itadracor-metadata.csv'
+# TF_IDF_PATH = f'data_files/ita_tfidf_min10.csv'
 
-
+GER_METADATA_PATH = Path("data_files/gerdracor-metadata.csv")
+ITA_METADATA_PATH = Path("data_files/itadracor-metadata.csv")
+TF_IDF_PATH = Path("data_files/ita_tfidf_min10.cs")
 
 
 dracor_api = "https://dracor.org/api"                    # API-Endpunkt für DraCor

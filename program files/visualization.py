@@ -181,7 +181,7 @@ def cluster_scatterplot(
     out_path = create_output_folder(out_string)
     if out_path != "":
         plt.savefig(out_path + "/cluster_plot.png")
-        plt.show()
+        #plt.show()
 
 
 
@@ -265,6 +265,6 @@ if __name__ == '__main__':
                       syntax=False, 
                       lemmatize=False, 
                       get_ids=True,
-                      label='firstAuthor',
+                      #label='firstAuthor',
                       clusters=6)
 
