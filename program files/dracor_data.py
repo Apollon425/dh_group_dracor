@@ -17,6 +17,8 @@ GER_METADATA_PATH = Path("data_files/gerdracor-metadata.csv")
 ITA_METADATA_PATH = Path("data_files/itadracor-metadata.csv")
 TF_IDF_PATH = Path("data_files/ita_tfidf_min10.csv")
 
+OUTLIERLIST = ["ger0000480"]
+
 
 dracor_api = "https://dracor.org/api"                    # API-Endpunkt für DraCor
 
@@ -52,9 +54,12 @@ def get_data(corpus, text_mode):
     for drama in get_dracor(corpus)["dramas"]:            # alle Stücke durchlaufen
         name = drama["name"]                              # Name des Stücks
         ident = drama["id"]                               # id des Stücks
-        texts.append(get_dracor(corpus, name, text_mode)) # Text herunterladen
-        ids.append(ident)                                 # id hinzufügen
-    return texts, ids                                     # Texte + ids als Ergebnis
+        if ident not in OUTLIERLIST:
+            continue
+        else:
+            texts.append(get_dracor(corpus, name, text_mode)) # Text herunterladen
+            ids.append(ident)                                 # id hinzufügen
+    return texts, ids                                         # Texte + ids als Ergebnis
 
 def get_metadata(corpus):
     if corpus == "ger":
