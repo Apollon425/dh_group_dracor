@@ -179,10 +179,10 @@ def cluster_scatterplot(
     syntax_str = "pos" if syntax is True else ""
     lemma_str = "lemma" if lemmatize is True else ""
     label_str = label if label is not None else "None"
-    stopword_str = "noStopwords" if removeStopwords is True else ""
+    stopword_str = "noStop" if removeStopwords is True else ""
 
 
-    out_string = f'/{corpus}_{text}_{stopword_str}_{vocab_str}_min_df={str(min_df)}_{syntax_str}_{lemma_str}_cluster={str(clusters)}_label={label_str}'  #  
+    out_string = f'/{corpus}_{text}_{stopword_str}_{vocab_str}_min_df={str(min_df)}_{syntax_str}_{lemma_str}_cluster={str(clusters)}_lab={label_str}'  #  
     out_path = create_output_folder(out_string)
     if out_path != "":
         plt.savefig(out_path + "/cluster_plot.png")
@@ -272,5 +272,5 @@ if __name__ == '__main__':
                       lemmatize=True, 
                       get_ids=True,
                       #label='firstAuthor',
-                      clusters=6)
+                      clusters=12)
 
