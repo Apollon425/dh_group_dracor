@@ -267,6 +267,6 @@ if __name__ == '__main__':
                       syntax=False, 
                       lemmatize=True, 
                       get_ids=True,
-                      label='firstAuthor',
+                      #label='firstAuthor',
                       clusters=6)
 
