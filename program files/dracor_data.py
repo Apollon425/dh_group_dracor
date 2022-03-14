@@ -54,7 +54,7 @@ def get_data(corpus, text_mode):
     for drama in get_dracor(corpus)["dramas"]:            # alle Stücke durchlaufen
         name = drama["name"]                              # Name des Stücks
         ident = drama["id"]                               # id des Stücks
-        if ident not in OUTLIERLIST:
+        if ident in OUTLIERLIST:
             continue
         else:
             texts.append(get_dracor(corpus, name, text_mode)) # Text herunterladen
