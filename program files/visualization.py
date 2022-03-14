@@ -8,7 +8,7 @@ from matplotlib import pyplot as plt
 
 import matplotlib.cm as cm
 import os
-
+from pathlib import Path
 
 import sys
 import elbow as elb
@@ -142,6 +142,10 @@ def cluster_scatterplot(
 
     model = KMeans(n_clusters=clusters, init="k-means++", n_init=1, random_state=10).fit(df)  #  max_iter = 100
 
+    #print(len(model.cluster_centers_[0]))
+    order_centroids = model.cluster_centers_.argsort()[:, ::-1]  #  sort token by tf-idf value for each cluster
+
+
     # 3) dimension reduction of tf-idf vectors:
 
     pca = PCA(n_components=2)
@@ -193,9 +197,23 @@ def cluster_scatterplot(
     #  7) find contents of clusters, save them as csv
 
     #  metadata and token-list for plays in cluster:
+    
+    full_out_path = Path(out_path + f"/Top_{top_terms}_centroids.txt")
+    open(full_out_path, mode='a').close()
 
-    order_centroids = model.cluster_centers_.argsort()[:, ::-1]  #  sort token by tf-idf value for each cluster
-    #print(order_centroids)
+
+    with open (full_out_path, "w", encoding="utf-8") as f:
+        for i in range(clusters):
+            f.write(f"Cluster: {i} \n")
+            print(f"Cluster: {i} \n")
+            f.write("\n")
+            for token_index in order_centroids[i][:top_terms]:
+                f.write(f'{vector_names[token_index]},')
+                print(vector_names[token_index])
+                f.write("\n")
+            f.write("\n")
+            f.write("\n")
+
 
 
     for cluster in range(clusters):
@@ -205,32 +223,6 @@ def cluster_scatterplot(
         print(f"\n Metadata for Cluster {cluster}: \n\n {meta_data_cluster} \n ------------------- \n")
         if out_path != "":
             meta_data_cluster.to_csv(out_path + f"/cluster {cluster}.csv")
-
-        #   TODO:  fix output of highest tf-idf features per cluster
-        #  
-        # highest_tf_idf_scores = order_centroids[cluster][:top_terms]
-        # print(highest_tf_idf_scores)
-        # for value in highest_tf_idf_scores:
-        #     try:
-        #         print(df_2.columns[value])
-        #     except IndexError as e:
-        #         print("Fehler bei: \n")
-
-        #         print(value)
-
-    #  token-list for plays in cluster:
-
-
-    # with open ("results2.txt", "w", encoding="utf-8") as f:
-    #     for i in range(clusters):
-    #         f.write(f"Cluster: {i} \n")
-    #         #f.write("\n")
-    #         for ind in order_centroids[i, :top_terms]:
-    #             f.write(' %s' % vector_names[ind],)
-    #             f.write("\n")
-    #         f.write("\n")
-    #         f.write("\n")
-
 
 
 if __name__ == '__main__':
@@ -272,5 +264,5 @@ if __name__ == '__main__':
                       lemmatize=True, 
                       get_ids=True,
                       #label='firstAuthor',
-                      clusters=21)
+                      clusters=7)
 
