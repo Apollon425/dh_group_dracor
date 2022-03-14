@@ -17,7 +17,7 @@ GER_METADATA_PATH = Path("data_files/gerdracor-metadata.csv")
 ITA_METADATA_PATH = Path("data_files/itadracor-metadata.csv")
 TF_IDF_PATH = Path("data_files/ita_tfidf_min10.csv")
 
-OUTLIERLIST = ["ger0000480"]
+OUTLIERLIST = ["ger000480"]
 
 
 dracor_api = "https://dracor.org/api"                    # API-Endpunkt für DraCor
