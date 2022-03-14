@@ -27,6 +27,7 @@ import sys
 import seaborn as sns
 
 OUTPUT_PATH_BASE = 'visualization_output/clustering'
+out_path = ""
 
 def create_output_folder(output_folder: str):
 
@@ -89,6 +90,22 @@ def draw_plot(data: pd.DataFrame, column: str, plot_type: str, annotate: bool, f
     plt.show()
 
 
+def write_centroids(clusters, order_centroids, top_terms, vector_names):
+
+    file_path = Path(out_path + f"/Top_{top_terms}_centroids.txt")
+    open(file_path, mode='a').close()
+    
+    with open (file_path, "w", encoding="utf-8") as f:
+        for i in range(clusters):
+            f.write(f"Cluster: {i} \n")
+            print(f"Cluster: {i} \n")
+            f.write("\n")
+            for token_index in order_centroids[i][:top_terms]:
+                f.write(f'{vector_names[token_index]}')
+                print(vector_names[token_index])
+                f.write("\n")
+            f.write("\n")
+            f.write("\n")
 
 
 def cluster_scatterplot(
@@ -103,7 +120,7 @@ def cluster_scatterplot(
     lemmatize = False, 
     get_ids = True, 
     label = None, 
-    clusters = 6 ):
+    clusters = 6):
 
 
     """
@@ -142,7 +159,6 @@ def cluster_scatterplot(
 
     model = KMeans(n_clusters=clusters, init="k-means++", n_init=1, random_state=10).fit(df)  #  max_iter = 100
 
-    #print(len(model.cluster_centers_[0]))
     order_centroids = model.cluster_centers_.argsort()[:, ::-1]  #  sort token by tf-idf value for each cluster
 
 
@@ -196,26 +212,15 @@ def cluster_scatterplot(
 
     #  7) find contents of clusters, save them as csv
 
-    #  metadata and token-list for plays in cluster:
+    #  token-list and metadata for plays in cluster:
     
-    full_out_path = Path(out_path + f"/Top_{top_terms}_centroids.txt")
-    open(full_out_path, mode='a').close()
+    try:
+        write_centroids(clusters=clusters, order_centroids=order_centroids, top_terms=top_terms, vector_names=vector_names)
+    except (FileNotFoundError, PermissionError) as e:
+        print(e)
+        print("Error writing centroids.")
 
-
-    with open (full_out_path, "w", encoding="utf-8") as f:
-        for i in range(clusters):
-            f.write(f"Cluster: {i} \n")
-            print(f"Cluster: {i} \n")
-            f.write("\n")
-            for token_index in order_centroids[i][:top_terms]:
-                f.write(f'{vector_names[token_index]},')
-                print(vector_names[token_index])
-                f.write("\n")
-            f.write("\n")
-            f.write("\n")
-
-
-
+    
     for cluster in range(clusters):
         cluster_content = df.query(f'k_mean_cluster=={cluster}')['dracor_id'].to_list()
 
@@ -254,7 +259,7 @@ if __name__ == '__main__':
 
     #  cluster plotting:
 
-    cluster_scatterplot(top_terms=25, 
+    cluster_scatterplot(top_terms=10, 
                       corpus="ita", 
                       text='spoken', 
                       vocab=True, 
@@ -264,5 +269,5 @@ if __name__ == '__main__':
                       lemmatize=True, 
                       get_ids=True,
                       #label='firstAuthor',
-                      clusters=7)
+                      clusters=15)
 

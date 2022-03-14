@@ -1,0 +1,13 @@
+,name,id,firstAuthor,numOfCoAuthors,title,subtitle,normalizedGenre,yearNormalized,size,libretto,averageClustering,density,averagePathLength,maxDegreeIds,averageDegree,diameter,yearPremiered,yearPrinted,maxDegree,numOfSpeakers,numOfSpeakersFemale,numOfSpeakersMale,numOfSpeakersUnknown,numPersonGroups,numConnectedComponents,yearWritten,numOfSegments,wikipediaLinkCount,numOfActs,wordCountText,wordCountSp,wordCountStage,numOfP,numOfL
+1,alfieri-agamennone,ita000002,Alfieri,0,Agamennone,,,1783,4,False,1.0,1.0,1.0,several characters,3.0,1,,1783.0,3,4,2,2,0,,1,1776/1778,25,0.0,5,10761,10638,51,0,1531
+2,alfieri-antigone,ita000003,Alfieri,0,Antigone,,,1783,4,False,1.0,1.0,1.0,several characters,3.0,1,,1783.0,3,4,2,2,0,,1,,22,0.0,5,10507,10248,63,0,1519
+9,alfieri-merope,ita000010,Alfieri,0,Merope,,,1783,6,False,1.0,1.0,1.0,several characters,5.0,1,,1783.0,5,6,1,4,1,,1,1782,21,0.0,5,11239,10896,57,0,1652
+11,alfieri-oreste,ita000012,Alfieri,0,Oreste,,,1783,5,False,1.0,1.0,1.0,several characters,4.0,1,,1783.0,4,5,2,3,0,,1,1776/1777,30,0.0,5,11132,10952,93,0,1721
+13,alfieri-polinice,ita000014,Alfieri,0,Polinice,,,1783,5,False,1.0,1.0,1.0,several characters,4.0,1,,1783.0,4,5,2,3,0,,1,1775,21,0.0,5,11428,11295,65,3,1643
+15,alfieri-saul,ita000016,Alfieri,0,Saul,,,1788,6,False,0.9,0.8666666666666667,1.1333333333333333,saul|gionata|abner,4.333333333333333,2,,1788.0,5,6,1,5,0,,1,1782,24,0.0,5,12015,11701,145,1,1762
+65,foscolo-ajace,ita000066,Foscolo,0,Ajace,,,1811,8,False,0.6958333333333333,0.6428571428571429,1.4642857142857142,aiace|agamennone,4.5,3,1811,1828.0,6,8,1,7,0,,1,1810/1811,36,0.0,5,14452,14151,258,0,2066
+66,foscolo-edippo,ita000067,Foscolo,0,Edippo,,,1796,5,False,0.9,0.9,1.1,teseo|antigone|edippo,3.6,2,,1978.0,4,5,1,4,0,,1,1796,18,0.0,4,9582,9306,56,0,1418
+67,foscolo-ricciarda,ita000068,Foscolo,0,Ricciarda,,,1813,5,False,0.8666666666666666,0.8,1.2,averardo|guido,3.2,2,1813,1820.0,4,5,1,4,0,,1,1812/1813,25,0.0,5,10507,10288,128,0,1444
+68,foscolo-tieste,ita000069,Foscolo,0,Tieste,,,1797,4,False,1.0,1.0,1.0,several characters,3.0,1,1797,,3,4,2,2,0,,1,1795,24,0.0,5,11080,10771,417,0,1694
+121,monti-caio-gracco,ita000122,Monti,0,Caio Gracco,,,1802,14,False,0.8460111317254173,0.6483516483516484,1.3736263736263736,caio,8.428571428571429,3,1802,,12,14,2,11,1,,1,1788/1800,35,0.0,5,15292,14925,429,0,2394
+126,salfi-pausania,ita000127,Salfi,0,Pausania,,,1800,6,False,0.8222222222222221,0.7333333333333333,1.2666666666666666,pausania,3.6666666666666665,2,,1800.0,5,6,2,4,0,,1,,29,0.0,5,16750,12266,129,2,1813
