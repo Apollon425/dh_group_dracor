@@ -264,13 +264,13 @@ if __name__ == '__main__':
 
     cluster_scatterplot(top_terms=25, 
                       corpus="ita", 
-                      text='full', 
+                      text='spoken', 
                       vocab=True, 
-                      min_df=10,
+                      min_df=20,
                       removeStopwords=True,
                       syntax=False, 
                       lemmatize=True, 
                       get_ids=True,
                       #label='firstAuthor',
-                      clusters=12)
+                      clusters=21)
 
