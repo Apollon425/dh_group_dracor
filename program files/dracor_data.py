@@ -75,7 +75,7 @@ def get_metadata(corpus, ids: list):
         sys.exit("Corpus name invalid. Only \"ger\" and \"ita\" are supported.")
 
     #  sort dataframe to match the data downloaded via api:
-
+    meta = meta[~meta['id'].isin(OUTLIERLIST)]
     id_list = meta['id'].to_list()
     sort_index = []
 
