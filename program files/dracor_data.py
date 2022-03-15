@@ -19,6 +19,10 @@ TF_IDF_PATH = Path("data_files/ita_tfidf_min10.csv")
 
 OUTLIERLIST = ["ger000480"]
 
+metadata_featurelist = ["yearNormalized", "numOfSpeakers", "numOfSpeakersFemale", "numOfSpeakersMale", "wordCountText", "wordCountSp", "wordCountStage"]
+
+
+
 
 dracor_api = "https://dracor.org/api"                    # API-Endpunkt für DraCor
 
@@ -59,16 +63,33 @@ def get_data(corpus, text_mode):
         else:
             texts.append(get_dracor(corpus, name, text_mode)) # Text herunterladen
             ids.append(ident)                                 # id hinzufügen
+    #print(ids)
     return texts, ids                                         # Texte + ids als Ergebnis
 
-def get_metadata(corpus):
+def get_metadata(corpus, ids: list):
     if corpus == "ger":
         meta = read_data_csv(GER_METADATA_PATH)
     elif corpus == "ita":
         meta = read_data_csv(ITA_METADATA_PATH)
     else:
         sys.exit("Corpus name invalid. Only \"ger\" and \"ita\" are supported.")
-    return {meta["id"][i]:[meta["yearNormalized"][i], meta["numOfSpeakers"][i], meta["numOfSpeakersFemale"][i], meta["numOfSpeakersMale"][i], meta["wordCountText"][i], meta["wordCountSp"][i], meta["wordCountStage"][i]] for i in list(range(len(meta["id"])))}
+
+    #  sort dataframe to match the data downloaded via api:
+
+    id_list = meta['id'].to_list()
+    sort_index = []
+
+    for dracor_id in id_list:
+        sort_index.append(ids.index(dracor_id))
+
+    meta['sort_index'] = sort_index
+    meta.sort_values(by=["sort_index"], inplace=True)
+    meta.drop(["sort_index"], axis=1, inplace=True)
+
+    meta = meta[metadata_featurelist]
+    #print(meta)
+
+    return meta
 
 # options: corpus="ita"/"ger", text="spoken"/"full"
 def get_features(corpus="ita",
@@ -91,7 +112,6 @@ def get_features(corpus="ita",
         stopwordlist = stopwords.words('german')
     else:
         print("No valid corpus found!")
-        sys.exit()
     if not remove_stopwords:                               # Stopwordlisten deaktivieren falls gewünscht
         stopwordlist = None
     if lemmatize or syntax:
@@ -107,7 +127,7 @@ def get_features(corpus="ita",
             features.append(ids)
             features.append(vectorizer.get_feature_names_out())
     if drama_stats:
-        features.append(get_metadata(corpus))
+        features.append(get_metadata(corpus, ids))
     return features
 
 
@@ -130,9 +150,15 @@ def write_to_csv(data: pd.DataFrame, path: str, encoding: str, index: bool) -> N
 
 if __name__ == '__main__':
 
-    #matrix, dracor_ids, vector_names = get_features("ita", get_ids= True)  #  do tf-idf
+    pos, matrix, dracor_ids, vector_names,  meta_features = get_features("ita", get_ids= True)  #  do tf-idf
+    # print(pos)
+    # print(matrix)
+    # print(dracor_ids)
+    # print(vector_names)
+    # print(meta_features)
+
+
+
     #df = convert_to_df_and_csv(TF_IDF_PATH, matrix, vector_names, True)  #  put data in pandas dataframe with named columns (=features), export as csv optionally
     #df.index = dracor_ids  #  add row names (= dracors ids of plays)
-
     #print(df)  #  df has named rows (=dracors ids of plays) and columns (feature)
-    pass

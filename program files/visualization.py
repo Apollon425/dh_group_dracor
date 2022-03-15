@@ -119,7 +119,8 @@ def cluster_scatterplot(
     syntax = False, 
     lemmatize = False, 
     get_ids = True, 
-    label = None, 
+    label = None,
+    drama_stats = False, 
     clusters = 6):
 
 
@@ -137,24 +138,26 @@ def cluster_scatterplot(
         sys.exit("Corpus name invalid. Only \"ger\" and \"ita\" are supported.")
 
 
-    return_list = dr.get_features(corpus=corpus,
-                                 text=text,
-                                 remove_stopwords=removeStopwords, 
-                                 vocab=vocab, 
-                                 min_df=min_df, 
-                                 syntax=syntax, 
-                                 lemmatize=lemmatize, 
-                                 get_ids=get_ids)
+    pos, matrix, dracor_ids, vector_names,  meta_features = dr.get_features(corpus=corpus,
+                                                                            text=text,
+                                                                            remove_stopwords=removeStopwords, 
+                                                                            vocab=vocab, 
+                                                                            min_df=min_df, 
+                                                                            syntax=syntax, 
+                                                                            lemmatize=lemmatize, 
+                                                                            get_ids=get_ids)
 
-    matrix = return_list[0]
-    dracor_ids = return_list[1]
-    vector_names = return_list[2]
+
+  
+
+    
 
     df = dr.convert_to_df_and_csv(dr.TF_IDF_PATH, matrix, vector_names, False)  #  TODO: fix outputpath
-    #print(df)
+    print(df)
 
 
-
+    print(matrix)
+    sys.exit()
     #  2) cluster data using k-means:
 
     model = KMeans(n_clusters=clusters, init="k-means++", n_init=1, random_state=10).fit(df)  #  max_iter = 100
@@ -269,5 +272,6 @@ if __name__ == '__main__':
                       lemmatize=True, 
                       get_ids=True,
                       #label='firstAuthor',
+                      drama_stats=True,
                       clusters=15)
 
