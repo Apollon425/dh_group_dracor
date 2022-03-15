@@ -20,6 +20,10 @@ class Preprocessor:
     def pos_tag(self):
         pos_tag_features = []
         for doc in self.spacy_docs:
+            pos=dict()
             # text_pos = [token.pos_ for token in doc]    # POS bigrams?
-            pos_tag_features.append(doc.count_by(spacy.attrs.POS))  # convert to panda df?
+            num_pos = doc.count_by(spacy.attrs.POS)
+            for k,v in sorted(num_pos.items()):
+                pos.update({doc.vocab[k].text:v})
+            pos_tag_features.append(pos)
         return pos_tag_features
