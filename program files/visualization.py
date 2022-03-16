@@ -153,10 +153,12 @@ def cluster_scatterplot(
     
 
     df = dr.convert_to_df_and_csv(dr.TF_IDF_PATH, matrix, vector_names, False)  #  TODO: fix outputpath
-    print(df)
+    #print(df)
+    #print(meta_features)
+    #print(pd.concat([df, meta_features], axis=1))
+    #print(dracor_ids)
+    print(pos)
 
-
-    print(matrix)
     sys.exit()
     #  2) cluster data using k-means:
 
@@ -225,7 +227,7 @@ def cluster_scatterplot(
 
     
     for cluster in range(clusters):
-        cluster_content = df.query(f'k_mean_cluster=={cluster}')['dracor_id'].to_list()
+        cluster_content = df.j(f'k_mean_cluster=={cluster}')['dracor_id'].to_list()
 
         meta_data_cluster = meta.loc[meta['id'].isin(cluster_content)]
         print(f"\n Metadata for Cluster {cluster}: \n\n {meta_data_cluster} \n ------------------- \n")
@@ -268,7 +270,7 @@ if __name__ == '__main__':
                       vocab=True, 
                       min_df=20,
                       removeStopwords=True,
-                      syntax=False, 
+                      syntax=True, 
                       lemmatize=True, 
                       get_ids=True,
                       #label='firstAuthor',
