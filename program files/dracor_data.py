@@ -1,3 +1,4 @@
+from email import header
 from posixpath import split
 import sys
 import json
@@ -17,10 +18,10 @@ from pathlib import Path
 GER_METADATA_PATH = Path("data_files/gerdracor-metadata.csv")
 ITA_METADATA_PATH = Path("data_files/itadracor-metadata.csv")
 TF_IDF_PATH = Path("data_files/ita_tfidf_min10.csv")
+POS_TAG_PATH_BASE = "data_files/"
 
 #OUTLIERLIST = ["ger000480"]
 INCLUDE_PLAYS = []
-
 
 
 metadata_featurelist = ["yearNormalized", "numOfSpeakers", "numOfSpeakersFemale", "numOfSpeakersMale", "wordCountText", "wordCountSp", "wordCountStage"]
@@ -145,12 +146,11 @@ def convert_to_df_and_csv(path, scipymatrix, ids, export_data: bool) -> pd.DataF
     return df
 
 
-
 def read_data_csv(path: str) -> pd.DataFrame:
     return pd.read_csv(path)
 
 def write_to_csv(data: pd.DataFrame, path: str, encoding: str, index: bool) -> None:
-    data.to_csv(path, encoding=encoding, index=index)
+    data.to_csv(path, encoding=encoding, index=index, header=True)
 
 
 def create_sublists(corpus: str, split_in: int) -> list:
@@ -181,9 +181,6 @@ def create_sublists(corpus: str, split_in: int) -> list:
     return sublists
 
 
-
-
-
 def get_stop_indices(split_list: list) -> list:
     """help function for create sublist, returns indices in a list to build a sublist of dracor_ids to use"""
     new_list = []
@@ -196,33 +193,37 @@ def get_stop_indices(split_list: list) -> list:
             this_value = new_list[-1] + split_list[i]
 
             new_list.append(this_value)
+    print(new_list)
     return new_list
 
 
-    # foo = somevalue
-    # previous = next_ = None
-    # l = len(objects)
-    # for index, obj in enumerate(objects):
-    #     if obj == foo:
-    #         if index > 0:
-    #             previous = objects[index - 1]
-    #         if index < (l - 1):
-    #             next_ = objects[index + 1]
 
-    
+
+
+
 
 
 if __name__ == '__main__':
 
-    sublists = create_sublists("ita", 3)
+    sublists = create_sublists("ita", 3)  #  split specified corpus specified number of times
+    pos_df_list = []
     for index in range(0, len(sublists)):
-        # if index != 1:
-        #     continue
 
         INCLUDE_PLAYS = sublists[index]
 
         pos, matrix, dracor_ids, vector_names,  meta_features = get_features("ita", vocab=True, get_ids= True, drama_stats=True)  #  do tf-idf
-        print(pos)
+        #print(pos)
+        filename = "pos_ita_full_min_10_with_stopw"
+        path = Path(POS_TAG_PATH_BASE + filename)
+        pos_df = pd.DataFrame(pos)
+        pos_df_list.append(pos_df)
+
+
+    pos_df = pd.concat(pos_df_list, axis=0, ignore_index=True)
+    print(pos_df)
+
+    write_to_csv(pos_df, path, "utf-8", False)
+
 
 
 
