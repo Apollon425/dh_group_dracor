@@ -18,21 +18,9 @@ GER_METADATA_PATH = Path("data_files/gerdracor-metadata.csv")
 ITA_METADATA_PATH = Path("data_files/itadracor-metadata.csv")
 TF_IDF_PATH = Path("data_files/ita_tfidf_min10.csv")
 
-#EXCLUDE_PLAYS = ["ger000480"]
-EXCLUDE_PLAYS = ["ita000001", "ita000002", "ita000003", "ita000004", "ita000005", "ita000006", "ita000007", "ita000008", "ita000009", "ita000010", "ita000011", "ita000012",
- "ita000013", "ita000014", "ita000015", "ita000016", "ita000017", "ita000018", "ita000019", "ita000020", "ita000021", "ita000022", "ita000023", "ita000024", "ita000025",
-  "ita000026", "ita000027", "ita000028", "ita000029", "ita000030", "ita000031", "ita000032", "ita000033", "ita000034", "ita000035", "ita000036", "ita000037", "ita000038",
-   "ita000039", "ita000040", "ita000041", "ita000042", "ita000043", "ita000044", "ita000045", "ita000046", "ita000047", "ita000048", "ita000049", "ita000050", "ita000051",
-    "ita000052", "ita000053", "ita000054", "ita000055", "ita000056", "ita000057", "ita000058", "ita000059", "ita000060", "ita000061", "ita000062", "ita000063", "ita000064",
-    "ita000065", "ita000066", "ita000067", "ita000068", "ita000069", "ita000070"
- ]
-#      , "ita000071", "ita000072", "ita000073", "ita000074", "ita000075", "ita000076", "ita000077",
-#       "ita000078", "ita000079", "ita000080", "ita000081", "ita000082", "ita000083", "ita000084", "ita000085", "ita000086", "ita000087", "ita000088", "ita000089", "ita000090",
-#        "ita000091", "ita000092", "ita000093", "ita000094", "ita000095", "ita000096", "ita000097", "ita000098", "ita000099", "ita000100", "ita000101", "ita000102", "ita000103",
-#         "ita000104", "ita000105", "ita000106", "ita000107", "ita000108", "ita000109", "ita000110", "ita000111", "ita000112", "ita000113", "ita000114", "ita000115", "ita000116",
-#          "ita000117", "ita000118", "ita000119", "ita000120"
-#  , "ita000121", "ita000122", "ita000123", "ita000124", "ita000125", "ita000126", "ita000127", "ita000128", "ita000129",
-#           "ita000130", "ita000131", "ita000132", "ita000133", "ita000134", "ita000135"
+#OUTLIERLIST = ["ger000480"]
+INCLUDE_PLAYS = []
+
 
 
 metadata_featurelist = ["yearNormalized", "numOfSpeakers", "numOfSpeakersFemale", "numOfSpeakersMale", "wordCountText", "wordCountSp", "wordCountStage"]
@@ -74,7 +62,7 @@ def get_data(corpus, text_mode):
     for drama in get_dracor(corpus)["dramas"]:            # alle Stücke durchlaufen
         name = drama["name"]                              # Name des Stücks
         ident = drama["id"]                               # id des Stücks
-        if ident in EXCLUDE_PLAYS:
+        if ident not in INCLUDE_PLAYS:
             continue
         else:
             texts.append(get_dracor(corpus, name, text_mode)) # Text herunterladen
@@ -91,7 +79,8 @@ def get_metadata(corpus, ids: list):
         sys.exit("Corpus name invalid. Only \"ger\" and \"ita\" are supported.")
 
     #  sort dataframe to match the data downloaded via api:
-    meta = meta[~meta['id'].isin(EXCLUDE_PLAYS)]
+    meta = meta[meta['id'].isin(INCLUDE_PLAYS)]       #meta = meta[~meta['id'].isin(EXCLUDE_PLAYS)]
+
     id_list = meta['id'].to_list()
     sort_index = []
 
@@ -226,8 +215,12 @@ def get_stop_indices(split_list: list) -> list:
 if __name__ == '__main__':
 
     sublists = create_sublists("ita", 3)
-    for sl in sublists:
-        EXCLUDE_PLAYS = sl
+    for index in range(0, len(sublists)):
+        # if index != 1:
+        #     continue
+
+        INCLUDE_PLAYS = sublists[index]
+
         pos, matrix, dracor_ids, vector_names,  meta_features = get_features("ita", vocab=True, get_ids= True, drama_stats=True)  #  do tf-idf
         print(pos)
 
