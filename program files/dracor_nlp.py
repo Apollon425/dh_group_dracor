@@ -1,5 +1,7 @@
 import spacy
 
+taglist = ["ADJ","ADP","ADV","AUX","CONJ","CCONJ","DET","INTJ","NOUN","NUM","PART","PRON","PROPN","PUNCT","SCONJ","SYM","VERB","X","SPACE"]
+
 class Preprocessor:
     def __init__(self, texts, lang):
         self.spacy_docs = []
@@ -25,5 +27,8 @@ class Preprocessor:
             num_pos = doc.count_by(spacy.attrs.POS)
             for k,v in sorted(num_pos.items()):
                 pos.update({doc.vocab[k].text:v})
+            for tag in taglist:
+                if tag not in pos.keys():
+                    pos.update({tag:0})
             pos_tag_features.append(pos)
         return pos_tag_features
