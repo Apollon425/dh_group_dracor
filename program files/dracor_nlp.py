@@ -19,7 +19,7 @@ class Preprocessor:
             lemmatized_texts.append(" ".join([token.lemma_ for token in doc]))
         return lemmatized_texts
 
-    def pos_tag(self):
+    def pos_tag(self, relative=True):
         pos_tag_features = []
         for doc in self.spacy_docs:
             pos=dict()
@@ -30,5 +30,8 @@ class Preprocessor:
             for tag in taglist:
                 if tag not in pos.keys():
                     pos.update({tag:0})
+            if relative:                           # relative count of POS
+                for keytag in pos.keys():
+                    pos.update(keytag:(pos[keytag]/sum(pos.values()))
             pos_tag_features.append(pos)
         return pos_tag_features
