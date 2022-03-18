@@ -11,22 +11,15 @@ import scipy
 from dracor_nlp import Preprocessor
 from pathlib import Path
 
-# GER_METADATA_PATH = 'data_files/gerdracor-metadata.csv'
-# ITA_METADATA_PATH = 'data_files/itadracor-metadata.csv'
-# TF_IDF_PATH = f'data_files/ita_tfidf_min10.csv'
 
 GER_METADATA_PATH = Path("data_files/gerdracor-metadata.csv")
 ITA_METADATA_PATH = Path("data_files/itadracor-metadata.csv")
 TF_IDF_PATH = Path("data_files/ita_tfidf_min10.csv")
-POS_TAG_PATH_BASE = "data_files/"
 
-#OUTLIERLIST = ["ger000480"]
-INCLUDE_PLAYS = []
+OUTLIERLIST = []  #"ger000480"
 
 
-metadata_featurelist = ["yearNormalized", "numOfSpeakers", "numOfSpeakersFemale", "numOfSpeakersMale", "wordCountText", "wordCountSp", "wordCountStage"]
-
-
+metadata_featurelist = ["id", "yearNormalized", "numOfSpeakers", "numOfSpeakersFemale", "numOfSpeakersMale", "wordCountText", "wordCountSp", "wordCountStage"]
 
 
 dracor_api = "https://dracor.org/api"                    # API-Endpunkt für DraCor
@@ -63,12 +56,13 @@ def get_data(corpus, text_mode):
     for drama in get_dracor(corpus)["dramas"]:            # alle Stücke durchlaufen
         name = drama["name"]                              # Name des Stücks
         ident = drama["id"]                               # id des Stücks
-        if ident not in INCLUDE_PLAYS:
+        if ident in OUTLIERLIST:
             continue
         else:
             texts.append(get_dracor(corpus, name, text_mode)) # Text herunterladen
             ids.append(ident)                                 # id hinzufügen
-    #print(ids)
+    print("ids:")
+    print(ids)
     return texts, ids                                         # Texte + ids als Ergebnis
 
 def get_metadata(corpus, ids: list):
@@ -80,19 +74,33 @@ def get_metadata(corpus, ids: list):
         sys.exit("Corpus name invalid. Only \"ger\" and \"ita\" are supported.")
 
     #  sort dataframe to match the data downloaded via api:
-    meta = meta[meta['id'].isin(INCLUDE_PLAYS)]       #meta = meta[~meta['id'].isin(EXCLUDE_PLAYS)]
+    meta = meta[~meta['id'].isin(OUTLIERLIST)]       #meta = meta[~meta['id'].isin(EXCLUDE_PLAYS)]
+    #print("meta:")
+    #print(meta)
 
     id_list = meta['id'].to_list()
+    #print("id_list:")
+    #print(id_list)
     sort_index = []
 
     for dracor_id in id_list:
         sort_index.append(ids.index(dracor_id))
 
+    #print("sort_index:")
+    #print(sort_index)
+
     meta['sort_index'] = sort_index
+    #print('meta_after adding sort index:')
+    #print(meta)
     meta.sort_values(by=["sort_index"], inplace=True)
+    #print("meta after sorting:")
     meta.drop(["sort_index"], axis=1, inplace=True)
+    meta = meta.reset_index(drop=True)
+    #print("meta after dropping index:")
+    #print(meta)
 
     meta = meta[metadata_featurelist]
+    #print("meta after only keeping features list:")
     #print(meta)
 
     return meta
@@ -128,8 +136,17 @@ def get_features(corpus="ita",
         texts = preproc.lemmatize()
     if vocab:  
         vectorizer = TfidfVectorizer(min_df=min_df, stop_words=stopwordlist, use_idf=True, norm=None)
-        features.append(vectorizer.fit_transform(texts))
+        #features.append(vectorizer.fit_transform(texts))
+        a = vectorizer.fit_transform(texts)
+        print("matrix:")
+        print(a)
+        features.append(a)
+
+
         if get_ids:
+            print("ids appending:")
+            print(ids)
+
             features.append(ids)
             features.append(vectorizer.get_feature_names_out())
     if drama_stats:
@@ -145,6 +162,11 @@ def convert_to_df_and_csv(path, scipymatrix, ids, export_data: bool) -> pd.DataF
         write_to_csv(df, path, "utf-8", False)
     return df
 
+def dict_to_df(data: list) -> pd.DataFrame:
+    """converts list of dictionarys to dataframe"""
+    df = pd.DataFrame(data)
+    return df
+
 
 def read_data_csv(path: str) -> pd.DataFrame:
     return pd.read_csv(path)
@@ -153,89 +175,19 @@ def write_to_csv(data: pd.DataFrame, path: str, encoding: str, index: bool) -> N
     data.to_csv(path, encoding=encoding, index=index, header=True)
 
 
-def create_sublists(corpus: str, split_in: int) -> list:
-    sublists = []
-    if corpus == "ita":
-
-        no_plays = len(read_data_csv(ITA_METADATA_PATH).index)
-
-        split_indices = ([no_plays // split_in + (1 if x < no_plays % split_in else 0)  for x in range (split_in)])  #  split in equal parts
-
-        stop_indices = get_stop_indices(split_list=split_indices)
-
-        for i in range(0, split_in):
-            sublist = []
-            for x in range(stop_indices[i], stop_indices[i+1]):
-                #print(stop_indices[i])
-                #print(stop_indices[i+1])
-
-                
-                id = corpus + "{:06d}".format(x+1)
-                #print(id)
-                sublist.append(id)
-            #print(f"sublist {i+1}: ")
-            #print(sublist)
-            #print(len(sublist))
-            sublists.append(sublist)
-
-    return sublists
-
-
-def get_stop_indices(split_list: list) -> list:
-    """help function for create sublist, returns indices in a list to build a sublist of dracor_ids to use"""
-    new_list = []
-    for i in range(0, len(split_list)):
-
-        if i == 0:
-            new_list.append(0)
-            new_list.append(split_list[i])
-        else:
-            this_value = new_list[-1] + split_list[i]
-
-            new_list.append(this_value)
-    print(new_list)
-    return new_list
-
-
-
-
-
-
-
-
 if __name__ == '__main__':
-
-    sublists = create_sublists("ita", 3)  #  split specified corpus specified number of times
-    pos_df_list = []
-    for index in range(0, len(sublists)):
-
-        INCLUDE_PLAYS = sublists[index]
-
-        pos, matrix, dracor_ids, vector_names,  meta_features = get_features("ita", vocab=True, get_ids= True, drama_stats=True)  #  do tf-idf
-        #print(pos)
-        filename = "pos_ita_full_min_10_with_stopw"
-        path = Path(POS_TAG_PATH_BASE + filename)
-        pos_df = pd.DataFrame(pos)
-        pos_df_list.append(pos_df)
-
-
-    pos_df = pd.concat(pos_df_list, axis=0, ignore_index=True)
-    print(pos_df)
-
-    write_to_csv(pos_df, path, "utf-8", False)
+    pass
 
 
 
-
-    # pos, matrix, dracor_ids, vector_names,  meta_features = get_features("ita", vocab=True, get_ids= True, drama_stats=True)  #  do tf-idf
+    #pos, matrix, dracor_ids, vector_names,  meta_features = get_features("ger", vocab=True, syntax=True, get_ids= True, drama_stats=True)  #  do tf-idf
     # print(pos)
-    # for element in pos:
-    #     element
-    #print(matrix)
-    #print(dracor_ids)
-    #print(vector_names)
-    #print(meta_features)
-
+    # # for element in pos:
+    # #     element
+    # print(matrix)
+    # print(dracor_ids)
+    # print(vector_names)
+    # print(meta_features)
 
 
     #df = convert_to_df_and_csv(TF_IDF_PATH, matrix, vector_names, True)  #  put data in pandas dataframe with named columns (=features), export as csv optionally

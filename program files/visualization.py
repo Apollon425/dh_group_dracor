@@ -149,25 +149,33 @@ def cluster_scatterplot(
 
 
   
-
-    
-
     df = dr.convert_to_df_and_csv(dr.TF_IDF_PATH, matrix, vector_names, False)  #  TODO: fix outputpath
     #print(df)
     #print(meta_features)
-    #print(pd.concat([df, meta_features], axis=1))
+    print("df mit meta sorted right:")
+    df = pd.concat([df, meta_features], axis=1)
+    #print("dracor ids:")
     #print(dracor_ids)
-    print(pos)
+    #print(pos)
+    key_list = list(pos[0].keys())
+    print("key list:")
+    print(key_list)
+    pos_df = dr.dict_to_df(pos)
+   # print("pos_df")
+    df = pd.concat([df, pos_df], axis=1)
+    df = df.drop(['id'], axis=1)
+    print("final df:")
+    print(df)
 
-    sys.exit()
+
     #  2) cluster data using k-means:
 
     model = KMeans(n_clusters=clusters, init="k-means++", n_init=1, random_state=10).fit(df)  #  max_iter = 100
 
-    order_centroids = model.cluster_centers_.argsort()[:, ::-1]  #  sort token by tf-idf value for each cluster
+    order_centroids = model.cluster_centers_.argsort()[:, ::-1]  #  sort token by tf-idf value for each cluster; TODO: still work after meta+pos features?
 
 
-    # 3) dimension reduction of tf-idf vectors:
+    # 3) dimension reduction feature vectors:
 
     pca = PCA(n_components=2)
     scatter_plot_points = pca.fit_transform(matrix.toarray())
@@ -181,7 +189,11 @@ def cluster_scatterplot(
     kmean_indices = model.fit_predict(df)
     df['k_mean_cluster'] = kmean_indices
     df['dracor_id'] = dracor_ids
-    df = df.drop(vector_names, axis=1)
+    df = df.drop(vector_names, axis=1)  #  TODO: why drop vector names? drop all columns? how to drop
+    df = df.drop(dr.metadata_featurelist[1:], axis=1)  #  except first element (id), because it has been dropped earlier; 'id' can be removed from dr.metadate_feature_list if correctness of df has been confirmed
+    df = df.drop(key_list, axis=1)
+    print("df after clustering:")
+    print(df)
 
 
     #  5) plot that df:
@@ -193,7 +205,11 @@ def cluster_scatterplot(
             x = row[0]
             y = row[1]
             label_point_row = row[3]
+            print("label point row:")
+            print(label_point_row)
             label_point = meta.loc[meta['id'] == f"{label_point_row}", f'{label}'].item()
+            print(f"label point {idx}:")
+            print(label_point)
             label_point = label_point + ", " + str((meta.loc[meta['id'] == f"{label_point_row}", f'yearNormalized'].item()))
             ax.text(x+25, y-10, label_point, horizontalalignment='left')
 
@@ -203,11 +219,11 @@ def cluster_scatterplot(
     vocab_str = "tf_idf" if vocab is True else ""
     syntax_str = "pos" if syntax is True else ""
     lemma_str = "lemma" if lemmatize is True else ""
-    label_str = label if label is not None else "None"
+    label_str = "yes" if label is not None else "no"
     stopword_str = "noStop" if removeStopwords is True else ""
 
 
-    out_string = f'/{corpus}_{text}_{stopword_str}_{vocab_str}_min_df={str(min_df)}_{syntax_str}_{lemma_str}_cluster={str(clusters)}_lab={label_str}'  #  
+    out_string = f'/{corpus}_{text}_{stopword_str}_{vocab_str}_min_df={str(min_df)}_{syntax_str}_{lemma_str}_cluster={str(clusters)}_lab={label_str}'   
     out_path = create_output_folder(out_string)
     if out_path != "":
         plt.savefig(out_path + "/cluster_plot.png")
@@ -227,7 +243,7 @@ def cluster_scatterplot(
 
     
     for cluster in range(clusters):
-        cluster_content = df.j(f'k_mean_cluster=={cluster}')['dracor_id'].to_list()
+        cluster_content = df(f'k_mean_cluster=={cluster}')['dracor_id'].to_list()
 
         meta_data_cluster = meta.loc[meta['id'].isin(cluster_content)]
         print(f"\n Metadata for Cluster {cluster}: \n\n {meta_data_cluster} \n ------------------- \n")
@@ -240,8 +256,6 @@ if __name__ == '__main__':
     #  metadata plotting:
 
     #  draw_plot(data=read_data_csv(dr.GER_METADATA_PATH), column="averageClustering", plot_type="scatter", annotate=False, first_year=1850)
-
-
 
     #  calculate tif-idf (+ get singular token if that is of interest):
 
@@ -273,7 +287,7 @@ if __name__ == '__main__':
                       syntax=True, 
                       lemmatize=True, 
                       get_ids=True,
-                      #label='firstAuthor',
+                      label='firstAuthor',
                       drama_stats=True,
                       clusters=15)
 
