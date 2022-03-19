@@ -10,7 +10,7 @@ class Preprocessor:
         else:
             nlp = spacy.load("de_core_news_sm", disable=['parser'])
             nlp.max_length = 5000000
-        for doc in nlp.pipe(texts, disable=["parser", "attribute_ruler", "ner"]):  #  "tok2vec", 
+        for doc in nlp.pipe(texts, disable=["parser", "attribute_ruler", "ner"], batch_size=30):  #  "tok2vec", 
             self.spacy_docs.append(doc)  #  nlp (doc) ??
 
     def lemmatize(self):

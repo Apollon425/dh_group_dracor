@@ -180,7 +180,7 @@ if __name__ == '__main__':
 
 
 
-    #pos, matrix, dracor_ids, vector_names,  meta_features = get_features("ger", vocab=True, syntax=True, get_ids= True, drama_stats=True)  #  do tf-idf
+    pos, matrix, dracor_ids, vector_names,  meta_features = get_features("ger", vocab=True, syntax=True, get_ids= True, drama_stats=True)  #  do tf-idf
     # print(pos)
     # # for element in pos:
     # #     element

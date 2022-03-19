@@ -37,9 +37,7 @@ def silhouette_plot(data, no_of_clusters):
         cluster_labels = clusterer.fit_predict(data)  
         #print(cluster_labels)
 
-        # The silhouette_score gives the average value for all the samples.
-        # This gives a perspective into the density and separation of the formed
-        # clusters
+
         silhouette_avg = silhouette_score(data, cluster_labels)  
         print(
             "For n_clusters =",
