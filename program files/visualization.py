@@ -243,7 +243,7 @@ def cluster_scatterplot(
 
     
     for cluster in range(clusters):
-        cluster_content = df(f'k_mean_cluster=={cluster}')['dracor_id'].to_list()
+        cluster_content = df.query(f'k_mean_cluster=={cluster}')['dracor_id'].to_list()
 
         meta_data_cluster = meta.loc[meta['id'].isin(cluster_content)]
         print(f"\n Metadata for Cluster {cluster}: \n\n {meta_data_cluster} \n ------------------- \n")

@@ -32,6 +32,6 @@ class Preprocessor:
                     pos.update({tag:0})
             if relative:                           # relative count of POS
                 for keytag in pos.keys():
-                    pos.update(keytag:(pos[keytag]/sum(pos.values()))
+                    pos.update({keytag:(pos[keytag]/sum(pos.values()))})
             pos_tag_features.append(pos)
         return pos_tag_features
