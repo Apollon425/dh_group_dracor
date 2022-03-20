@@ -164,14 +164,14 @@ class Visualization:
         df = dr.convert_to_df_and_csv(dr.TF_IDF_PATH, matrix, vector_names, False)  #  TODO: make construction of df flexible (only pos, only meta, only tf-idf)
         #print(df)
         #print(meta_features)
-        print("df mit meta sorted right:")
-        df = pd.concat([df, meta_features], axis=1)
+        #print("df mit meta sorted right:")
+        #df = pd.concat([df, meta_features], axis=1)
         #print("dracor ids:")
         #print(dracor_ids)
         #print(pos)
         key_list = list(pos[0].keys())
-        print("key list:")
-        print(key_list)
+        #print("key list:")
+        #print(key_list)
         pos_df = dr.dict_to_df(pos)
         # print("pos_df")
         df = pd.concat([df, pos_df], axis=1)
@@ -182,9 +182,7 @@ class Visualization:
 
 
 
-    def cluster_scatterplot(self):
-
-
+    def cluster_scatterplot(self, df: pd.DataFrame, dracor_ids, vector_names):
 
 
         #  2) cluster data using k-means:
@@ -215,10 +213,10 @@ class Visualization:
         df['k_mean_cluster'] = kmean_indices
         df['dracor_id'] = dracor_ids
         df = df.drop(vector_names, axis=1)  
-        df = df.drop(dr.metadata_featurelist[1:], axis=1)  #  except first element (id), because it has been dropped earlier; 'id' can be removed from dr.metadate_feature_list if correctness of df has been confirmed
+        df = df.drop(dr.metadata_featurelist[1:], axis=1)  #  except first element (id), because it has been dropped earlier; 'id' can be removed from dr.metadata_feature_list if correctness of df has been confirmed
         df = df.drop(dracor_nlp.taglist, axis=1)
-        print("df after clustering:")
-        print(df)
+        #print("df after clustering:")
+        #print(df)
 
 
         #  5) plot that df:
@@ -237,11 +235,11 @@ class Visualization:
                 x = row[0]
                 y = row[1]
                 label_point_row = row[3]
-                print("label point row:")
-                print(label_point_row)
+                #print("label point row:")
+                #print(label_point_row)
                 label_point = meta.loc[meta['id'] == f"{label_point_row}", f'{self.label}'].item()
-                print(f"label point {idx}:")
-                print(label_point)
+                #print(f"label point {idx}:")
+                #print(label_point)
                 label_point = label_point + ", " + str((meta.loc[meta['id'] == f"{label_point_row}", f'yearNormalized'].item()))
                 ax.text(x+25, y-10, label_point, horizontalalignment='left')
 
@@ -446,11 +444,11 @@ if __name__ == '__main__':
 
     #  2)  visualize it:
 
-    #visualizer.cluster_scatterplot()
+    visualizer.cluster_scatterplot(df=df, dracor_ids=dracor_ids, vector_names=vector_names)
 
     #visualizer.silhouette_plot(data=df)
 
-    visualizer.elbow_plot(data=df)
+    #visualizer.elbow_plot(data=df)
 
 
 

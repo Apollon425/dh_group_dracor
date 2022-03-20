@@ -138,14 +138,14 @@ def get_features(corpus="ita",
         vectorizer = TfidfVectorizer(min_df=min_df, stop_words=stopwordlist, use_idf=True, norm=None)
         #features.append(vectorizer.fit_transform(texts))
         a = vectorizer.fit_transform(texts)
-        print("matrix:")
-        print(a)
+        #print("matrix:")
+        #print(a)
         features.append(a)
 
 
         if get_ids:
-            print("ids appending:")
-            print(ids)
+            #print("ids appending:")
+            #print(ids)
 
             features.append(ids)
             features.append(vectorizer.get_feature_names_out())
