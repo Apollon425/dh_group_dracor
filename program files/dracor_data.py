@@ -171,8 +171,8 @@ def dict_to_df(data: list) -> pd.DataFrame:
 def read_data_csv(path: str) -> pd.DataFrame:
     return pd.read_csv(path)
 
-def write_to_csv(data: pd.DataFrame, path: str, encoding: str, index: bool) -> None:
-    data.to_csv(path, encoding=encoding, index=index, header=True)
+def write_to_csv(data: pd.DataFrame, path: str, encoding: str, index: bool, header) -> None:
+    data.to_csv(path, encoding=encoding, index=index, header=header)
 
 
 if __name__ == '__main__':

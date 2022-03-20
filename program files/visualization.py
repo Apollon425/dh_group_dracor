@@ -12,14 +12,11 @@ import os
 from pathlib import Path
 
 import sys
-import elbow as elb
-import silhouette as sil
 import dracor_nlp
-
 
 import pandas as pd
 from sklearn.cluster import KMeans
-from sklearn.metrics import adjusted_rand_score
+from sklearn.metrics import adjusted_rand_score, silhouette_samples, silhouette_score
 import string
 import dracor_data as dr
 import numpy as np
@@ -28,11 +25,9 @@ from sklearn.decomposition import PCA
 import sys
 import seaborn as sns
 
-# OUTPUT_PATH_BASE = 'visualization_output/clustering'
-# out_path = ""
 
 
-class visualization:
+class Visualization:
 
     OUTPUT_PATH_BASE = 'visualization_output/clustering'
     out_path = ""
@@ -41,7 +36,7 @@ class visualization:
 
     def __init__(self, corpus: str, text: str, vocab: bool, min_df: int, remove_Stopwords: bool, syntax: bool, lemmatize: bool, get_ids: bool, drama_stats: bool,
 
-                top_terms: int, label: str, clusters: int, do_silhouette_plot: bool, do_elbow_plot: bool, do_cluster_scatterplot: bool):  #  TODO: not do elbow, sil...
+                top_terms: int, label: str, clusters: int): 
 
                 self.corpus = corpus
                 self.text = text
@@ -58,9 +53,9 @@ class visualization:
                 self.clusters = clusters
 
 
-                self.do_silhouette_plot = do_silhouette_plot
-                self.do_elbow_plot = do_elbow_plot
-                self.do_cluster_scatterplot = do_cluster_scatterplot
+                # self.do_silhouette_plot = do_silhouette_plot
+                # self.do_elbow_plot = do_elbow_plot
+                # self.do_cluster_scatterplot = do_cluster_scatterplot
 
 
 
@@ -122,22 +117,33 @@ class visualization:
         plt.show()
 
 
-    def write_centroids(self, clusters, order_centroids, top_terms, vector_names):
+    def write_centroids(self, clusters, order_centroids, top_terms, df: pd.DataFrame):
 
-        file_path = Path(self.out_path + f"Top_{top_terms}_centroids.txt")
-        open(file_path, mode='a').close()
-        
-        with open (file_path, "w", encoding="utf-8") as f:
-            for i in range(clusters):
-                f.write(f"Cluster: {i} \n")
-                print(f"Cluster: {i} \n")
-                f.write("\n")
-                for token_index in order_centroids[i][:top_terms]:
-                    f.write(f'{vector_names[token_index]}')
-                    print(vector_names[token_index])
-                    f.write("\n")
-                f.write("\n")
-                f.write("\n")
+
+        centroid_outer = []  
+        centroid_headers = []
+      
+
+        for i in range(clusters):
+            centroid_list = []
+            centroid_headers.append(f"Cluster {i}")
+
+            for centroid_index in order_centroids[i][:top_terms]:
+
+                centroid_list.append(df.columns[centroid_index])
+
+            centroid_outer.append(centroid_list)
+            
+        centroid_df = pd.DataFrame(centroid_outer)
+        centroid_df = centroid_df.transpose()
+        centroid_df.columns = centroid_headers
+        print("Centroids: ")
+        print(centroid_df)
+        file_path = Path(self.out_path + f"Top_{top_terms}_centroids.csv")
+        dr.write_to_csv(path=file_path, data=centroid_df, encoding='utf-8', index=False, header=centroid_headers)
+
+
+
 
 
     def construct_df(self) -> pd.DataFrame:
@@ -155,7 +161,7 @@ class visualization:
 
 
     
-        df = dr.convert_to_df_and_csv(dr.TF_IDF_PATH, matrix, vector_names, False)  #  TODO: fix outputpath
+        df = dr.convert_to_df_and_csv(dr.TF_IDF_PATH, matrix, vector_names, False)  #  TODO: make construction of df flexible (only pos, only meta, only tf-idf)
         #print(df)
         #print(meta_features)
         print("df mit meta sorted right:")
@@ -178,14 +184,20 @@ class visualization:
 
     def cluster_scatterplot(self):
 
-        #  1) get data, construct df:
-        df, matrix, dracor_ids, vector_names = self.construct_df()
+
 
 
         #  2) cluster data using k-means:
 
         model = KMeans(n_clusters=self.clusters, init="k-means++", n_init=1, random_state=10).fit(df)  #  max_iter = 100
         order_centroids = model.cluster_centers_.argsort()[:, ::-1]  #  sort centroids for each cluster
+
+        try:
+            self.write_centroids(clusters=self.clusters, order_centroids=order_centroids, top_terms=self.top_terms, df=df)
+        except (FileNotFoundError, PermissionError, IndexError) as e:
+            print(e)
+            print("Error writing centroids.")
+
 
 
         # 3) dimension reduction feature vectors:
@@ -202,7 +214,7 @@ class visualization:
         kmean_indices = model.fit_predict(df)
         df['k_mean_cluster'] = kmean_indices
         df['dracor_id'] = dracor_ids
-        df = df.drop(vector_names, axis=1)  #  TODO: why drop vector names? drop all columns? how to drop
+        df = df.drop(vector_names, axis=1)  
         df = df.drop(dr.metadata_featurelist[1:], axis=1)  #  except first element (id), because it has been dropped earlier; 'id' can be removed from dr.metadate_feature_list if correctness of df has been confirmed
         df = df.drop(dracor_nlp.taglist, axis=1)
         print("df after clustering:")
@@ -251,15 +263,7 @@ class visualization:
 
         #  7) find contents of clusters, save them as csv
 
-        #  token-list and metadata for plays in cluster:
-        
-        try:
-            self.write_centroids(clusters=self.clusters, order_centroids=order_centroids, top_terms=self.top_terms, vector_names=vector_names)
-        except (FileNotFoundError, PermissionError, IndexError) as e:
-            print(e)
-            print("Error writing centroids.")
 
-        
         for cluster in range(self.clusters):
             cluster_content = df.query(f'k_mean_cluster=={cluster}')['dracor_id'].to_list()
 
@@ -269,11 +273,157 @@ class visualization:
                 meta_data_cluster.to_csv(out_path + f"/cluster {cluster}.csv")
 
 
+    def silhouette_plot(self, data: pd.DataFrame):
+
+
+
+        range_n_clusters = list(range(2, self.clusters+2))
+        for n_clusters in range_n_clusters:
+            # Create a subplot with 1 row and 2 columns
+            fig, (ax1, ax2) = plt.subplots(1, 2)
+            fig.set_size_inches(18, 7)
+
+            # The 1st subplot is the silhouette plot
+            # The silhouette coefficient can range from -1, 1 but in this example all
+            # lie within [-0.1, 1]
+            ax1.set_xlim([-0.1, 1])
+            # The (n_clusters+1)*10 is for inserting blank space between silhouette
+            # plots of individual clusters, to demarcate them clearly.
+            ax1.set_ylim([0, len(data) + (n_clusters + 1) * 10])  
+
+            # Initialize the clusterer with n_clusters value and a random generator
+            # seed of 10 for reproducibility.
+            clusterer = KMeans(n_clusters=n_clusters, init="k-means++", n_init=1, random_state=10)
+            cluster_labels = clusterer.fit_predict(data)  
+            #print(cluster_labels)
+
+
+            silhouette_avg = silhouette_score(data, cluster_labels)  
+            print(
+                "For n_clusters =",
+                n_clusters,
+                "The average silhouette_score is :",
+                silhouette_avg,
+            )
+
+            # Compute the silhouette scores for each sample
+            sample_silhouette_values = silhouette_samples(data, cluster_labels)  
+
+            y_lower = 10
+            for i in range(n_clusters):
+                # Aggregate the silhouette scores for samples belonging to
+                # cluster i, and sort them
+                ith_cluster_silhouette_values = sample_silhouette_values[cluster_labels == i]
+
+                ith_cluster_silhouette_values.sort()
+
+                size_cluster_i = ith_cluster_silhouette_values.shape[0]
+                y_upper = y_lower + size_cluster_i
+
+                color = cm.nipy_spectral(float(i) / n_clusters)
+                ax1.fill_betweenx(
+                    np.arange(y_lower, y_upper),
+                    0,
+                    ith_cluster_silhouette_values,
+                    facecolor=color,
+                    edgecolor=color,
+                    alpha=0.7,
+                )
+
+                # Label the silhouette plots with their cluster numbers at the middle
+                ax1.text(-0.05, y_lower + 0.5 * size_cluster_i, str(i))
+
+                # Compute the new y_lower for next plot
+                y_lower = y_upper + 10  # 10 for the 0 samples
+
+            ax1.set_title("The silhouette plot for the various clusters.")
+            ax1.set_xlabel("The silhouette coefficient values")
+            ax1.set_ylabel("Cluster label")
+
+            # The vertical line for average silhouette score of all the values
+            ax1.axvline(x=silhouette_avg, color="red", linestyle="--")
+
+            ax1.set_yticks([])  # Clear the yaxis labels / ticks
+            ax1.set_xticks([-0.1, 0, 0.2, 0.4, 0.6, 0.8, 1])
+
+            # 2nd Plot showing the actual clusters formed
+            colors = cm.nipy_spectral(cluster_labels.astype(float) / n_clusters)
+
+
+            pca = PCA(n_components=2)
+            scatter_plot_points = pca.fit_transform(data)
+            x_axis = [o[0] for o in scatter_plot_points]
+            y_axis = [o[1] for o in scatter_plot_points]
+
+            ax2.scatter(
+                x_axis, y_axis, marker=".", s=30, lw=0, alpha=0.7, c=colors, edgecolor="k"  #  @fabian x_axis, y_axis war urspürnglich so:  matrix[:, 0], matrix[:, 1]
+                                                                                            #  das ging aber leider nicht zu plotten, kam immer derselbe fehler; daher pca in
+                                                                                            #  zeile 103-106, so ging es dann; dafür ging das labeln der cluster nicht mehr;
+                                                                                            #  daher habe ich z.113-129, die das eigentlich machen, leider nich mehr;
+                                                                                            #  das ist der aktuelle stand :-)
+            )  #  TODO: understand; seems wrong
+
+            # # Labeling the clusters
+            # centers = clusterer.cluster_centers_
+            # # Draw white circles at cluster centers
+            # ax2.scatter(
+            #     centers[:, 0],
+            #     centers[:, 1],
+            #     marker="o",
+            #     c="white",
+            #     alpha=1,
+            #     s=200,
+            #     edgecolor="k",
+            # )
+
+            # for i, c in enumerate(centers):
+            #     ax2.scatter(c[0], c[1], marker="$%d$" % i, alpha=1, s=50, edgecolor="k")
+
+            ax2.set_title("The visualization of the clustered data.")
+            ax2.set_xlabel("Feature space for the 1st feature")
+            ax2.set_ylabel("Feature space for the 2nd feature")
+
+            plt.suptitle(
+                "Silhouette analysis for KMeans clustering on sample data with n_clusters = %d"
+                % n_clusters,
+                fontsize=14,
+                fontweight="bold",
+            )
+
+        plt.show()
+
+
+
+    def elbow_plot(self, data: pd.DataFrame, plotsize=(10,10)):
+
+    #  evaluating k
+    #  elbow plot: inertia = sum of squared distances of samples to their closest cluster center; decreases with number of clusters
+    #  ideally: low inertia, as few clusters as possible
+
+        cluster_range = list(range(2, self.clusters+2))
+        print(cluster_range)
+        inertia_list = []
+        for n in cluster_range:
+            k_means = KMeans(n_clusters=n, random_state=42)
+            k_means.fit(data)
+            inertia_list.append(k_means.inertia_)
+            
+        # plotting
+        plot = plt.figure(figsize=plotsize)
+        ax = plot.add_subplot(111)
+        sns.lineplot(y=inertia_list, x=cluster_range, ax=ax)
+        ax.set_xlabel("Cluster")
+        ax.set_ylabel("Inertia")
+        ax.set_xticks(cluster_range)
+        print("Hello")
+        #plot.show()
+        plot.savefig("elbow_plot_dracor.png")
+
 
 
 if __name__ == '__main__':
 
-    visualizer = visualization(
+    visualizer = Visualization(
                                 corpus = "ita",
                                 text = "spoken",
                                 vocab = True,
@@ -288,13 +438,20 @@ if __name__ == '__main__':
                                 label = 'firstAuthor',
                                 clusters = 10,
 
-                                do_silhouette_plot = False,
-                                do_elbow_plot = False,
-                                do_cluster_scatterplot = True
     )
 
+    #  1)  get data, construct df:
 
-    visualizer.cluster_scatterplot()
+    df, matrix, dracor_ids, vector_names = visualizer.construct_df()
+
+    #  2)  visualize it:
+
+    #visualizer.cluster_scatterplot()
+
+    #visualizer.silhouette_plot(data=df)
+
+    visualizer.elbow_plot(data=df)
+
 
 
 
