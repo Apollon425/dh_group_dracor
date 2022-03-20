@@ -1,4 +1,5 @@
 import spacy
+import copy
 
 taglist = ["ADJ","ADP","ADV","AUX","CONJ","CCONJ","DET","INTJ","NOUN","NUM","PART","PRON","PROPN","PUNCT","SCONJ","SYM","VERB","X","SPACE"]
 
@@ -30,8 +31,11 @@ class Preprocessor:
             for tag in taglist:
                 if tag not in pos.keys():
                     pos.update({tag:0})
+            pos_abs = copy.deepcopy(pos)
             if relative:                           # relative count of POS
-                for keytag in pos.keys():
-                    pos.update({keytag:(pos[keytag]/sum(pos.values()))})
+                for keytag in pos_abs.keys():
+                    pos.update({keytag:(pos[keytag]/sum(pos_abs.values()))})
             pos_tag_features.append(pos)
         return pos_tag_features
+        
+        
