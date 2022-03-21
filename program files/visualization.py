@@ -166,12 +166,12 @@ class Visualization:
                                                                                 #drama_stats = self.drama_stats)
 
 
-        df = dr.convert_to_df_and_csv(dr.TF_IDF_PATH, matrix, vector_names, False)
+        tf_idf_df = dr.convert_to_df_and_csv(dr.TF_IDF_PATH, matrix, vector_names, False)
         #print(df)
         #print(meta_features)
         #print("df mit meta sorted right:")
         meta_df = meta_features
-        df = pd.concat([df, meta_features], axis=1)
+        df = pd.concat([tf_idf_df, meta_features], axis=1)
         #print("dracor ids:")
         #print(dracor_ids)
         #print(pos)
@@ -181,7 +181,7 @@ class Visualization:
         df = df.drop(['id'], axis=1)
         print("final full df:")
         print(df)
-        return df, matrix, pos_df, dracor_ids, vector_names, meta_df
+        return df, tf_idf_df, pos_df, dracor_ids, vector_names, meta_df
 
 
     def print_cluster_content(self, df: pd.DataFrame, meta: pd.DataFrame):
@@ -413,7 +413,7 @@ if __name__ == '__main__':
 
     #  1)  get data, construct df:
 
-    df_all_features, matrix, pos_df, dracor_ids, vector_names, meta_df = visualizer.construct_df()
+    df_all_features, tf_idf_df, pos_df, dracor_ids, vector_names, meta_df = visualizer.construct_df()
 
     #  2)  visualize it and save it:
 
@@ -421,7 +421,7 @@ if __name__ == '__main__':
     if visualizer.feature_domain == "pos":
         df=pos_df
     elif visualizer.feature_domain == "tf-idf":
-        df=matrix
+        df=tf_idf_df
     elif visualizer.feature_domain == "meta":
         df=meta_df
     elif visualizer.feature_domain == "all_features":
