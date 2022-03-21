@@ -45,7 +45,7 @@ class Visualization:
                 self.remove_Stopwords = remove_Stopwords
                 #self.syntax = syntax
                 self.lemmatize = lemmatize
-                self.feature_domain = "all_features"
+                self.feature_domain = feature_domain
                 #self.drama_stats = drama_stats
 
                 self.top_centroids = top_centroids
@@ -60,11 +60,10 @@ class Visualization:
         path_exists = os.path.exists(self.out_path)
 
         if not path_exists:    
-            os.makedirs(self.out_path)
-            print("New plot saved.")
+            os.makedirs(Path(self.out_path))
+            print("New output folder created.")
         else:
-            print("Plot not saved, since one with the same parameters already exists.")
-            return ""
+            print("No new output folder created, since one with the same name already exists.")
 
     
 
@@ -172,8 +171,6 @@ class Visualization:
         #print(meta_features)
         #print("df mit meta sorted right:")
         meta_df = meta_features
-        print("meta df:")
-        print(meta_df)
         df = pd.concat([df, meta_features], axis=1)
         #print("dracor ids:")
         #print(dracor_ids)
@@ -247,28 +244,23 @@ class Visualization:
 
         plot = sns.relplot(data = df, x = 'x_axis', y = 'y_axis', hue = 'k_mean_cluster', palette = 'tab10', kind = 'scatter', height=15, aspect=1.5)
         if self.label is not None:
-            print("trying to label away...")
             ax = plot.axes[0, 0]
             for idx, row in df.iterrows():
                 x = row[0]
                 y = row[1]
                 label_point_row = row[3]
-                print("label point row:")
-                print(label_point_row)
+                #print("label point row:")
+                #print(label_point_row)
                 label_point = meta.loc[meta['id'] == f"{label_point_row}", f'{self.label}'].item()
-                print(f"label point {idx}:")
-                print(label_point)
+                #print(f"label point {idx}:")
+                #print(label_point)
                 label_point = label_point + ", " + str((meta.loc[meta['id'] == f"{label_point_row}", f'yearNormalized'].item()))
                 ax.text(x+25, y-10, label_point, horizontalalignment='left')
 
 
-
         #  5) save it:
         label_str = "_lab" if self.label is not None else ""
-        print("label issue...")
-        print(self.out_path)
-        plt.savefig(self.out_path + f"/cluster_plot{label_str}.png")
-
+        plt.savefig(Path(self.out_path + f"/cluster_plot{label_str}.png"))
 
 
         #  6) find contents of clusters, save them as csv
@@ -377,6 +369,7 @@ class Visualization:
 
 
 
+
     def elbow_plot(self, data: pd.DataFrame, plotsize=(10,10)):
 
     #  evaluating k
@@ -398,9 +391,8 @@ class Visualization:
         ax.set_xlabel("Cluster")
         ax.set_ylabel("Inertia")
         ax.set_xticks(cluster_range)
-        print("Hello")
         #plot.show()
-        plot.savefig(self.out_path + "elbow_plot_dracor.png")  
+        plot.savefig(Path(self.out_path + "/elbow_plot_dracor.png"))  
 
 
 
@@ -408,15 +400,15 @@ if __name__ == '__main__':
 
     visualizer = Visualization(
 
-                                corpus = "ita",
+                                corpus = "ger",
                                 text = "spoken",
-                                min_df = 15,
+                                min_df = 20,
                                 remove_Stopwords = False,
                                 lemmatize = True,
-                                top_centroids = 5,
-                                label = 'firstAuthor',
-                                clusters = 10,
-                                feature_domain = "all_features"
+                                top_centroids = 20,
+                                #label = 'firstAuthor',
+                                clusters = 15,
+                                feature_domain = "all_features"   #  "all_features" or "pos" or "tf-idf" or "meta"
     )
 
     #  1)  get data, construct df:
@@ -439,28 +431,10 @@ if __name__ == '__main__':
 
 
     visualizer.create_output_folder()
-    visualizer.cluster_scatterplot(df=df, dracor_ids=dracor_ids, vector_names=vector_names) 
 
+
+
+    visualizer.cluster_scatterplot(df=df, dracor_ids=dracor_ids, vector_names=vector_names) 
     #visualizer.elbow_plot(data=df)
     #visualizer.silhouette_plot(data=df)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    #  probably deletable:
-
-    #  draw_plot(data=read_data_csv(dr.GER_METADATA_PATH), column="averageClustering", plot_type="scatter", annotate=False, first_year=1850)
 

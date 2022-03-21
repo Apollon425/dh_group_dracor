@@ -1,0 +1,21 @@
+Cluster 0,Cluster 1,Cluster 2,Cluster 3,Cluster 4,Cluster 5,Cluster 6,Cluster 7,Cluster 8,Cluster 9,Cluster 10,Cluster 11,Cluster 12,Cluster 13,Cluster 14
+wordCountText,wordCountText,wordCountText,wordCountText,wordCountText,wordCountText,wordCountText,wordCountText,wordCountText,wordCountText,wordCountText,wordCountText,wordCountText,wordCountText,wordCountText
+wordCountSp,wordCountSp,wordCountSp,wordCountSp,wordCountSp,wordCountSp,wordCountSp,wordCountSp,yearNormalized,wordCountSp,wordCountSp,wordCountSp,wordCountSp,wordCountSp,wordCountSp
+wordCountStage,wordCountStage,yearNormalized,wordCountStage,wordCountStage,ich,yearNormalized,wordCountStage,wordCountSp,wordCountStage,wordCountStage,der,yearNormalized,wordCountStage,yearNormalized
+yearNormalized,der,wordCountStage,yearNormalized,ich,der,wordCountStage,ich,wordCountStage,yearNormalized,yearNormalized,wordCountStage,wordCountStage,ich,wordCountStage
+ich,ich,ich,ich,der,wordCountStage,ich,der,der,ich,ich,ich,ich,yearNormalized,ich
+der,yearNormalized,der,der,sich,sich,der,yearNormalized,ich,der,der,sich,der,der,der
+sich,sich,sich,sich,yearNormalized,yearNormalized,sich,sich,sich,sich,sich,yearNormalized,sich,sich,sich
+sein,sein,sein,sein,und,sein,sein,mein,sein,sein,sein,mein,sein,sein,und
+und,und,und,und,mein,und,mein,sein,und,mein,mein,und,und,mein,sein
+mein,mein,mein,mein,du,mein,und,und,mein,und,und,sein,mein,haben,mein
+nicht,nicht,nicht,nicht,sein,nicht,nicht,nicht,dass,nicht,nicht,in,nicht,nicht,nicht
+du,einen,du,du,haben,so,du,zu,nicht,zu,du,nicht,du,und,du
+einen,in,einen,zu,nicht,zu,zu,in,du,du,zu,du,einen,du,zu
+so,zu,zu,haben,in,in,einen,so,so,in,einen,zu,zu,in,einen
+zu,du,so,so,dies,einen,so,du,einen,haben,so,einen,haben,so,so
+haben,haben,in,einen,zu,meinen,in,wie,in,einen,haben,mit,so,noch,in
+in,so,haben,in,noch,wie,haben,einen,zu,so,in,so,in,se,haben
+was,werden,wie,was,so,haben,was,mit,haben,was,was,wie,was,zu,wie
+meinen,wie,was,werden,einen,daß,wie,haben,werden,mit,mit,auf,meinen,det,was
+wie,mit,meinen,daß,daß,werden,meinen,was,was,wie,werden,dies,mit,wie,mit
