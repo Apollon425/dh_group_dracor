@@ -29,50 +29,57 @@ import seaborn as sns
 
 class Visualization:
 
-    OUTPUT_PATH_BASE = 'visualization_output/clustering'
+    OUTPUT_PATH_BASE = 'visualization_output/clustering/'
     out_path = ""
 
 
 
-    def __init__(self, corpus: str, text: str, vocab: bool, min_df: int, remove_Stopwords: bool, syntax: bool, lemmatize: bool, get_ids: bool, drama_stats: bool,
+    def __init__(self, corpus: str, text: str, min_df: int, remove_Stopwords: bool, lemmatize: bool,
 
-                top_terms: int, label: str, clusters: int): 
+                top_centroids: int, label: str, clusters: int, feature_domain: str): 
 
                 self.corpus = corpus
                 self.text = text
-                self.vocab = vocab
+                #self.vocab = vocab
                 self.min_df = min_df
                 self.remove_Stopwords = remove_Stopwords
-                self.syntax = syntax
+                #self.syntax = syntax
                 self.lemmatize = lemmatize
-                self.get_ids = get_ids
-                self.drama_stats = drama_stats
+                self.feature_domain = "all_features"
+                #self.drama_stats = drama_stats
 
-                self.top_terms = top_terms
+                self.top_centroids = top_centroids
                 self.label = label
                 self.clusters = clusters
-
-
-                # self.do_silhouette_plot = do_silhouette_plot
-                # self.do_elbow_plot = do_elbow_plot
-                # self.do_cluster_scatterplot = do_cluster_scatterplot
+                self.out_path = self.define_output_path()
 
 
 
+    def create_output_folder(self):
 
-    def create_output_folder(self, output_folder: str):
-
-        outputpath = self.OUTPUT_PATH_BASE + output_folder
-        path_exists = os.path.exists(outputpath)
+        path_exists = os.path.exists(self.out_path)
 
         if not path_exists:    
-            os.makedirs(outputpath)
+            os.makedirs(self.out_path)
             print("New plot saved.")
-            return outputpath
         else:
             print("Plot not saved, since one with the same parameters already exists.")
             return ""
-        
+
+    
+
+    def define_output_path(self):
+
+        #vocab_str = "tf_idf" if vocab is True else ""
+        #syntax_str = "pos" if self.syntax is True else ""
+        #lemma_str = "lemma" if lemmatize is True else ""
+        #label_str = "yes" if label is not None else "no"
+        stopword_str = "noStop" if self.remove_Stopwords is True else ""
+
+        out_string = self.OUTPUT_PATH_BASE + f"{self.feature_domain}" + f'/{self.corpus}/{self.text}_{stopword_str}_min_df={str(self.min_df)}_cluster={str(self.clusters)}'
+        return out_string
+
+
 
     def set_time_frame(self, first_year, last_year, corpus) -> tuple:
 
@@ -117,7 +124,10 @@ class Visualization:
         plt.show()
 
 
-    def write_centroids(self, clusters, order_centroids, top_terms, df: pd.DataFrame):
+
+
+
+    def write_centroids(self, clusters, order_centroids, top_centroids, df: pd.DataFrame):
 
 
         centroid_outer = []  
@@ -128,7 +138,7 @@ class Visualization:
             centroid_list = []
             centroid_headers.append(f"Cluster {i}")
 
-            for centroid_index in order_centroids[i][:top_terms]:
+            for centroid_index in order_centroids[i][:top_centroids]:
 
                 centroid_list.append(df.columns[centroid_index])
 
@@ -139,71 +149,77 @@ class Visualization:
         centroid_df.columns = centroid_headers
         print("Centroids: ")
         print(centroid_df)
-        file_path = Path(self.out_path + f"Top_{top_terms}_centroids.csv")
+        file_path = Path(self.out_path + f"/Top_{top_centroids}_centroids.csv")
         dr.write_to_csv(path=file_path, data=centroid_df, encoding='utf-8', index=False, header=centroid_headers)
-
-
 
 
 
     def construct_df(self) -> pd.DataFrame:
             
 
-        pos, matrix, dracor_ids, vector_names, meta_features = dr.get_features(corpus=self.corpus,
-                                                                                text=self.text,
-                                                                                remove_stopwords=self.remove_Stopwords, 
-                                                                                vocab=self.vocab, 
-                                                                                min_df=self.min_df, 
-                                                                                syntax=self.syntax, 
-                                                                                lemmatize=self.lemmatize,
-                                                                                drama_stats=self.drama_stats, 
-                                                                                get_ids=self.get_ids)
+        pos, matrix, dracor_ids, vector_names, meta_features = dr.get_features(corpus = self.corpus,
+                                                                                text = self.text,
+                                                                                remove_stopwords = self.remove_Stopwords, 
+                                                                                #vocab = self.vocab, 
+                                                                                min_df= self.min_df, 
+                                                                                #syntax= self.syntax, 
+                                                                                lemmatize = self.lemmatize)
+                                                                                #drama_stats = self.drama_stats)
 
 
-    
-        df = dr.convert_to_df_and_csv(dr.TF_IDF_PATH, matrix, vector_names, False)  #  TODO: make construction of df flexible (only pos, only meta, only tf-idf)
+        df = dr.convert_to_df_and_csv(dr.TF_IDF_PATH, matrix, vector_names, False)
         #print(df)
         #print(meta_features)
         #print("df mit meta sorted right:")
-        #df = pd.concat([df, meta_features], axis=1)
+        meta_df = meta_features
+        print("meta df:")
+        print(meta_df)
+        df = pd.concat([df, meta_features], axis=1)
         #print("dracor ids:")
         #print(dracor_ids)
         #print(pos)
-        key_list = list(pos[0].keys())
-        #print("key list:")
-        #print(key_list)
         pos_df = dr.dict_to_df(pos)
         # print("pos_df")
         df = pd.concat([df, pos_df], axis=1)
         df = df.drop(['id'], axis=1)
-        print("final df:")
+        print("final full df:")
         print(df)
-        return df, matrix, dracor_ids, vector_names
+        return df, matrix, pos_df, dracor_ids, vector_names, meta_df
+
+
+    def print_cluster_content(self, df: pd.DataFrame, meta: pd.DataFrame):
+
+    
+        for cluster in range(self.clusters):
+            cluster_content = df.query(f'k_mean_cluster=={cluster}')['dracor_id'].to_list()
+
+            meta_data_cluster = meta.loc[meta['id'].isin(cluster_content)]
+            print(f"\n Metadata for Cluster {cluster}: \n\n {meta_data_cluster} \n ------------------- \n")
+            meta_data_cluster.to_csv(self.out_path + f"/cluster {cluster}.csv")    
 
 
 
     def cluster_scatterplot(self, df: pd.DataFrame, dracor_ids, vector_names):
 
-
-        #  2) cluster data using k-means:
+        #  1) cluster data using k-means:
 
         model = KMeans(n_clusters=self.clusters, init="k-means++", n_init=1, random_state=10).fit(df)  #  max_iter = 100
         order_centroids = model.cluster_centers_.argsort()[:, ::-1]  #  sort centroids for each cluster
 
         try:
-            self.write_centroids(clusters=self.clusters, order_centroids=order_centroids, top_terms=self.top_terms, df=df)
+            self.write_centroids(clusters=self.clusters, order_centroids=order_centroids, top_centroids=self.top_centroids, df=df)
         except (FileNotFoundError, PermissionError, IndexError) as e:
             print(e)
             print("Error writing centroids.")
 
 
 
-        # 3) dimension reduction feature vectors:
+        #  2) dimension reduction feature vectors:
 
         pca = PCA(n_components=2)
         scatter_plot_points = pca.fit_transform(df)
 
-        #  4) build new df for more convenient plotting:
+        #  3) build new df for more convenient plotting:
 
         x_axis = [o[0] for o in scatter_plot_points]
         y_axis = [o[1] for o in scatter_plot_points]
@@ -212,14 +228,15 @@ class Visualization:
         kmean_indices = model.fit_predict(df)
         df['k_mean_cluster'] = kmean_indices
         df['dracor_id'] = dracor_ids
-        df = df.drop(vector_names, axis=1)  
-        df = df.drop(dr.metadata_featurelist[1:], axis=1)  #  except first element (id), because it has been dropped earlier; 'id' can be removed from dr.metadata_feature_list if correctness of df has been confirmed
-        df = df.drop(dracor_nlp.taglist, axis=1)
-        #print("df after clustering:")
-        #print(df)
+        df.drop(df.filter(vector_names), inplace=True, axis=1)
+        df.drop(df.filter(dr.metadata_featurelist[1:]), inplace=True, axis=1)  #  except first element (id), because it has been dropped earlier; 'id' can be removed from dr.metadata_feature_list if correctness of df has been confirmed
+        df.drop(df.filter(dracor_nlp.taglist), inplace=True, axis=1)
+
+        print("df after filter applied:")
+        print(df)
 
 
-        #  5) plot that df:
+        #  4) plot that df:
 
         if self.corpus == "ger":
             meta = dr.read_data_csv(dr.GER_METADATA_PATH)
@@ -230,49 +247,36 @@ class Visualization:
 
         plot = sns.relplot(data = df, x = 'x_axis', y = 'y_axis', hue = 'k_mean_cluster', palette = 'tab10', kind = 'scatter', height=15, aspect=1.5)
         if self.label is not None:
+            print("trying to label away...")
             ax = plot.axes[0, 0]
             for idx, row in df.iterrows():
                 x = row[0]
                 y = row[1]
                 label_point_row = row[3]
-                #print("label point row:")
-                #print(label_point_row)
+                print("label point row:")
+                print(label_point_row)
                 label_point = meta.loc[meta['id'] == f"{label_point_row}", f'{self.label}'].item()
-                #print(f"label point {idx}:")
-                #print(label_point)
+                print(f"label point {idx}:")
+                print(label_point)
                 label_point = label_point + ", " + str((meta.loc[meta['id'] == f"{label_point_row}", f'yearNormalized'].item()))
                 ax.text(x+25, y-10, label_point, horizontalalignment='left')
 
 
-        #  6) save it:
 
-        #vocab_str = "tf_idf" if vocab is True else ""
-        syntax_str = "pos" if self.syntax is True else ""
-        #lemma_str = "lemma" if lemmatize is True else ""
-        #label_str = "yes" if label is not None else "no"
-        stopword_str = "noStop" if self.remove_Stopwords is True else ""
-
-
-        out_string = f'/{self.text}_{stopword_str}_min_df={str(self.min_df)}_{syntax_str}_cluster={str(self.clusters)}'   
-        out_path = self.create_output_folder(out_string)
-        if out_path != "":
-            plt.savefig(out_path + "/cluster_plot.png")
+        #  5) save it:
+        label_str = "_lab" if self.label is not None else ""
+        print("label issue...")
+        print(self.out_path)
+        plt.savefig(self.out_path + f"/cluster_plot{label_str}.png")
 
 
-        #  7) find contents of clusters, save them as csv
 
+        #  6) find contents of clusters, save them as csv
 
-        for cluster in range(self.clusters):
-            cluster_content = df.query(f'k_mean_cluster=={cluster}')['dracor_id'].to_list()
-
-            meta_data_cluster = meta.loc[meta['id'].isin(cluster_content)]
-            print(f"\n Metadata for Cluster {cluster}: \n\n {meta_data_cluster} \n ------------------- \n")
-            if out_path != "":
-                meta_data_cluster.to_csv(out_path + f"/cluster {cluster}.csv")
+        self.print_cluster_content(df=df, meta=meta)
 
 
     def silhouette_plot(self, data: pd.DataFrame):
-
 
 
         range_n_clusters = list(range(2, self.clusters+2))
@@ -354,28 +358,9 @@ class Visualization:
             y_axis = [o[1] for o in scatter_plot_points]
 
             ax2.scatter(
-                x_axis, y_axis, marker=".", s=30, lw=0, alpha=0.7, c=colors, edgecolor="k"  #  @fabian x_axis, y_axis war urspürnglich so:  matrix[:, 0], matrix[:, 1]
-                                                                                            #  das ging aber leider nicht zu plotten, kam immer derselbe fehler; daher pca in
-                                                                                            #  zeile 103-106, so ging es dann; dafür ging das labeln der cluster nicht mehr;
-                                                                                            #  daher habe ich z.113-129, die das eigentlich machen, leider nich mehr;
-                                                                                            #  das ist der aktuelle stand :-)
-            )  #  TODO: understand; seems wrong
-
-            # # Labeling the clusters
-            # centers = clusterer.cluster_centers_
-            # # Draw white circles at cluster centers
-            # ax2.scatter(
-            #     centers[:, 0],
-            #     centers[:, 1],
-            #     marker="o",
-            #     c="white",
-            #     alpha=1,
-            #     s=200,
-            #     edgecolor="k",
-            # )
-
-            # for i, c in enumerate(centers):
-            #     ax2.scatter(c[0], c[1], marker="$%d$" % i, alpha=1, s=50, edgecolor="k")
+                x_axis, y_axis, marker=".", s=30, lw=0, alpha=0.7, c=colors, edgecolor="k"
+                                                                                            
+            )
 
             ax2.set_title("The visualization of the clustered data.")
             ax2.set_xlabel("Feature space for the 1st feature")
@@ -415,40 +400,54 @@ class Visualization:
         ax.set_xticks(cluster_range)
         print("Hello")
         #plot.show()
-        plot.savefig("elbow_plot_dracor.png")
+        plot.savefig(self.out_path + "elbow_plot_dracor.png")  
 
 
 
 if __name__ == '__main__':
 
     visualizer = Visualization(
+
                                 corpus = "ita",
                                 text = "spoken",
-                                vocab = True,
                                 min_df = 15,
                                 remove_Stopwords = False,
-                                syntax = True,
                                 lemmatize = True,
-                                get_ids = True,
-                                drama_stats = True,
-
-                                top_terms = 20,
+                                top_centroids = 5,
                                 label = 'firstAuthor',
                                 clusters = 10,
-
+                                feature_domain = "all_features"
     )
 
     #  1)  get data, construct df:
 
-    df, matrix, dracor_ids, vector_names = visualizer.construct_df()
+    df_all_features, matrix, pos_df, dracor_ids, vector_names, meta_df = visualizer.construct_df()
 
-    #  2)  visualize it:
+    #  2)  visualize it and save it:
 
-    visualizer.cluster_scatterplot(df=df, dracor_ids=dracor_ids, vector_names=vector_names)
 
-    #visualizer.silhouette_plot(data=df)
+    if visualizer.feature_domain == "pos":
+        df=pos_df
+    elif visualizer.feature_domain == "tf-idf":
+        df=matrix
+    elif visualizer.feature_domain == "meta":
+        df=meta_df
+    elif visualizer.feature_domain == "all_features":
+        df=df_all_features
+    else:
+        sys.exit("Invalid feature domain.")
+
+
+    visualizer.create_output_folder()
+    visualizer.cluster_scatterplot(df=df, dracor_ids=dracor_ids, vector_names=vector_names) 
 
     #visualizer.elbow_plot(data=df)
+    #visualizer.silhouette_plot(data=df)
+
+
+
+
+
 
 
 

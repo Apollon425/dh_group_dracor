@@ -61,8 +61,8 @@ def get_data(corpus, text_mode):
         else:
             texts.append(get_dracor(corpus, name, text_mode)) # Text herunterladen
             ids.append(ident)                                 # id hinzufügen
-    print("ids:")
-    print(ids)
+    #print("ids:")
+    #print(ids)
     return texts, ids                                         # Texte + ids als Ergebnis
 
 def get_metadata(corpus, ids: list):
@@ -113,7 +113,7 @@ def get_features(corpus="ita",
         remove_stopwords=False, 
         lemmatize=True, 
         drama_stats=True, 
-        get_ids=False,
+        get_ids=True,
         min_df=10
 
     ):
