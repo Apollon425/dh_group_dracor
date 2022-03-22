@@ -1,0 +1,21 @@
+Cluster 0,Cluster 1,Cluster 2,Cluster 3,Cluster 4
+wordCountText,wordCountText,wordCountText,wordCountText,wordCountText
+wordCountSp,wordCountSp,wordCountSp,wordCountSp,wordCountSp
+wordCountStage,wordCountStage,yearNormalized,yearNormalized,wordCountStage
+yearNormalized,der,wordCountStage,wordCountStage,ich
+ich,ich,ich,ich,yearNormalized
+der,sich,der,der,der
+sich,yearNormalized,sich,sich,sich
+sein,und,sein,sein,sein
+und,mein,und,und,und
+mein,sein,mein,mein,mein
+nicht,nicht,nicht,nicht,nicht
+du,in,du,du,zu
+zu,zu,zu,einen,du
+einen,du,einen,zu,in
+haben,so,so,so,haben
+so,einen,in,haben,einen
+in,haben,haben,in,so
+was,wie,wie,was,was
+mit,mit,was,wie,mit
+wie,von,mit,meinen,wie

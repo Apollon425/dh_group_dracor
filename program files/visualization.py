@@ -226,11 +226,12 @@ class Visualization:
         df['k_mean_cluster'] = kmean_indices
         df['dracor_id'] = dracor_ids
         df.drop(df.filter(vector_names), inplace=True, axis=1)
-        df.drop(df.filter(dr.metadata_featurelist[1:]), inplace=True, axis=1)  #  except first element (id), because it has been dropped earlier; 'id' can be removed from dr.metadata_feature_list if correctness of df has been confirmed
+        df.drop(df.filter(dr.metadata_featurelist), inplace=True, axis=1)  #  except first element (id), because it has been dropped earlier; 'id' can be removed from dr.metadata_feature_list if correctness of df has been confirmed
         df.drop(df.filter(dracor_nlp.taglist), inplace=True, axis=1)
 
         print("df after filter applied:")
         print(df)
+        sys.exit()
 
 
         #  4) plot that df:
@@ -249,11 +250,11 @@ class Visualization:
                 x = row[0]
                 y = row[1]
                 label_point_row = row[3]
-                #print("label point row:")
-                #print(label_point_row)
+                # print("label point row:")
+                # print(label_point_row)
                 label_point = meta.loc[meta['id'] == f"{label_point_row}", f'{self.label}'].item()
-                #print(f"label point {idx}:")
-                #print(label_point)
+                # print(f"label point {idx}:")
+                # print(label_point)
                 label_point = label_point + ", " + str((meta.loc[meta['id'] == f"{label_point_row}", f'yearNormalized'].item()))
                 ax.text(x+25, y-10, label_point, horizontalalignment='left')
 
@@ -401,14 +402,14 @@ if __name__ == '__main__':
 
     visualizer = Visualization(
 
-                                corpus = "ita",
+                                corpus = "ger",
                                 text = "spoken",
                                 min_df = 20,
                                 remove_Stopwords = False,
                                 lemmatize = True,
                                 top_centroids = 20,
                                 label = 'firstAuthor',  #  set to None if no label on the datapoints in the cluster plot is desired
-                                clusters = 15,
+                                clusters = 5,
                                 feature_domain = "all_features"   #  "all_features" or "pos" or "tf-idf" or "meta"
     )
 
@@ -436,6 +437,6 @@ if __name__ == '__main__':
 
 
     visualizer.cluster_scatterplot(df=df, dracor_ids=dracor_ids, vector_names=vector_names) 
-    visualizer.elbow_plot(data=df)
-    visualizer.silhouette_plot(data=df)
+    #visualizer.elbow_plot(data=df)
+    #visualizer.silhouette_plot(data=df)
 
