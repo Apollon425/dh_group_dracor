@@ -229,8 +229,8 @@ class Visualization:
         df.drop(df.filter(dr.metadata_featurelist[1:]), inplace=True, axis=1)  #  except first element (id), because it has been dropped earlier; 'id' can be removed from dr.metadata_feature_list if correctness of df has been confirmed
         df.drop(df.filter(dracor_nlp.taglist), inplace=True, axis=1)
 
-        print("df after filter applied:")
-        print(df)
+        #print("df after filter applied:")
+        #print(df)
 
 
         #  4) plot that df:
