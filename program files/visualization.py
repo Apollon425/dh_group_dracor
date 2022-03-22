@@ -406,7 +406,7 @@ if __name__ == '__main__':
                                 remove_Stopwords = False,
                                 lemmatize = True,
                                 top_centroids = 20,
-                                #label = 'firstAuthor',
+                                label = 'firstAuthor',  #  set to None if no label on the datapoints in the cluster plot is desired
                                 clusters = 15,
                                 feature_domain = "all_features"   #  "all_features" or "pos" or "tf-idf" or "meta"
     )
