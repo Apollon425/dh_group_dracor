@@ -375,12 +375,10 @@ class Visualization:
     #  evaluating k
     #  elbow plot: inertia = sum of squared distances of samples to their closest cluster center; decreases with number of clusters
     #  ideally: low inertia, as few clusters as possible
-        print("df elbow")
-        print(data)
+
         data.drop(data.filter(['dracor_id']), inplace=True, axis=1)
 
         cluster_range = list(range(2, self.clusters+2))
-        print(cluster_range)
         inertia_list = []
         for n in cluster_range:
             k_means = KMeans(n_clusters=n, random_state=42)
