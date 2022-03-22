@@ -178,7 +178,7 @@ class Visualization:
         pos_df = dr.dict_to_df(pos)
         # print("pos_df")
         df = pd.concat([df, pos_df], axis=1)
-        df = df.drop(['id'], axis=1)
+        #df = df.drop(['id'], axis=1)
         print("final full df:")
         print(df)
         return df, tf_idf_df, pos_df, dracor_ids, vector_names, meta_df
@@ -229,8 +229,8 @@ class Visualization:
         df.drop(df.filter(dr.metadata_featurelist[1:]), inplace=True, axis=1)  #  except first element (id), because it has been dropped earlier; 'id' can be removed from dr.metadata_feature_list if correctness of df has been confirmed
         df.drop(df.filter(dracor_nlp.taglist), inplace=True, axis=1)
 
-        print("df after filter applied:")
-        print(df)
+        #print("df after filter applied:")
+        #print(df)
 
 
         #  4) plot that df:
@@ -400,14 +400,14 @@ if __name__ == '__main__':
 
     visualizer = Visualization(
 
-                                corpus = "ger",
+                                corpus = "ita",
                                 text = "spoken",
                                 min_df = 20,
                                 remove_Stopwords = False,
                                 lemmatize = True,
                                 top_centroids = 20,
-                                #label = 'firstAuthor',
-                                clusters = 15,
+                                label = None,
+                                clusters = 10,
                                 feature_domain = "all_features"   #  "all_features" or "pos" or "tf-idf" or "meta"
     )
 
