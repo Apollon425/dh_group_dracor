@@ -179,6 +179,10 @@ class Visualization:
         # print("pos_df")
         df = pd.concat([df, pos_df], axis=1)
         #df = df.drop(['id'], axis=1)
+        df.drop(df.filter(['id']), inplace=True, axis=1)
+
+
+        
         print("final full df:")
         print(df)
         return df, tf_idf_df, pos_df, dracor_ids, vector_names, meta_df
@@ -434,7 +438,7 @@ if __name__ == '__main__':
 
 
 
-    visualizer.cluster_scatterplot(df=df, dracor_ids=dracor_ids, vector_names=vector_names) 
-    #visualizer.elbow_plot(data=df)
+    #visualizer.cluster_scatterplot(df=df, dracor_ids=dracor_ids, vector_names=vector_names) 
+    visualizer.elbow_plot(data=df)
     #visualizer.silhouette_plot(data=df)
 
