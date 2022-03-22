@@ -178,7 +178,7 @@ class Visualization:
         pos_df = dr.dict_to_df(pos)
         # print("pos_df")
         df = pd.concat([df, pos_df], axis=1)
-        df = df.drop(['id'], axis=1)
+        #df = df.drop(['id'], axis=1)
         print("final full df:")
         print(df)
         return df, tf_idf_df, pos_df, dracor_ids, vector_names, meta_df
