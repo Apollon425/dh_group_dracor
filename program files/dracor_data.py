@@ -19,7 +19,7 @@ TF_IDF_PATH = Path("data_files/ita_tfidf_min10.csv")
 OUTLIERLIST = ["ger000480"]  #  Karl Kraus - Die letzten Tage der Menschheit
 
 
-metadata_featurelist = ["yearNormalized", "numOfSpeakers", "numOfSpeakersFemale", "numOfSpeakersMale", "wordCountText", "wordCountSp", "wordCountStage"]
+metadata_featurelist = ["id", "yearNormalized", "numOfSpeakers", "numOfSpeakersFemale", "numOfSpeakersMale", "wordCountText", "wordCountSp", "wordCountStage"]
 
 
 dracor_api = "https://dracor.org/api"                    # API-Endpunkt für DraCor

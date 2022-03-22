@@ -178,11 +178,7 @@ class Visualization:
         pos_df = dr.dict_to_df(pos)
         # print("pos_df")
         df = pd.concat([df, pos_df], axis=1)
-        #df = df.drop(['id'], axis=1)
-        df.drop(df.filter(['id']), inplace=True, axis=1)
-
-
-        
+        df = df.drop(['id'], axis=1)
         print("final full df:")
         print(df)
         return df, tf_idf_df, pos_df, dracor_ids, vector_names, meta_df
@@ -233,8 +229,8 @@ class Visualization:
         df.drop(df.filter(dr.metadata_featurelist[1:]), inplace=True, axis=1)  #  except first element (id), because it has been dropped earlier; 'id' can be removed from dr.metadata_feature_list if correctness of df has been confirmed
         df.drop(df.filter(dracor_nlp.taglist), inplace=True, axis=1)
 
-        #print("df after filter applied:")
-        #print(df)
+        print("df after filter applied:")
+        print(df)
 
 
         #  4) plot that df:
@@ -379,6 +375,9 @@ class Visualization:
     #  evaluating k
     #  elbow plot: inertia = sum of squared distances of samples to their closest cluster center; decreases with number of clusters
     #  ideally: low inertia, as few clusters as possible
+        print("df elbow")
+        print(data)
+        data.drop(data.filter(['dracor_id']), inplace=True, axis=1)
 
         cluster_range = list(range(2, self.clusters+2))
         print(cluster_range)
@@ -438,7 +437,7 @@ if __name__ == '__main__':
 
 
 
-    #visualizer.cluster_scatterplot(df=df, dracor_ids=dracor_ids, vector_names=vector_names) 
+    visualizer.cluster_scatterplot(df=df, dracor_ids=dracor_ids, vector_names=vector_names) 
     visualizer.elbow_plot(data=df)
-    #visualizer.silhouette_plot(data=df)
+    visualizer.silhouette_plot(data=df)
 
