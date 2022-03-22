@@ -231,7 +231,6 @@ class Visualization:
 
         print("df after filter applied:")
         print(df)
-        sys.exit()
 
 
         #  4) plot that df:
@@ -247,9 +246,9 @@ class Visualization:
         if self.label is not None:
             ax = plot.axes[0, 0]
             for idx, row in df.iterrows():
-                x = row[0]
-                y = row[1]
-                label_point_row = row[3]
+                x = row['x_axis']
+                y = row['y_axis']
+                label_point_row = row['dracor_id']
                 # print("label point row:")
                 # print(label_point_row)
                 label_point = meta.loc[meta['id'] == f"{label_point_row}", f'{self.label}'].item()
