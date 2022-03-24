@@ -188,7 +188,7 @@ class Visualization:
 
     
         for cluster in range(self.clusters):
-            cluster_content = df.query(f'k_mean_cluster=={cluster}')['dracor_id'].to_list()
+            cluster_content = df.query(f'kmean_indices=={cluster}')['dracor_ids'].to_list()
 
             meta_data_cluster = meta.loc[meta['id'].isin(cluster_content)]
             print(f"\n Metadata for Cluster {cluster}: \n\n {meta_data_cluster} \n ------------------- \n")
@@ -197,6 +197,7 @@ class Visualization:
 
 
     def cluster_scatterplot(self, df: pd.DataFrame, dracor_ids, vector_names):
+
 
         #  1) cluster data using k-means:
 
@@ -209,7 +210,7 @@ class Visualization:
             print(e)
             print("Error writing centroids.")
 
-
+        print("df before cluster scatter")
 
         #  2) dimension reduction feature vectors:
 
@@ -220,17 +221,12 @@ class Visualization:
 
         x_axis = [o[0] for o in scatter_plot_points]
         y_axis = [o[1] for o in scatter_plot_points]
-        df['x_axis'] = x_axis
-        df['y_axis'] = y_axis
         kmean_indices = model.fit_predict(df)
-        df['k_mean_cluster'] = kmean_indices
-        df['dracor_id'] = dracor_ids
-        df.drop(df.filter(vector_names), inplace=True, axis=1)
-        df.drop(df.filter(dr.metadata_featurelist), inplace=True, axis=1)  #  except first element (id), because it has been dropped earlier; 'id' can be removed from dr.metadata_feature_list if correctness of df has been confirmed
-        df.drop(df.filter(dracor_nlp.taglist), inplace=True, axis=1)
 
-        print("df after filter applied:")
-        print(df)
+        plot_df = pd.DataFrame(list(zip(x_axis, y_axis, kmean_indices, dracor_ids)), columns=["x_axis", "y_axis", "kmean_indices", "dracor_ids"])
+
+        print("plot df:")
+        print(plot_df)
 
 
         #  4) plot that df:
@@ -242,20 +238,17 @@ class Visualization:
         else:
             sys.exit("Corpus name invalid. Only \"ger\" and \"ita\" are supported.")
 
-        plot = sns.relplot(data = df, x = 'x_axis', y = 'y_axis', hue = 'k_mean_cluster', palette = 'tab10', kind = 'scatter', height=15, aspect=1.5)
+        plot = sns.relplot(data = plot_df, x = 'x_axis', y = 'y_axis', hue = 'kmean_indices', palette = 'tab10', kind = 'scatter', height=15, aspect=1.5)
         if self.label is not None:
             ax = plot.axes[0, 0]
-            for idx, row in df.iterrows():
+            for idx, row in plot_df.iterrows():  #  iterate over rows of df, get id and then look up a label to mark the data point in the plot with it
                 x = row['x_axis']
                 y = row['y_axis']
-                label_point_row = row['dracor_id']
-                # print("label point row:")
-                # print(label_point_row)
-                label_point = meta.loc[meta['id'] == f"{label_point_row}", f'{self.label}'].item()
-                # print(f"label point {idx}:")
-                # print(label_point)
-                label_point = label_point + ", " + str((meta.loc[meta['id'] == f"{label_point_row}", f'yearNormalized'].item()))
-                ax.text(x+25, y-10, label_point, horizontalalignment='left')
+                dracor_id_of_this_row = row['dracor_ids']
+                label_name = meta.loc[meta['id'] == f"{dracor_id_of_this_row}", f'{self.label}'].item()  #  get label (for ex. 'firstAuthor' depending on value of self.label)
+                label_name = label_name + ", " + str((meta.loc[meta['id'] == f"{dracor_id_of_this_row}", f'yearNormalized'].item()))  #  add yearNormalized to label name (firstAuthor, year)
+                ax.text(x+25, y-10, label_name, horizontalalignment='left')
+
 
 
         #  5) save it:
@@ -265,11 +258,9 @@ class Visualization:
 
         #  6) find contents of clusters, save them as csv
 
-        self.print_cluster_content(df=df, meta=meta)
-
+        self.print_cluster_content(df=plot_df, meta=meta)
 
     def silhouette_plot(self, data: pd.DataFrame):
-
 
         range_n_clusters = list(range(2, self.clusters+2))
         for n_clusters in range_n_clusters:
@@ -278,18 +269,16 @@ class Visualization:
             fig.set_size_inches(18, 7)
 
             # The 1st subplot is the silhouette plot
-            # The silhouette coefficient can range from -1, 1 but in this example all
-            # lie within [-0.1, 1]
-            ax1.set_xlim([-0.1, 1])
-            # The (n_clusters+1)*10 is for inserting blank space between silhouette
-            # plots of individual clusters, to demarcate them clearly.
-            ax1.set_ylim([0, len(data) + (n_clusters + 1) * 10])  
+            # The silhouette coefficient can range from -1, 1
+            ax1.set_xlim([-0.1, 1])           
+            ax1.set_ylim([0, len(data) + (n_clusters + 1) * 10])  #  The (n_clusters+1)*10 is for inserting blank space between silhouette
 
-            # Initialize the clusterer with n_clusters value and a random generator
-            # seed of 10 for reproducibility.
             clusterer = KMeans(n_clusters=n_clusters, init="k-means++", n_init=1, random_state=10)
+            # print("sil df:")
+            # print(data)
             cluster_labels = clusterer.fit_predict(data)  
-            #print(cluster_labels)
+            # print("cluster labels:")
+            # print(cluster_labels)
 
 
             silhouette_avg = silhouette_score(data, cluster_labels)  
@@ -368,15 +357,9 @@ class Visualization:
         plt.show()
 
 
-
-
     def elbow_plot(self, data: pd.DataFrame, plotsize=(10,10)):
 
-    #  evaluating k
-    #  elbow plot: inertia = sum of squared distances of samples to their closest cluster center; decreases with number of clusters
-    #  ideally: low inertia, as few clusters as possible
-
-        data.drop(data.filter(['dracor_id']), inplace=True, axis=1)
+        data = data.drop(data.filter(['dracor_id']), axis=1)
 
         cluster_range = list(range(2, self.clusters+2))
         inertia_list = []
@@ -401,21 +384,22 @@ if __name__ == '__main__':
 
     visualizer = Visualization(
 
-                                corpus = "ger",
+                                corpus = "ita",
                                 text = "spoken",
                                 min_df = 20,
                                 remove_Stopwords = False,
                                 lemmatize = True,
-                                top_centroids = 20,
+                                top_centroids = 10,
                                 label = 'firstAuthor',  #  set to None if no label on the datapoints in the cluster plot is desired
                                 clusters = 5,
-                                feature_domain = "all_features"   #  "all_features" or "pos" or "tf-idf" or "meta"
+                                feature_domain = "pos"   #  "all_features" or "pos" or "tf-idf" or "meta"
     )
 
     #  1)  get data, construct df:
 
     df_all_features, tf_idf_df, pos_df, dracor_ids, vector_names, meta_df = visualizer.construct_df()
 
+    
     #  2)  visualize it and save it:
 
 
@@ -434,8 +418,7 @@ if __name__ == '__main__':
     visualizer.create_output_folder()
 
 
-
     visualizer.cluster_scatterplot(df=df, dracor_ids=dracor_ids, vector_names=vector_names) 
     #visualizer.elbow_plot(data=df)
-    #visualizer.silhouette_plot(data=df)
+    visualizer.silhouette_plot(data=df)
 
