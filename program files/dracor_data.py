@@ -10,6 +10,9 @@ import pandas as pd
 import scipy
 from dracor_nlp import Preprocessor
 from pathlib import Path
+import matplotlib.pyplot as plt
+import seaborn as sns
+
 
 
 GER_METADATA_PATH = Path("data_files/gerdracor-metadata.csv")
@@ -176,11 +179,10 @@ def write_to_csv(data: pd.DataFrame, path: str, encoding: str, index: bool, head
 
 
 if __name__ == '__main__':
+
     pass
-
-
-
-    pos, matrix, dracor_ids, vector_names,  meta_features = get_features("ger", vocab=True, syntax=True, get_ids= True, drama_stats=True)  #  do tf-idf
+    
+    #ix, dracor_ids, vector_names,  meta_features = get_features("ger", vocab=True, syntax=True, get_ids= True, drama_stats=True)  #  do tf-idf
     # print(pos)
     # # for element in pos:
     # #     element
@@ -195,6 +197,3 @@ if __name__ == '__main__':
     #print(df)  #  df has named rows (=dracors ids of plays) and columns (feature)
 
 
-    
-
-    
