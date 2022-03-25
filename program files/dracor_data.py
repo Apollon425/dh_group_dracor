@@ -17,11 +17,9 @@ import seaborn as sns
 
 GER_METADATA_PATH = Path("data_files/gerdracor-metadata.csv")
 ITA_METADATA_PATH = Path("data_files/itadracor-metadata.csv")
-TF_IDF_PATH = Path("data_files/ita_tfidf_min10.csv")
-
 OUTLIERLIST = ["ger000480"]  #  Karl Kraus - Die letzten Tage der Menschheit
 
-
+#  metadata features to include ("id" must be present, rest optional):
 metadata_featurelist = ["id", "yearNormalized", "numOfSpeakers", "numOfSpeakersFemale", "numOfSpeakersMale", "wordCountText", "wordCountSp", "wordCountStage"]
 
 
@@ -64,8 +62,6 @@ def get_data(corpus, text_mode):
         else:
             texts.append(get_dracor(corpus, name, text_mode)) # Text herunterladen
             ids.append(ident)                                 # id hinzufügen
-    #print("ids:")
-    #print(ids)
     return texts, ids                                         # Texte + ids als Ergebnis
 
 def get_metadata(corpus, ids: list):
@@ -77,34 +73,19 @@ def get_metadata(corpus, ids: list):
         sys.exit("Corpus name invalid. Only \"ger\" and \"ita\" are supported.")
 
     #  sort dataframe to match the data downloaded via api:
-    meta = meta[~meta['id'].isin(OUTLIERLIST)]       #meta = meta[~meta['id'].isin(EXCLUDE_PLAYS)]
-    #print("meta:")
-    #print(meta)
+    meta = meta[~meta['id'].isin(OUTLIERLIST)]  #  remove outliers from dataframe
 
     id_list = meta['id'].to_list()
-    #print("id_list:")
-    #print(id_list)
     sort_index = []
 
     for dracor_id in id_list:
         sort_index.append(ids.index(dracor_id))
 
-    #print("sort_index:")
-    #print(sort_index)
-
     meta['sort_index'] = sort_index
-    #print('meta_after adding sort index:')
-    #print(meta)
     meta.sort_values(by=["sort_index"], inplace=True)
-    #print("meta after sorting:")
     meta.drop(["sort_index"], axis=1, inplace=True)
     meta = meta.reset_index(drop=True)
-    #print("meta after dropping index:")
-    #print(meta)
-
     meta = meta[metadata_featurelist]
-    #print("meta after only keeping features list:")
-    #print(meta)
 
     return meta
 
@@ -139,17 +120,11 @@ def get_features(corpus="ita",
         texts = preproc.lemmatize()
     if vocab:  
         vectorizer = TfidfVectorizer(min_df=min_df, stop_words=stopwordlist, use_idf=True, norm=None)
-        #features.append(vectorizer.fit_transform(texts))
         a = vectorizer.fit_transform(texts)
-        #print("matrix:")
-        #print(a)
         features.append(a)
 
 
         if get_ids:
-            #print("ids appending:")
-            #print(ids)
-
             features.append(ids)
             features.append(vectorizer.get_feature_names_out())
     if drama_stats:
@@ -157,16 +132,14 @@ def get_features(corpus="ita",
     return features
 
 
-def convert_to_df_and_csv(path, scipymatrix, ids, export_data: bool) -> pd.DataFrame:
+def convert_scipymatrix_to_dataframe(scipymatrix, ids) -> pd.DataFrame:
+    """converts scipy matrix to pandas dataframe"""
     df = pd.DataFrame(data=scipy.sparse.csr_matrix.todense(scipymatrix))
     df.columns = ids
 
-    if export_data:
-        write_to_csv(df, path, "utf-8", False)
-    return df
 
 def dict_to_df(data: list) -> pd.DataFrame:
-    """converts list of dictionarys to dataframe"""
+    """converts list of dictionarys to pandasdataframe"""
     df = pd.DataFrame(data)
     return df
 
@@ -191,9 +164,5 @@ if __name__ == '__main__':
     # print(vector_names)
     # print(meta_features)
 
-
-    #df = convert_to_df_and_csv(TF_IDF_PATH, matrix, vector_names, True)  #  put data in pandas dataframe with named columns (=features), export as csv optionally
-    #df.index = dracor_ids  #  add row names (= dracors ids of plays)
-    #print(df)  #  df has named rows (=dracors ids of plays) and columns (feature)
 
 
