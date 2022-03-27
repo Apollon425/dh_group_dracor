@@ -73,7 +73,7 @@ class Visualization:
 
     def set_time_frame(self, first_year, last_year, corpus) -> tuple:
 
-        """help function for draw_plot, determines time frame to draw plot for; if not specified by user, it defaults to the oldest/youngest play in the corpus 
+        """help function for metadata_plot, determines time frame to draw plot for; if not specified by user, it defaults to the oldest/youngest play in the corpus 
         """
         path = dr.GER_METADATA_PATH if corpus == "ger" else dr.ITA_METADATA_PATH
 
@@ -86,7 +86,7 @@ class Visualization:
         return first_year, last_year
 
 
-    def draw_plot(self, data: pd.DataFrame, column: str, plot_type: str, annotate: bool, first_year: int = None, last_year: int = None, corpus="ger") -> None:
+    def metadata_plot(self, data: pd.DataFrame, column: str, plot_type: str, annotate: bool, first_year: int = None, last_year: int = None, corpus="ger") -> None:
 
         """
         :param column: y-axis value to plot against time; must be column name out of given data frame (see parameter data')
@@ -355,7 +355,6 @@ class Visualization:
         ax.set_ylabel("Inertia")
         ax.set_xticks(cluster_range)
         plot.savefig(Path(self.out_path + "/elbow_plot_dracor.png"))  
-
 
 
 if __name__ == '__main__':

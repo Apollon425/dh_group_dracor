@@ -65,7 +65,7 @@ def get_data(corpus, text_mode):
     return texts, ids                                         # Texte + ids als Ergebnis
 
 def get_metadata(corpus, ids: list):
-    
+
     if corpus == "ger":
         meta = read_data_csv(GER_METADATA_PATH)
     elif corpus == "ita":
@@ -90,8 +90,8 @@ def get_metadata(corpus, ids: list):
 
     return meta
 
-# options: corpus="ita"/"ger", text="spoken"/"full"
-def get_features(corpus="ita", text="full", syntax=True, remove_stopwords=False, lemmatize=True, min_df=10):
+def get_features(corpus="ita", text="full", syntax=True, remove_stopwords=False, lemmatize=True, min_df=10):  #  options: corpus="ita"/"ger", text="spoken"/"full"
+
 
     features = []
     if corpus=="ita":                                      # Dramentexte aus dem Netz ziehen
