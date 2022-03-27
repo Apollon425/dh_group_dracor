@@ -65,6 +65,7 @@ def get_data(corpus, text_mode):
     return texts, ids                                         # Texte + ids als Ergebnis
 
 def get_metadata(corpus, ids: list):
+    
     if corpus == "ger":
         meta = read_data_csv(GER_METADATA_PATH)
     elif corpus == "ita":
@@ -90,17 +91,8 @@ def get_metadata(corpus, ids: list):
     return meta
 
 # options: corpus="ita"/"ger", text="spoken"/"full"
-def get_features(corpus="ita",
-        text="full", 
-        vocab=True, 
-        syntax=True, 
-        remove_stopwords=False, 
-        lemmatize=True, 
-        drama_stats=True, 
-        get_ids=True,
-        min_df=10
+def get_features(corpus="ita", text="full", syntax=True, remove_stopwords=False, lemmatize=True, min_df=10):
 
-    ):
     features = []
     if corpus=="ita":                                      # Dramentexte aus dem Netz ziehen
         texts, ids = get_data("ita", text_mode=text)
@@ -118,17 +110,13 @@ def get_features(corpus="ita",
         features.append(preproc.pos_tag())
     if lemmatize:
         texts = preproc.lemmatize()
-    if vocab:  
-        vectorizer = TfidfVectorizer(min_df=min_df, stop_words=stopwordlist, use_idf=True, norm=None)
-        a = vectorizer.fit_transform(texts)
-        features.append(a)
+    vectorizer = TfidfVectorizer(min_df=min_df, stop_words=stopwordlist, use_idf=True, norm=None)
 
+    features.append(vectorizer.fit_transform(texts))  #  add tf-idf features
+    features.append(ids)  #  add dracor ids
+    features.append(vectorizer.get_feature_names_out())  #  add vector names for tf-idf vectors
+    features.append(get_metadata(corpus, ids))  #  add metadata features
 
-        if get_ids:
-            features.append(ids)
-            features.append(vectorizer.get_feature_names_out())
-    if drama_stats:
-        features.append(get_metadata(corpus, ids))
     return features
 
 
