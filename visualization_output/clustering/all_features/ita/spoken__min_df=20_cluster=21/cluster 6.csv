@@ -1,0 +1,17 @@
+,name,id,firstAuthor,numOfCoAuthors,title,subtitle,normalizedGenre,yearNormalized,size,libretto,averageClustering,density,averagePathLength,maxDegreeIds,averageDegree,diameter,yearPremiered,yearPrinted,maxDegree,numOfSpeakers,numOfSpeakersFemale,numOfSpeakersMale,numOfSpeakersUnknown,numPersonGroups,numConnectedComponents,yearWritten,numOfSegments,wikipediaLinkCount,numOfActs,wordCountText,wordCountSp,wordCountStage,numOfP,numOfL
+16,alfieri-sofonisba,ita000017,Alfieri,0,Sofonisba,,,1789,4,False,1.0,1.0,1.0,several characters,3.0,1,,1789.0,3,4,1,3,0,,1,,23,0.0,5,8817,8670,51,0,1223
+30,anonimo-la-veniexiana,ita000031,(Anonimo),0,La veniexiana,,,1536,6,False,1.0,1.0,1.0,several characters,5.0,1,,,5,6,4,2,0,,1,1536,5,0.0,0,9748,8579,98,575,0
+54,da-ponte-don-giovanni,ita000055,Ponte,0,Don Giovanni,,,1787,12,False,0.7612433862433864,0.5,1.5909090909090908,don_giovanni,5.5,3,1787,,9,12,4,6,2,,1,1787,36,0.0,2,9681,9078,1368,0,1665
+59,de-medici-rappresentazione-di-san-giovanni-e-paolo,ita000060,Medici,0,Rappresentazione di san Giovanni e Paolo,,,1491,37,False,1.0,1.0,1.0,several characters,36.0,1,1491,,36,37,7,28,2,,1,1490/1491,1,0.0,0,8866,8635,412,0,1169
+66,foscolo-edippo,ita000067,Foscolo,0,Edippo,,,1796,5,False,0.9,0.9,1.1,teseo|antigone|edippo,3.6,2,,1978.0,4,5,1,4,0,,1,1796,18,0.0,4,9582,9306,56,0,1418
+101,metastasio-achille-in-sciro,ita000102,Metastasio,0,Achille in Sciro,,,1736,14,False,0.8839493839493839,0.6153846153846154,1.3846153846153846,deidamia|achille,8.0,2,1736,,13,14,2,6,6,,1,,35,0.0,3,10329,8332,1109,0,1511
+102,metastasio-adriano-in-siria,ita000103,Metastasio,0,Adriano in Siria,,,1732,7,False,0.8857142857142858,0.8571428571428571,1.1428571428571428,farnaspe|aquilio|adriano,5.142857142857143,2,1732,,6,7,2,5,0,,1,,36,0.0,3,9330,8298,632,0,1501
+104,metastasio-attilio-regolo,ita000105,Metastasio,0,Attilio Regolo,,,1750,9,False,0.8711640211640213,0.75,1.25,licinio,6.0,2,1750,,8,9,2,5,2,,1,1738/1740,33,0.0,3,9516,8770,520,0,1585
+107,metastasio-didone-abbandonata,ita000108,Metastasio,0,Didone abbandonata,,,1724,7,False,0.8571428571428571,0.7142857142857143,1.0,several characters,4.285714285714286,1,1724,,5,7,2,5,0,,2,,53,0.0,3,9930,9013,924,0,1563
+111,metastasio-issipile,ita000112,Metastasio,0,Issipile,,,1732,7,False,1.0,1.0,1.0,several characters,6.0,1,1732,,6,7,3,3,1,,1,,37,0.0,3,8782,7796,924,0,1445
+115,metastasio-nitteti,ita000116,Metastasio,0,Nitteti,,,1756,7,False,1.0,1.0,1.0,several characters,6.0,1,1756,,6,7,2,4,1,,1,,32,0.0,3,9724,8888,1062,0,1538
+117,metastasio-ruggero-ovvero-l-eroica-gratitudine,ita000118,Metastasio,0,Ruggero ovvero l'eroica gratitudine,,,1771,7,False,1.0,1.0,1.0,several characters,6.0,1,1771,,6,7,2,4,1,,1,,29,0.0,3,8456,7925,316,0,1422
+120,metastasio-zenobia,ita000121,Metastasio,0,Zenobia,,,1737,7,False,0.8476190476190476,0.7619047619047619,1.238095238095238,tiridate|zenobia,4.571428571428571,2,1737,,6,7,2,4,1,,1,,29,0.0,3,9649,8764,532,0,1554
+125,rucellai-rosmunda,ita000126,Rucellai,0,Rosmunda,,,1515,9,False,0.8661375661375662,0.7222222222222222,1.2777777777777777,coro|rosmunda|nutrice,5.777777777777778,2,1515,1525.0,8,9,3,5,1,,1,,5,0.0,0,8520,8470,26,0,1237
+133,tasso-galealto,ita000134,Tasso,0,Galealto,,,1574,8,False,0.2916666666666666,0.2142857142857142,1.25,galealto,1.5,2,,,3,8,4,3,1,,3,1573/1574,6,0.0,2,8751,8714,16,0,1211
+138,visconti-pasitea,ita000139,Visconti,0,Pasitea,,,1498,12,False,0.5361111111111111,0.2575757575757575,2.3181818181818183,crisalo|dioneo,2.833333333333333,4,,,5,12,3,9,0,,1,1495/1498,25,0.0,0,9117,8447,84,0,1137

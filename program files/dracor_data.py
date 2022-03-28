@@ -112,7 +112,8 @@ def get_features(corpus="ita", text="full", syntax=True, remove_stopwords=False,
         texts = preproc.lemmatize()
     vectorizer = TfidfVectorizer(min_df=min_df, stop_words=stopwordlist, use_idf=True, norm=None)
 
-    features.append(vectorizer.fit_transform(texts))  #  add tf-idf features
+    a = vectorizer.fit_transform(texts)
+    features.append(a)  #  add tf-idf features
     features.append(ids)  #  add dracor ids
     features.append(vectorizer.get_feature_names_out())  #  add vector names for tf-idf vectors
     features.append(get_metadata(corpus, ids))  #  add metadata features
@@ -124,6 +125,7 @@ def convert_scipymatrix_to_dataframe(scipymatrix, ids) -> pd.DataFrame:
     """converts scipy matrix to pandas dataframe"""
     df = pd.DataFrame(data=scipy.sparse.csr_matrix.todense(scipymatrix))
     df.columns = ids
+    return df
 
 
 def dict_to_df(data: list) -> pd.DataFrame:

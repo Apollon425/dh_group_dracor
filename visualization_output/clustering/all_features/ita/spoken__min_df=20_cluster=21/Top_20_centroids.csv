@@ -1,0 +1,21 @@
+Cluster 0,Cluster 1,Cluster 2,Cluster 3,Cluster 4,Cluster 5,Cluster 6,Cluster 7,Cluster 8,Cluster 9,Cluster 10,Cluster 11,Cluster 12,Cluster 13,Cluster 14,Cluster 15,Cluster 16,Cluster 17,Cluster 18,Cluster 19,Cluster 20
+wordCountText,wordCountText,wordCountText,wordCountText,wordCountText,wordCountText,wordCountText,wordCountText,wordCountText,wordCountText,wordCountText,wordCountText,wordCountText,wordCountText,wordCountText,wordCountText,wordCountText,wordCountText,yearNormalized,wordCountText,wordCountText
+wordCountSp,wordCountSp,wordCountSp,wordCountSp,wordCountSp,wordCountSp,wordCountSp,wordCountSp,wordCountSp,wordCountSp,wordCountSp,wordCountSp,wordCountSp,wordCountSp,wordCountSp,wordCountSp,wordCountSp,wordCountSp,wordCountText,wordCountSp,wordCountSp
+yearNormalized,yearNormalized,yearNormalized,yearNormalized,yearNormalized,yearNormalized,yearNormalized,yearNormalized,che,yearNormalized,yearNormalized,yearNormalized,yearNormalized,wordCountStage,yearNormalized,yearNormalized,yearNormalized,yearNormalized,wordCountSp,yearNormalized,yearNormalized
+wordCountStage,wordCountStage,il,il,wordCountStage,il,wordCountStage,wordCountStage,il,il,il,il,il,yearNormalized,il,il,wordCountStage,il,wordCountStage,il,wordCountStage
+il,il,che,wordCountStage,il,che,il,il,yearNormalized,che,che,che,che,il,wordCountStage,che,il,che,che,che,il
+che,che,essere,che,che,essere,che,che,essere,essere,essere,essere,essere,che,di,essere,che,essere,de,wordCountStage,che
+essere,essere,di,essere,essere,wordCountStage,essere,essere,di,di,di,di,di,essere,che,di,essere,non,il,essere,essere
+di,el,non,di,di,di,non,di,non,non,non,non,non,avere,essere,non,non,di,in,di,di
+non,mi,io,non,non,non,di,non,io,et,et,io,avere,non,non,io,di,wordCountStage,mio,avere,non
+avere,in,avere,io,avere,io,io,in,mi,avere,wordCountStage,avere,in,di,io,wordCountStage,mio,avere,te,non,uno
+per,avere,fare,mio,lo,avere,mio,avere,avere,si,avere,fare,ch,lo,in,avere,io,in,avere,in,mio
+el,mio,per,in,fare,in,in,io,in,in,io,per,io,uno,mio,in,in,mi,per,mi,in
+fare,di,mi,mi,uno,mi,mi,fare,fare,per,in,mi,si,mi,mi,uno,mi,uno,non,ch,mi
+in,no,in,al,per,uno,tuo,el,per,io,fare,mio,mi,fare,tu,mi,tuo,io,el,uno,avere
+mio,de,mio,tuo,mi,mio,uno,mio,mio,uno,mi,in,molto,se,al,questo,uno,per,me,mio,per
+io,se,questo,uno,in,per,se,mi,si,mi,mio,uno,fare,per,tuo,lo,se,si,gt,io,fare
+ch,per,uno,tu,se,si,per,per,dire,wordCountStage,per,lo,mio,io,ma,si,per,mio,ogni,per,el
+mi,uno,dire,per,el,fare,avere,se,uno,ch,uno,wordCountStage,per,no,uno,per,avere,se,essere,lo,io
+gt,non,si,avere,mio,se,al,ch,se,fare,si,se,uno,in,avere,mio,al,ch,se,se,si
+tu,tuo,volere,ti,io,ch,ti,tuo,lo,mio,ch,dire,al,el,ch,tu,si,lo,lasso,fare,questo

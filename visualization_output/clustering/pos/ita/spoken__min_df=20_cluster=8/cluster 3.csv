@@ -1,0 +1,20 @@
+,name,id,firstAuthor,numOfCoAuthors,title,subtitle,normalizedGenre,yearNormalized,size,libretto,averageClustering,density,averagePathLength,maxDegreeIds,averageDegree,diameter,yearPremiered,yearPrinted,maxDegree,numOfSpeakers,numOfSpeakersFemale,numOfSpeakersMale,numOfSpeakersUnknown,numPersonGroups,numConnectedComponents,yearWritten,numOfSegments,wikipediaLinkCount,numOfActs,wordCountText,wordCountSp,wordCountStage,numOfP,numOfL
+22,anonimo-la-canterina,ita000023,(Anonimo),0,La Canterina,,,1766,4,False,1.0,1.0,1.0,several characters,3.0,1,1766,,3,4,2,2,0,,1,,13,0.0,0,2744,2523,178,0,490
+53,da-ponte-cosi-fan-tutte,ita000054,Ponte,0,Così fan tutte,,,1790,9,False,0.9285714285714286,0.9166666666666666,1.0833333333333333,several characters,7.333333333333333,2,1790,,8,9,3,5,1,,1,1789/1790,34,0.0,2,10653,9986,1201,0,1970
+54,da-ponte-don-giovanni,ita000055,Ponte,0,Don Giovanni,,,1787,12,False,0.7612433862433864,0.5,1.5909090909090908,don_giovanni,5.5,3,1787,,9,12,4,6,2,,1,1787,36,0.0,2,9681,9078,1368,0,1665
+55,da-ponte-le-nozze-di-figaro,ita000056,Ponte,0,Le nozze di Figaro,,,1786,14,False,0.8710832817975674,0.6923076923076923,1.3186813186813189,conte|susanna|figaro,9.0,3,1786,,12,14,6,7,2,,1,1785/1786,48,0.0,4,13038,11739,2360,0,2133
+69,gigli-la-dirindina,ita000070,Gigli,0,La Dirindina,,,1715,3,False,1.0,1.0,1.0,don_carissimo|liscione|dirindina,2.0,1,1715,1715.0,2,3,1,2,0,,1,,2,0.0,0,2086,2073,0,0,408
+101,metastasio-achille-in-sciro,ita000102,Metastasio,0,Achille in Sciro,,,1736,14,False,0.8839493839493839,0.6153846153846154,1.3846153846153846,deidamia|achille,8.0,2,1736,,13,14,2,6,6,,1,,35,0.0,3,10329,8332,1109,0,1511
+102,metastasio-adriano-in-siria,ita000103,Metastasio,0,Adriano in Siria,,,1732,7,False,0.8857142857142858,0.8571428571428571,1.1428571428571428,farnaspe|aquilio|adriano,5.142857142857143,2,1732,,6,7,2,5,0,,1,,36,0.0,3,9330,8298,632,0,1501
+103,metastasio-alessandro-nell-indie,ita000104,Metastasio,0,Alessandro nell'Indie,,,1730,7,False,1.0,1.0,1.0,several characters,6.0,1,1730,,6,7,3,4,0,,1,1727/1730,40,0.0,3,8463,7640,968,0,1399
+108,metastasio-ezio,ita000109,Metastasio,0,Ezio,,,1728,7,False,1.0,1.0,1.0,several characters,6.0,1,1728,,6,7,2,4,1,,1,,44,0.0,3,11857,11258,605,0,1988
+109,metastasio-il-re-pastore,ita000110,Metastasio,0,Il re pastore,,,1751,6,False,1.0,1.0,1.0,several characters,5.0,1,1751,,5,6,2,3,1,,1,,25,0.0,3,6773,5765,576,0,1043
+110,metastasio-ipermestra,ita000111,Metastasio,0,Ipermestra,,,1744,7,False,0.923809523809524,0.8095238095238095,1.1904761904761905,danao|ipermestra,4.857142857142857,2,1744,,6,8,2,4,2,,1,,30,0.0,3,7647,7015,358,0,1269
+111,metastasio-issipile,ita000112,Metastasio,0,Issipile,,,1732,7,False,1.0,1.0,1.0,several characters,6.0,1,1732,,6,7,3,3,1,,1,,37,0.0,3,8782,7796,924,0,1445
+112,metastasio-l-eroe-cinese,ita000113,Metastasio,0,L'eroe cinese,,,1752,6,False,1.0,1.0,1.0,several characters,5.0,1,1752,,5,6,2,3,1,,1,,26,0.0,3,7265,6487,602,0,1178
+113,metastasio-l-impresario-delle-canarie,ita000114,Metastasio,0,"L'impresario delle Canarie, Intermezzi per la Didone",,,1724,2,False,0.0,1.0,1.0,nibbio|dorina,1.0,1,1724,,1,2,1,1,0,,1,,2,0.0,0,2205,2154,84,0,410
+115,metastasio-nitteti,ita000116,Metastasio,0,Nitteti,,,1756,7,False,1.0,1.0,1.0,several characters,6.0,1,1756,,6,7,2,4,1,,1,,32,0.0,3,9724,8888,1062,0,1538
+116,metastasio-romolo-ed-ersilia,ita000117,Metastasio,0,Romolo ed Ersilia,,,1765,7,False,0.7238095238095238,0.7142857142857143,1.2857142857142858,romolo,4.285714285714286,2,1765,,6,7,2,4,1,,1,,27,0.0,3,7659,6700,541,0,1234
+118,metastasio-siroe,ita000119,Metastasio,0,Siroe,,,1726,7,False,0.9523809523809524,0.9523809523809524,1.0476190476190477,several characters,5.714285714285714,2,1726,,6,7,2,4,1,,1,,48,0.0,3,10541,9905,507,0,1778
+119,metastasio-temistocle,ita000120,Metastasio,0,Temistocle,,,1736,8,False,1.0,1.0,1.0,several characters,7.0,1,1736,,7,8,2,5,1,,1,,37,0.0,3,10495,9579,502,0,1731
+120,metastasio-zenobia,ita000121,Metastasio,0,Zenobia,,,1737,7,False,0.8476190476190476,0.7619047619047619,1.238095238095238,tiridate|zenobia,4.571428571428571,2,1737,,6,7,2,4,1,,1,,29,0.0,3,9649,8764,532,0,1554

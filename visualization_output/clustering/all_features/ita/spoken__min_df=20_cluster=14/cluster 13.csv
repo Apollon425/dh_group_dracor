@@ -1,0 +1,21 @@
+,name,id,firstAuthor,numOfCoAuthors,title,subtitle,normalizedGenre,yearNormalized,size,libretto,averageClustering,density,averagePathLength,maxDegreeIds,averageDegree,diameter,yearPremiered,yearPrinted,maxDegree,numOfSpeakers,numOfSpeakersFemale,numOfSpeakersMale,numOfSpeakersUnknown,numPersonGroups,numConnectedComponents,yearWritten,numOfSegments,wikipediaLinkCount,numOfActs,wordCountText,wordCountSp,wordCountStage,numOfP,numOfL
+0,alamanni-tragedia-di-antigone,ita000001,Alamanni,0,Tragedia di Antigone,,,1527,10,False,1.0,1.0,1.0,several characters,9.0,1,,1527.0,9,10,3,7,0,,1,,1,0.0,1,12351,12177,0,0,1692
+4,alfieri-bruto-secondo,ita000005,Alfieri,0,Bruto secondo,,,1789,9,False,0.7817460317460316,0.6944444444444444,1.3055555555555556,bruto,5.555555555555555,2,,1789.0,8,9,0,8,1,,1,,14,0.0,5,11801,11450,106,0,1628
+5,alfieri-don-garzia,ita000006,Alfieri,0,Don Garzia,,,1789,5,False,0.9,0.9,1.1,cosimo|piero|garzia,3.6,2,,1789.0,4,5,1,4,0,,1,,23,0.0,5,11016,10893,53,1,1542
+6,alfieri-filippo,ita000007,Alfieri,0,Filippo,,,1783,6,False,0.8444444444444444,0.8,1.2,filippo|gomez,4.0,2,,1783.0,5,6,1,5,0,,1,1775,24,0.0,5,11028,10906,50,0,1620
+7,alfieri-la-congiura-de-pazzi,ita000008,Alfieri,0,La congiura de' Pazzi,,,1788,6,False,0.9,0.8,1.2,raimondo|guglielmo,4.0,2,,1788.0,5,6,1,5,0,,1,1777/1783,24,0.0,5,11880,11637,63,0,1619
+8,alfieri-maria-stuarda,ita000009,Alfieri,0,Maria Stuarda,,,1788,5,False,0.9,0.9,1.1,maria|arrigo|botuello,3.6,2,,1788.0,4,5,1,4,0,,1,1778/1782,27,0.0,5,11409,11287,47,0,1629
+9,alfieri-merope,ita000010,Alfieri,0,Merope,,,1783,6,False,1.0,1.0,1.0,several characters,5.0,1,,1783.0,5,6,1,4,1,,1,1782,21,0.0,5,11239,10896,57,0,1652
+10,alfieri-mirra,ita000011,Alfieri,0,Mirra,,,1789,6,False,1.0,1.0,1.0,several characters,5.0,1,,1789.0,5,6,3,2,1,,1,1784/1786,22,0.0,5,11051,10803,65,4,1575
+11,alfieri-oreste,ita000012,Alfieri,0,Oreste,,,1783,5,False,1.0,1.0,1.0,several characters,4.0,1,,1783.0,4,5,2,3,0,,1,1776/1777,30,0.0,5,11132,10952,93,0,1721
+12,alfieri-ottavia,ita000013,Alfieri,0,Ottavia,,,1783,5,False,1.0,1.0,1.0,several characters,4.0,1,,1783.0,4,5,2,3,0,,1,1779/1782,27,0.0,5,11138,11001,60,0,1592
+13,alfieri-polinice,ita000014,Alfieri,0,Polinice,,,1783,5,False,1.0,1.0,1.0,several characters,4.0,1,,1783.0,4,5,2,3,0,,1,1775,21,0.0,5,11428,11295,65,3,1643
+14,alfieri-rosmunda,ita000015,Alfieri,0,Rosmunda,,,1783,4,False,1.0,1.0,1.0,several characters,3.0,1,,1783.0,3,4,2,2,0,,1,1779/1780,24,0.0,5,11482,11349,61,0,1632
+15,alfieri-saul,ita000016,Alfieri,0,Saul,,,1788,6,False,0.9,0.8666666666666667,1.1333333333333333,saul|gionata|abner,4.333333333333333,2,,1788.0,5,6,1,5,0,,1,1782,24,0.0,5,12015,11701,145,1,1762
+18,alfieri-virginia,ita000019,Alfieri,0,Virginia,,,1783,7,False,0.9523809523809524,0.9523809523809524,1.0476190476190477,several characters,5.714285714285714,2,,,6,7,2,4,1,,1,1777/1783,21,0.0,5,11418,11263,65,0,1639
+35,ariosto-i-studenti,ita000036,Ariosto,0,I Studenti,,,1519,12,False,0.5555555555555556,0.2272727272727272,2.108695652173913,accursio|bonifazio,2.5,4,,,5,12,3,9,0,,2,1518/1519,18,0.0,4,12668,11057,48,0,1700
+47,cammelli-panfila,ita000048,Cammelli,0,Panfila,,,1508,15,False,0.2244444444444444,0.1333333333333333,1.8974358974358971,demetrio|panfila,1.8666666666666667,4,,1508.0,5,15,6,6,3,,5,1499,31,0.0,5,11877,11326,74,1,1581
+62,epicuro-la-cecaria,ita000063,Epicuro,0,La Cecaria,,,1525,6,False,0.9,0.8666666666666667,1.1333333333333333,terzo|vecchio|geloso,4.333333333333333,2,,1525.0,5,6,1,5,0,,1,,6,0.0,2,11814,11663,200,0,1647
+68,foscolo-tieste,ita000069,Foscolo,0,Tieste,,,1797,4,False,1.0,1.0,1.0,several characters,3.0,1,1797,,3,4,2,2,0,,1,1795,24,0.0,5,11080,10771,417,0,1694
+105,metastasio-demetrio,ita000106,Metastasio,0,Demetrio,,,1731,7,False,0.9523809523809524,0.9523809523809524,1.0476190476190477,several characters,5.714285714285714,2,1731,,6,7,2,4,1,,1,,45,0.0,3,11808,10798,640,0,1956
+108,metastasio-ezio,ita000109,Metastasio,0,Ezio,,,1728,7,False,1.0,1.0,1.0,several characters,6.0,1,1728,,6,7,2,4,1,,1,,44,0.0,3,11857,11258,605,0,1988

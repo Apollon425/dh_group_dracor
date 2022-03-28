@@ -151,9 +151,10 @@ class Visualization:
                                                                                 min_df= self.min_df, 
                                                                                 lemmatize = self.lemmatize)
 
-        #  build dataframe for each feauture domain (tf-idf, pos, meta-data and a dataframe with all possible features):
-        tf_idf_df = dr.convert_scipymatrix_to_dataframe(matrix, vector_names)
 
+        #  build dataframe for each feauture domain (tf-idf, pos, meta-data and a dataframe with all possible features):
+
+        tf_idf_df = dr.convert_scipymatrix_to_dataframe(matrix, vector_names)
         meta_df = meta_features
         df = pd.concat([tf_idf_df, meta_features], axis=1)
         pos_df = dr.dict_to_df(pos)
@@ -369,7 +370,7 @@ if __name__ == '__main__':
                                 top_centroids = 10,
                                 label = 'firstAuthor',  #  set to None if no label on the datapoints in the cluster plot is desired
                                 clusters = 5,
-                                feature_domain = "pos"   #  "all_features" or "pos" or "tf-idf" or "meta"
+                                feature_domain = "tf-idf"   #  "all_features" or "pos" or "tf-idf" or "meta"
     )
 
     #  1)  get data, construct df:
@@ -393,7 +394,8 @@ if __name__ == '__main__':
     #  3)  visualize it and save it:
 
     visualizer.create_output_folder()
-
+    print("df vorm clustern:")
+    print(df)
     visualizer.cluster_scatterplot(df=df, dracor_ids=dracor_ids) 
     #visualizer.elbow_plot(data=df)
     visualizer.silhouette_plot(data=df)

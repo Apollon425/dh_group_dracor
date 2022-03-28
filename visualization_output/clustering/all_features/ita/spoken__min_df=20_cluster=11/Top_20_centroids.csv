@@ -1,0 +1,21 @@
+Cluster 0,Cluster 1,Cluster 2,Cluster 3,Cluster 4,Cluster 5,Cluster 6,Cluster 7,Cluster 8,Cluster 9,Cluster 10
+wordCountText,wordCountText,wordCountText,wordCountText,wordCountText,wordCountText,wordCountText,wordCountText,wordCountText,wordCountText,wordCountText
+wordCountSp,wordCountSp,wordCountSp,wordCountSp,wordCountSp,wordCountSp,wordCountSp,wordCountSp,wordCountSp,wordCountSp,wordCountSp
+yearNormalized,yearNormalized,yearNormalized,yearNormalized,yearNormalized,yearNormalized,yearNormalized,che,yearNormalized,yearNormalized,yearNormalized
+wordCountStage,il,il,il,il,il,il,il,wordCountStage,il,il
+il,wordCountStage,che,di,wordCountStage,wordCountStage,che,yearNormalized,il,che,che
+che,che,essere,wordCountStage,che,che,essere,essere,che,wordCountStage,wordCountStage
+essere,essere,di,che,essere,essere,di,di,essere,essere,essere
+di,di,non,essere,di,di,non,non,non,di,di
+non,non,io,non,non,non,io,io,di,non,non
+avere,avere,avere,io,avere,io,avere,mi,mio,io,avere
+in,uno,fare,in,in,in,fare,avere,io,avere,in
+mio,mi,per,mio,mi,mio,per,in,in,in,io
+fare,in,mi,mi,fare,uno,mi,fare,mi,mi,et
+el,lo,in,tuo,lo,mi,mio,per,tuo,uno,mi
+per,io,mio,tu,uno,avere,in,mio,uno,ch,uno
+io,per,questo,al,per,si,uno,si,se,et,per
+mi,si,uno,ma,io,tu,lo,dire,per,per,fare
+uno,fare,dire,uno,mio,al,wordCountStage,uno,avere,fare,mio
+ch,mio,si,me,se,se,se,se,al,si,lo
+se,et,volere,avere,ch,ma,dire,lo,si,questo,si

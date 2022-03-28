@@ -1,0 +1,21 @@
+Cluster 0,Cluster 1,Cluster 2,Cluster 3,Cluster 4,Cluster 5,Cluster 6,Cluster 7,Cluster 8,Cluster 9,Cluster 10,Cluster 11
+wordCountText,wordCountText,wordCountText,wordCountText,wordCountText,wordCountText,wordCountText,wordCountText,wordCountText,wordCountText,wordCountText,wordCountText
+wordCountSp,wordCountSp,wordCountSp,wordCountSp,wordCountSp,wordCountSp,wordCountSp,wordCountSp,wordCountSp,wordCountSp,wordCountSp,wordCountSp
+wordCountStage,wordCountStage,yearNormalized,wordCountStage,wordCountStage,wordCountStage,yearNormalized,wordCountStage,yearNormalized,wordCountStage,wordCountStage,der
+yearNormalized,der,wordCountStage,yearNormalized,ich,ich,wordCountStage,ich,wordCountStage,yearNormalized,yearNormalized,wordCountStage
+ich,ich,ich,ich,der,der,ich,der,ich,ich,ich,ich
+der,yearNormalized,der,der,sich,yearNormalized,der,yearNormalized,der,der,der,sich
+sich,sich,sich,sich,yearNormalized,sich,sich,sich,sich,sich,sich,yearNormalized
+sein,sein,sein,sein,und,sein,sein,mein,und,sein,sein,mein
+und,und,und,und,mein,und,und,sein,sein,mein,und,und
+mein,mein,mein,mein,du,mein,mein,und,mein,und,mein,sein
+nicht,nicht,nicht,nicht,sein,nicht,nicht,nicht,nicht,nicht,nicht,in
+du,einen,du,du,haben,so,du,zu,du,zu,du,nicht
+einen,in,zu,zu,nicht,in,einen,in,einen,du,so,du
+zu,zu,einen,haben,in,haben,zu,so,zu,in,zu,zu
+so,du,so,einen,dies,zu,so,du,so,haben,einen,einen
+haben,haben,in,so,zu,einen,haben,wie,in,einen,haben,mit
+in,so,haben,in,noch,du,in,einen,haben,so,in,so
+was,werden,wie,was,so,wie,was,mit,was,was,was,wie
+meinen,wie,was,werden,einen,werden,wie,haben,wie,mit,mit,auf
+mit,mit,mit,daß,daß,daß,mit,was,werden,wie,wie,dies

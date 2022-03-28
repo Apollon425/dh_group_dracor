@@ -1,0 +1,15 @@
+,name,id,firstAuthor,numOfCoAuthors,title,subtitle,normalizedGenre,yearNormalized,size,libretto,averageClustering,density,averagePathLength,maxDegreeIds,averageDegree,diameter,yearPremiered,yearPrinted,maxDegree,numOfSpeakers,numOfSpeakersFemale,numOfSpeakersMale,numOfSpeakersUnknown,numPersonGroups,numConnectedComponents,yearWritten,numOfSegments,wikipediaLinkCount,numOfActs,wordCountText,wordCountSp,wordCountStage,numOfP,numOfL
+31,anonimo-orphei-tragoedia,ita000032,(Anonimo),0,Orphei tragoedia,,,1491,12,False,0.8293650793650794,0.303030303030303,2.212121212121212,orpheus,3.333333333333333,4,,,8,12,6,6,0,,1,1491,5,0.0,0,3027,2840,60,0,422
+45,bellincioni-ripresentazione-di-pavia,ita000046,Bellincioni,0,Ripresentazione di Pavia,,,1492,11,False,1.0,1.0,1.0,several characters,10.0,1,,,10,11,1,2,8,,1,1492,1,0.0,0,2402,2127,115,0,316
+49,cascina-alfea-reverente,ita000050,Cascina,0,Alfea reverente,,,1639,4,False,1.0,1.0,1.0,several characters,3.0,1,,1639.0,3,4,3,0,1,,1,,1,0.0,0,2896,929,67,0,148
+58,de-dottori-aristodemo,ita000059,Dottori,0,Aristodemo,,,1657,12,False,0.6765873015873015,0.4545454545454545,1.6515151515151516,policare|coro,5.0,3,,1670.0,8,12,4,7,1,,1,1657,34,0.0,5,18682,18472,98,0,3113
+62,epicuro-la-cecaria,ita000063,Epicuro,0,La Cecaria,,,1525,6,False,0.9,0.8666666666666667,1.1333333333333333,terzo|vecchio|geloso,4.333333333333333,2,,1525.0,5,6,1,5,0,,1,,6,0.0,2,11814,11663,200,0,1647
+65,foscolo-ajace,ita000066,Foscolo,0,Ajace,,,1811,8,False,0.6958333333333333,0.6428571428571429,1.4642857142857142,aiace|agamennone,4.5,3,1811,1828.0,6,8,1,7,0,,1,1810/1811,36,0.0,5,14452,14151,258,0,2066
+91,guidi-endimione,ita000092,Guidi,0,Endimione,,,1691,5,False,0.9,0.9,1.1,amore|cintia|endimione,3.6,2,1691,1692.0,4,5,2,2,1,,1,1688,5,0.0,5,8005,6981,0,0,1215
+98,marchese-il-crispo,ita000099,Marchese,0,Il Crispo,,,1715,9,False,0.6111111111111112,0.5,1.3571428571428572,costantino,4.0,2,,1715.0,6,9,2,6,1,,2,,44,0.0,5,17597,17283,106,0,2333
+99,marchese-l-ermenegildo,ita000100,Marchese,0,L'Ermenegildo,,,1729,9,False,0.8693121693121691,0.8055555555555556,1.1944444444444444,igonda|recaredo,6.444444444444445,2,,1729.0,8,9,1,7,6,,1,,36,0.0,5,21208,20944,79,0,2965
+123,pagano-gli-esuli-tebani,ita000124,Pagano,0,Gli esuli tebani,,,1782,11,False,0.7670995670995672,0.5636363636363636,1.4363636363636365,carone,5.636363636363637,2,,1782.0,10,11,2,8,1,,1,,34,0.0,5,10693,9842,256,1,1491
+128,speroni-canace,ita000129,Speroni,0,Canace,,,1546,11,False,0.206060606060606,0.2909090909090909,1.8888888888888888,famiglio,2.909090909090909,4,,1546.0,6,11,3,6,2,,2,,29,0.0,0,10597,10437,60,0,2070
+133,tasso-galealto,ita000134,Tasso,0,Galealto,,,1574,8,False,0.2916666666666666,0.2142857142857142,1.25,galealto,1.5,2,,,3,8,4,3,1,,3,1573/1574,6,0.0,2,8751,8714,16,0,1211
+135,tasso-re-torrismondo,ita000136,Tasso,0,Re Torrismondo,,,1587,13,False,0.7917582417582417,0.3717948717948718,1.7307692307692308,torrismondo,4.461538461538462,3,1618,1587.0,9,13,5,7,1,,1,,34,0.0,5,25478,24763,68,0,3404
+136,torelli-la-merope,ita000137,Torelli,0,La Merope,,,1589,8,False,1.0,1.0,1.0,several characters,7.0,1,,1589.0,7,8,3,5,0,,1,,1,0.0,1,19170,18597,10,0,2699
