@@ -1,0 +1,15 @@
+For n_clusters = 2 The average silhouette_score is : 0.28644461968585244
+For n_clusters = 3 The average silhouette_score is : 0.20899969846184682
+For n_clusters = 4 The average silhouette_score is : 0.23531679109311898
+For n_clusters = 5 The average silhouette_score is : 0.19975036685452732
+For n_clusters = 6 The average silhouette_score is : 0.18901016784176194
+For n_clusters = 7 The average silhouette_score is : 0.1644502213974245
+For n_clusters = 8 The average silhouette_score is : 0.1715615144023326
+For n_clusters = 9 The average silhouette_score is : 0.16858193159780346
+For n_clusters = 10 The average silhouette_score is : 0.16659845990764316
+For n_clusters = 11 The average silhouette_score is : 0.17012636592137434
+For n_clusters = 12 The average silhouette_score is : 0.17168763580864432
+For n_clusters = 13 The average silhouette_score is : 0.169773567625642
+For n_clusters = 14 The average silhouette_score is : 0.1548695838019343
+For n_clusters = 15 The average silhouette_score is : 0.14414694156381389
+For n_clusters = 16 The average silhouette_score is : 0.16518110060185412

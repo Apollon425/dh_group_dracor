@@ -365,11 +365,11 @@ if __name__ == '__main__':
                                 corpus = "ita",
                                 text = "spoken",
                                 min_df = 20,
-                                remove_Stopwords = False,
+                                remove_Stopwords = True,
                                 lemmatize = True,
                                 top_centroids = 10,
                                 label = 'firstAuthor',  #  set to None if no label on the datapoints in the cluster plot is desired
-                                clusters = 5,
+                                clusters = 21,
                                 feature_domain = "tf-idf"   #  "all_features" or "pos" or "tf-idf" or "meta"
     )
 
@@ -394,9 +394,7 @@ if __name__ == '__main__':
     #  3)  visualize it and save it:
 
     visualizer.create_output_folder()
-    print("df vorm clustern:")
-    print(df)
-    visualizer.cluster_scatterplot(df=df, dracor_ids=dracor_ids) 
+    #visualizer.cluster_scatterplot(df=df, dracor_ids=dracor_ids) 
     #visualizer.elbow_plot(data=df)
     visualizer.silhouette_plot(data=df)
 

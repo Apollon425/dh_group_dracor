@@ -17,7 +17,7 @@ import seaborn as sns
 
 GER_METADATA_PATH = Path("data_files/gerdracor-metadata.csv")
 ITA_METADATA_PATH = Path("data_files/itadracor-metadata.csv")
-OUTLIERLIST = ["ger000480"]  #  Karl Kraus - Die letzten Tage der Menschheit
+OUTLIERLIST = ["ger000480", "ger000555", "ger000556", "ger000557", "ger000558", "ger000559", "ger000560"]  #  Karl Kraus - Die letzten Tage der Menschheit + neueste Stücke
 
 #  metadata features to include ("id" must be present, rest optional):
 metadata_featurelist = ["id", "yearNormalized", "numOfSpeakers", "numOfSpeakersFemale", "numOfSpeakersMale", "wordCountText", "wordCountSp", "wordCountStage"]
