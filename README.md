@@ -4,10 +4,13 @@ This repository contains the code, input data and example outputs for our DraCor
 
 _Overview_
 
-data_files				contains input data
-expose,presentation,project_paper	contains our writeups
-program_files				contains our code
-visualization_output			contains our visualizations
+data_files contains input data
+
+expose,presentation,project_paper contains our writeups
+
+program_files contains our code
+
+visualization_output contains our visualizations
 
 _Running the code_
 
