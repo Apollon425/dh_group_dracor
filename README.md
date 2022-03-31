@@ -20,7 +20,11 @@ This script is our main script. dracor\_data is responsible for requesting data 
 _Requirements_
 
 python3.6 or bigger
+
 sklearn1.0.2
+
 spacy, spacy-models it\_core\_news\_lg, de\_core\_news\_sm
+
 nltk
+
 internet connection while running the code
