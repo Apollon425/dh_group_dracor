@@ -340,6 +340,8 @@ class Visualization:
 
     def elbow_plot(self, data: pd.DataFrame, plotsize=(10,10)):
         """Outputs an elbow plot of data in dataframe. Used to determine how many clusters to use."""
+        
+        # The tutorial by The Programming Historian was useful for the Elbow Plot algorithm
 
         data = data.drop(data.filter(['dracor_id']), axis=1)
 
