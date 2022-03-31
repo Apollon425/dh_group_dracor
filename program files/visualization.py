@@ -245,6 +245,8 @@ class Visualization:
 
 
     def silhouette_plot(self, data: pd.DataFrame) -> None:
+       # this code is based on the sci-kit learn tutorial for silhouette plot: https://scikit-learn.org/stable/auto_examples/cluster/plot_kmeans_silhouette_analysis.html
+    
         """Outputs as many silhouette plot's of data in dataframe as clusters are specified in 'clusters'-attribute in the visualization object. 
            Used to evaluate the quality of the clustering. Outputs silhouette scores as well."""
 
